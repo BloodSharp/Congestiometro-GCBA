@@ -1,2 +1,3 @@
-# Ignorar carpeta de Angular
+# Ignorar carpetas de Angular
 .angular
+dist/
