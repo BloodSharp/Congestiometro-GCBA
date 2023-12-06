@@ -8,8 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 import localeEsAR from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAR, 'es-AR');
 
-import { FlexLayoutModule } from '@angular/flex-layout';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NativeDateAdapter, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
@@ -79,7 +77,6 @@ const MY_DATE_FORMATS = {
     RouterModule.forRoot([]),
     GraphQLModule,
     HttpClientModule,
-    FlexLayoutModule.withConfig({ addFlexToParent: false }),
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { DisplayUsersComponent } from './display-users.component';
 
@@ -20,7 +19,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    FlexLayoutModule,
     MatIconModule,
     MatTableModule,
     MatPaginatorModule,
