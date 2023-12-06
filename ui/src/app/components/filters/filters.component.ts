@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
+/* TODO: reemplazar el MediaObserver por contenido de Angular moderno
 import { MediaObserver } from '@angular/flex-layout';
+*/
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
@@ -57,7 +59,7 @@ export const getTurfFeature = (polygon: Polygon | MultiPolygon) => {
   styleUrls: ['./filters.component.scss'],
 })
 export class FiltersComponent {
-  @Input() exportableData!: Observable<{ csvData: any[]; chart: typeof charts[number] }>;
+  @Input() exportableData!: Observable<{ csvData: any[]; chart: (typeof charts)[number] }>;
   @Input() secondary = false;
 
   public maxDate = timer(0, 1000 * 60 * 60).pipe(map(() => new Date()));
@@ -83,7 +85,7 @@ export class FiltersComponent {
             });
           }
           return prev;
-        }, [] as { label: string; neighborhoods: typeof neighborhoods[number][]; neighborhoodIds: number[] }[])
+        }, [] as { label: string; neighborhoods: (typeof neighborhoods)[number][]; neighborhoodIds: number[] }[])
     )
   );
 
@@ -246,9 +248,9 @@ export class FiltersComponent {
     private router: Router,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private displayLogService: DisplayLogService,
-    media: MediaObserver
+    private displayLogService: DisplayLogService //media: MediaObserver
   ) {
+    /* TODO: Arreglar el renderizado 
     this.draw.on('drawend', (drawEvent) =>
       this.mapPolygon.next(
         drawEvent.feature
@@ -257,6 +259,7 @@ export class FiltersComponent {
           ?.map((c: any) => toLonLat(c)) || []
       )
     );
+    */
     this.subscriptions.push(
       ...[
         dataService.ready
@@ -280,6 +283,7 @@ export class FiltersComponent {
             });
             this.map.addInteraction(this.draw);
           }),
+        /* TODO: Arreglar el MediaObserver
         media
           .asObservable()
           .pipe(
@@ -288,6 +292,7 @@ export class FiltersComponent {
             debounceTime(100)
           )
           .subscribe(() => (this.map ? this.map.updateSize() : null)),
+        */
       ]
     );
   }
@@ -361,8 +366,8 @@ export class FiltersComponent {
     control.setValue(newNeighborhoods);
   }
 
-  public download({ csvData, chart }: { csvData: any[]; chart: typeof charts[number] }) {
-    const headers = (Object.keys(csvData[0]) as (keyof typeof csvData[0])[]).filter((h) => h !== '__typename');
+  public download({ csvData, chart }: { csvData: any[]; chart: (typeof charts)[number] }) {
+    const headers = (Object.keys(csvData[0]) as (keyof (typeof csvData)[0])[]).filter((h) => h !== '__typename');
     const csv = [
       headers.join(','),
       ...csvData.map((row) => headers.map((fieldName) => row[fieldName]).join(',')),
