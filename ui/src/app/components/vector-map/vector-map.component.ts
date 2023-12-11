@@ -127,15 +127,19 @@ export class VectorMapComponent implements OnInit {
       this.map.on('click', (event) => {
         const feature = this.map.forEachFeatureAtPixel(this.map.getEventPixel(event.originalEvent), (f) => f);
         if (feature instanceof Feature) {
-          const text = (feature.getStyle() as Style).getText().getText();
+          const text = (feature.getStyle() as Style)?.getText()?.getText();
           const selected = this.newSelectedNeighborhoods.value;
-          const newNeighborhood = selected.find((n) => n.lowerAdminLevelName === text?.toLocaleLowerCase());
+          const newNeighborhood = selected.find(
+            (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLowerCase()
+          );
+          //const newNeighborhood = selected.find((n) => n.lowerAdminLevelName === text?.toLocaleLowerCase());
           const newSelected = !!newNeighborhood
             ? selected.filter((nei) => nei.lowerAdminLevelId !== newNeighborhood.lowerAdminLevelId)
             : [
                 ...selected,
                 allNeighborhoods.find(
-                  (neighborhood) => neighborhood.lowerAdminLevelName === text?.toLocaleLowerCase()
+                  (neighborhood) =>
+                    neighborhood.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase()
                 ),
               ].filter(isValid);
           this.newSelectedNeighborhoods.next(newSelected);
@@ -183,14 +187,17 @@ export class VectorMapComponent implements OnInit {
     action: 'add' | 'remove',
     selected: boolean
   ) {
-    const text = (feature.getStyle() as Style)?.getText()?.getText();
+    let text = (feature.getStyle() as Style)?.getText()?.getText();
+    if (text !== undefined && text?.length > 0) text = text[0];
     const { color, disabled } = shapes.filter((shape) => shape.label === text)[0];
     this.map.getTargetElement().style.cursor = feature && !disabled ? 'pointer' : '';
     const alreadySelected = this.newSelectedNeighborhoods.value.some(
-      (n) => n.lowerAdminLevelName === text?.toLocaleLowerCase()
+      (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase()
     );
     if (!disabled && (!alreadySelected || selected)) {
-      feature.setStyle(new Style(this.getStyleOptions(action === 'add', selected, color, disabled, text || '')));
+      feature.setStyle(
+        new Style(this.getStyleOptions(action === 'add', selected, color, disabled, text?.toString() || ''))
+      );
     }
   }
 
