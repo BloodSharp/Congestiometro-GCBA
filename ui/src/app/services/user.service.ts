@@ -5,7 +5,7 @@ import { Apollo } from 'apollo-angular';
 import { fromEvent, merge, of, Subject, timer } from 'rxjs';
 import { catchError, map, mapTo, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import jwt_decode from 'jwt-decode';
+import jwt_decode, { jwtDecode } from 'jwt-decode';
 export interface DBUser {
   username: string;
 }
@@ -24,7 +24,7 @@ export class UserService {
       const token = localStorage.getItem('token');
       // console.log({ token });
       if (!token) return of(null);
-      const decodedToken = jwt_decode(token) as { id: string; username: string; exp: number };
+      const decodedToken = jwtDecode<{ id: string; username: string; exp: number }>(token);
       // console.log({ decodedToken });
       const expired = new Date().getTime() - decodedToken.exp * 1000 > oneHour;
       if (expired) {
