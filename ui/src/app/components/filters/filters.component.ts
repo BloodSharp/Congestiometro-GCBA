@@ -229,7 +229,7 @@ export class FiltersComponent {
   public filteredStreets = combineLatest([
     this.streetSearch.valueChanges.pipe(
       filter((v) => typeof v === 'string'),
-      map((search) => normalizeString(search)),
+      map((search) => normalizeString(search || '')),
       startWith('')
     ),
     this.geoFilteredStreets,
