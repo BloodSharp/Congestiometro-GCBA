@@ -34,8 +34,8 @@ export class UsersComponent {
   public creatingNewUser = new Subject<boolean>();
   public loading = new BehaviorSubject(false);
   public form = new FormGroup({
-    username: new FormControl(null, [Validators.required]),
-    password: new FormControl(null, [Validators.required]),
+    username: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+    password: new FormControl(null, [Validators.required, Validators.minLength(1)]),
   });
 
   public alreadyExistingUsername = combineLatest([this.form.controls.username.valueChanges, this.users]).pipe(

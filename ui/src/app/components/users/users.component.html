@@ -25,7 +25,9 @@
       <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="1em" style="padding-top: 1em">
         <button mat-flat-button color="warn" (click)="creatingNewUser.next(false)">Cancelar</button>
         <ng-container *ngIf="validForm | async as validF">
-          <button (click)="createUser(form.value)" mat-flat-button color="primary" [disabled]="!validF.valid">
+          <button
+            (click)="createUser({username: this?.form?.value?.username || '', password: this?.form?.value?.password || ''})"
+            mat-flat-button color="primary" [disabled]="!validF.valid">
             {{ (loading | async) ? "Creando usuario..." : "Crear usuario y continuar" }}
           </button>
         </ng-container>
