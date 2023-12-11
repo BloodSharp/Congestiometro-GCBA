@@ -115,7 +115,7 @@ export class VectorMapComponent implements OnInit {
           const feature = new Feature({ geometry: new MultiPolygon(points) });
           const style = new Style(this.getStyleOptions(highlight, true, color, disabled, label));
           feature.setStyle(style);
-          return feature;
+          return feature as never;
         })
       );
 
