@@ -147,7 +147,7 @@ export class FiltersComponent {
             fill: new Fill({ color: '#60bfff' }),
           })
         );
-        this.drawnPolygon.addFeature(feature);
+        this.drawnPolygon.addFeature(feature as never);
       }),
       startWith([])
     ),
