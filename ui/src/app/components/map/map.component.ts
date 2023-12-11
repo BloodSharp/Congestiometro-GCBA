@@ -88,7 +88,7 @@ export class MapComponent implements OnInit, OnDestroy {
                   feature.setStyle([
                     new Style({ stroke: new Stroke({ color: this.colors[color - 1] || 'black', width: 4 }) }),
                   ]);
-                  return feature;
+                  return feature as never;
                 })
             );
 
