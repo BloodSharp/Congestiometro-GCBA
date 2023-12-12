@@ -204,25 +204,31 @@ export class FiltersComponent {
       const filteredStreetIds = Array.from(new Set<number>(streetIds).values());
       const filteredStreets = filteredStreetIds.map((streetId) => streets[streetId]);
 
-      return this.data.pipe(pluck('form')).pipe(
+      return this.data.pipe(map((data) => data['form'])).pipe(
         switchMap((form) =>
           combineLatest([
             form.controls.autoSelectStreets.valueChanges.pipe(startWith(form.value.autoSelectStreets)),
             form.controls.autoSelectAvenues.valueChanges.pipe(startWith(form.value.autoSelectAvenues)),
-          ]),
+          ]).pipe(
+            map(
+              ([autoSelectStreets, autoSelectAvenues]: [
+                boolean | null | undefined,
+                boolean | null | undefined,
+              ]) => {
+                if (autoSelectStreets || autoSelectAvenues) {
+                  this.selectedStreets.clear();
+                  const selectedStreets = filteredStreets.filter(
+                    (street) => (autoSelectAvenues && street.type > 1) || (autoSelectStreets && street.type === 1),
+                  );
+                  for (const street of selectedStreets) {
+                    this.selectedStreets.set(street.id, street.name);
+                  }
+                }
+                return filteredStreets;
+              },
+            ),
+          ),
         ),
-        map(([autoSelectStreets, autoSelectAvenues]: boolean[]) => {
-          if (autoSelectStreets || autoSelectAvenues) {
-            this.selectedStreets.clear();
-            const selectedStreets = filteredStreets.filter(
-              (street) => (autoSelectAvenues && street.type > 1) || (autoSelectStreets && street.type === 1),
-            );
-            for (const street of selectedStreets) {
-              this.selectedStreets.set(street.id, street.name);
-            }
-          }
-          return filteredStreets;
-        }),
       );
     }),
     shareReplay(1),
