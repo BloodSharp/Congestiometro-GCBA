@@ -30,17 +30,20 @@ export class UserService {
       if (expired) {
         return this.refreshTokens().pipe(
           mapTo(null),
-          catchError(() => of(null))
+          catchError(() => of(null)),
         );
       } else {
         const user = { username: decodedToken.username, isAdmin: decodedToken.username === 'admin' } as User;
         return of(Object.assign(user, { token }));
       }
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
 
-  constructor(private http: HttpClient, private apollo: Apollo) {
+  constructor(
+    private http: HttpClient,
+    private apollo: Apollo,
+  ) {
     fromEvent<StorageEvent>(window, 'storage').subscribe(console.log);
   }
 
@@ -63,7 +66,7 @@ export class UserService {
       tap(({ token }) => {
         localStorage.setItem('token', token);
         this.statusChange.next();
-      })
+      }),
     );
   };
 

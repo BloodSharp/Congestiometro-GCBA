@@ -18,7 +18,10 @@ export class LoginComponent {
   public loading = new BehaviorSubject<boolean>(false);
   public loginForm: FormGroup;
 
-  constructor(fb: FormBuilder, private userService: UserService) {
+  constructor(
+    fb: FormBuilder,
+    private userService: UserService,
+  ) {
     this.loginForm = fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],

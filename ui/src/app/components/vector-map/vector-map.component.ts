@@ -69,7 +69,11 @@ export class VectorMapComponent implements OnInit {
     '#6e7e80bf', // '#rgba(110,126,128,0.8)',
   ];
 
-  constructor(public dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    public dataService: DataService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   public async ngOnInit() {
     await timer(100).toPromise();
@@ -116,7 +120,7 @@ export class VectorMapComponent implements OnInit {
           const style = new Style(this.getStyleOptions(highlight, true, color, disabled, label));
           feature.setStyle(style);
           return feature as never;
-        })
+        }),
       );
 
       this.map.on('pointermove', (event) => {
@@ -130,7 +134,7 @@ export class VectorMapComponent implements OnInit {
           const text = (feature.getStyle() as Style)?.getText()?.getText();
           const selected = this.newSelectedNeighborhoods.value;
           const newNeighborhood = selected.find(
-            (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLowerCase()
+            (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLowerCase(),
           );
           //const newNeighborhood = selected.find((n) => n.lowerAdminLevelName === text?.toLocaleLowerCase());
           const newSelected = !!newNeighborhood
@@ -139,7 +143,7 @@ export class VectorMapComponent implements OnInit {
                 ...selected,
                 allNeighborhoods.find(
                   (neighborhood) =>
-                    neighborhood.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase()
+                    neighborhood.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase(),
                 ),
               ].filter(isValid);
           this.newSelectedNeighborhoods.next(newSelected);
@@ -171,7 +175,7 @@ export class VectorMapComponent implements OnInit {
     selected: boolean,
     fillColor: string,
     disabled: boolean,
-    text: string
+    text: string,
   ): Options {
     const alpha = disabled ? '40' : 'ff';
     const color = `#${fillColor.slice(1, 7)}${alpha}`;
@@ -185,18 +189,18 @@ export class VectorMapComponent implements OnInit {
     feature: Feature<Geometry>,
     shapes: Shape[],
     action: 'add' | 'remove',
-    selected: boolean
+    selected: boolean,
   ) {
     let text = (feature.getStyle() as Style)?.getText()?.getText();
     if (text !== undefined && text?.length > 0) text = text[0];
     const { color, disabled } = shapes.filter((shape) => shape.label === text)[0];
     this.map.getTargetElement().style.cursor = feature && !disabled ? 'pointer' : '';
     const alreadySelected = this.newSelectedNeighborhoods.value.some(
-      (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase()
+      (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase(),
     );
     if (!disabled && (!alreadySelected || selected)) {
       feature.setStyle(
-        new Style(this.getStyleOptions(action === 'add', selected, color, disabled, text?.toString() || ''))
+        new Style(this.getStyleOptions(action === 'add', selected, color, disabled, text?.toString() || '')),
       );
     }
   }

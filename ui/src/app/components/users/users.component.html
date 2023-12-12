@@ -3,8 +3,14 @@
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1em">
       <app-button-icon tooltip="Volver" icon="arrow_back" (clickEvent)="cancel.emit()"></app-button-icon>
       <div class="mat-headline no-margin-bottom">Administración de Usuarios</div>
-      <button *ngIf="!(creatingNewUser | async)" mat-mini-fab color="primary" matTooltip="Crear nuevo"
-        matTooltipClass="tooltip" (click)="creatingNewUser.next(true)">
+      <button
+        *ngIf="!(creatingNewUser | async)"
+        mat-mini-fab
+        color="primary"
+        matTooltip="Crear nuevo"
+        matTooltipClass="tooltip"
+        (click)="creatingNewUser.next(true)"
+      >
         <mat-icon>add</mat-icon>
       </button>
     </div>
@@ -26,9 +32,17 @@
         <button mat-flat-button color="warn" (click)="creatingNewUser.next(false)">Cancelar</button>
         <ng-container *ngIf="validForm | async as validF">
           <button
-            (click)="createUser({username: this?.form?.value?.username || '', password: this?.form?.value?.password || ''})"
-            mat-flat-button color="primary" [disabled]="!validF.valid">
-            {{ (loading | async) ? "Creando usuario..." : "Crear usuario y continuar" }}
+            (click)="
+              createUser({
+                username: this?.form?.value?.username || '',
+                password: this?.form?.value?.password || ''
+              })
+            "
+            mat-flat-button
+            color="primary"
+            [disabled]="!validF.valid"
+          >
+            {{ (loading | async) ? 'Creando usuario...' : 'Crear usuario y continuar' }}
           </button>
         </ng-container>
       </div>

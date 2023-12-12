@@ -72,27 +72,30 @@ export class FiltersComponent {
     map((neighborhoods) =>
       (neighborhoods || [])
         .sort((a, b) => (a.greaterAdminLevelId > b.greaterAdminLevelId ? 1 : -1))
-        .reduce((prev, nei) => {
-          const index = prev.findIndex((p) => p.label === nei.greaterAdminLevelName);
-          if (index >= 0) {
-            prev[index].neighborhoods.push(nei);
-            prev[index].neighborhoodIds.push(nei.lowerAdminLevelId);
-          } else {
-            prev.push({
-              label: nei.greaterAdminLevelName,
-              neighborhoods: [nei],
-              neighborhoodIds: [nei.lowerAdminLevelId],
-            });
-          }
-          return prev;
-        }, [] as { label: string; neighborhoods: (typeof neighborhoods)[number][]; neighborhoodIds: number[] }[])
-    )
+        .reduce(
+          (prev, nei) => {
+            const index = prev.findIndex((p) => p.label === nei.greaterAdminLevelName);
+            if (index >= 0) {
+              prev[index].neighborhoods.push(nei);
+              prev[index].neighborhoodIds.push(nei.lowerAdminLevelId);
+            } else {
+              prev.push({
+                label: nei.greaterAdminLevelName,
+                neighborhoods: [nei],
+                neighborhoodIds: [nei.lowerAdminLevelId],
+              });
+            }
+            return prev;
+          },
+          [] as { label: string; neighborhoods: (typeof neighborhoods)[number][]; neighborhoodIds: number[] }[],
+        ),
+    ),
   );
 
   public show = new BehaviorSubject(false);
   private forceShow = this.dataService.queryParams.pipe(
     take(1),
-    map((queryParams) => !this.secondary && !queryParams)
+    map((queryParams) => !this.secondary && !queryParams),
   );
   public show$ = merge(this.show, this.forceShow);
   private drawnPolygon = new VectorSource({ features: [] });
@@ -132,7 +135,7 @@ export class FiltersComponent {
         autoSelectAvenues: new FormControl(state.autoSelectAvenues),
       }),
     })),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public geoFilteredStreets = combineLatest([
@@ -145,17 +148,17 @@ export class FiltersComponent {
           new Style({
             stroke: new Stroke({ color: '#0099ff', width: 4 }),
             fill: new Fill({ color: '#60bfff' }),
-          })
+          }),
         );
         this.drawnPolygon.addFeature(feature as never);
       }),
-      startWith([])
+      startWith([]),
     ),
     this.data.pipe(
       switchMap(({ form }) =>
-        form.controls.neighborhoods.valueChanges.pipe(startWith(form.controls.neighborhoods.value))
+        form.controls.neighborhoods.valueChanges.pipe(startWith(form.controls.neighborhoods.value)),
       ),
-      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))
+      distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
     ) as Observable<number[]>,
     this.dataService.neighborhoods,
     this.dataService.streets,
@@ -165,7 +168,7 @@ export class FiltersComponent {
       if (coordinates.length === 0 && selectedNeighborhoodIds.length === 0) return of(Object.values(streets));
 
       const selectedNeighborhoods = neighborhoods.filter((n) =>
-        selectedNeighborhoodIds.some((id) => id === n.lowerAdminLevelId)
+        selectedNeighborhoodIds.some((id) => id === n.lowerAdminLevelId),
       );
 
       if (selectedNeighborhoods.length > 0 && coordinates.length > 0) {
@@ -173,7 +176,7 @@ export class FiltersComponent {
         const intersected = selectedNeighborhoods.some((n) => booleanIntersects(n.turfPolygon, turfMapPolygon));
         if (!intersected) {
           this.displayLogService.openLogError(
-            'La selección del mapa y los barrios no se superponen, debes filtrar correctamente'
+            'La selección del mapa y los barrios no se superponen, debes filtrar correctamente',
           );
           this.selectedStreets.clear();
           return of([]);
@@ -206,23 +209,23 @@ export class FiltersComponent {
           combineLatest([
             form.controls.autoSelectStreets.valueChanges.pipe(startWith(form.value.autoSelectStreets)),
             form.controls.autoSelectAvenues.valueChanges.pipe(startWith(form.value.autoSelectAvenues)),
-          ])
+          ]),
         ),
         map(([autoSelectStreets, autoSelectAvenues]: boolean[]) => {
           if (autoSelectStreets || autoSelectAvenues) {
             this.selectedStreets.clear();
             const selectedStreets = filteredStreets.filter(
-              (street) => (autoSelectAvenues && street.type > 1) || (autoSelectStreets && street.type === 1)
+              (street) => (autoSelectAvenues && street.type > 1) || (autoSelectStreets && street.type === 1),
             );
             for (const street of selectedStreets) {
               this.selectedStreets.set(street.id, street.name);
             }
           }
           return filteredStreets;
-        })
+        }),
       );
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public streetSearch = new FormControl('');
@@ -230,7 +233,7 @@ export class FiltersComponent {
     this.streetSearch.valueChanges.pipe(
       filter((v) => typeof v === 'string'),
       map((search) => normalizeString(search || '')),
-      startWith('')
+      startWith(''),
     ),
     this.geoFilteredStreets,
   ]).pipe(
@@ -239,7 +242,7 @@ export class FiltersComponent {
       const filteredStreets = streets.filter(({ name }) => normalizeString(name).includes(search));
       const sorted = filteredStreets.sort((a, b) => (a.name > b.name ? 1 : -1));
       return sorted;
-    })
+    }),
   );
 
   public selectedStreets = new Map<number, string>();
@@ -248,7 +251,7 @@ export class FiltersComponent {
     private router: Router,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private displayLogService: DisplayLogService //media: MediaObserver
+    private displayLogService: DisplayLogService, //media: MediaObserver
   ) {
     /* TODO: Arreglar el renderizado 
     this.draw.on('drawend', (drawEvent) =>
@@ -268,7 +271,7 @@ export class FiltersComponent {
             switchMap(() => this.show$),
             filter((s) => s),
             debounceTime(100),
-            take(1)
+            take(1),
           )
           .subscribe(() => {
             this.map = new OlMap({
@@ -293,7 +296,7 @@ export class FiltersComponent {
           )
           .subscribe(() => (this.map ? this.map.updateSize() : null)),
         */
-      ]
+      ],
     );
   }
 
@@ -338,7 +341,7 @@ export class FiltersComponent {
 
   public allSelected(selectedNeighborhoods: number[], allNeighborhoods: AdminLevel[]) {
     return allNeighborhoods.every((neighborhood) =>
-      selectedNeighborhoods.includes(neighborhood.lowerAdminLevelId)
+      selectedNeighborhoods.includes(neighborhood.lowerAdminLevelId),
     );
   }
 
@@ -353,12 +356,12 @@ export class FiltersComponent {
     control: AbstractControl,
     select: boolean,
     selectedNeighborhoods: number[],
-    neighborhoodIds: number[]
+    neighborhoodIds: number[],
   ) {
     let newNeighborhoods: typeof selectedNeighborhoods = [];
     if (select) {
       newNeighborhoods = [...selectedNeighborhoods, ...neighborhoodIds].filter(
-        (id, index, arr) => arr.findIndex((id2) => id2 === id) === index
+        (id, index, arr) => arr.findIndex((id2) => id2 === id) === index,
       );
     } else {
       newNeighborhoods = selectedNeighborhoods.filter((id) => !neighborhoodIds.some((id2) => id2 === id));

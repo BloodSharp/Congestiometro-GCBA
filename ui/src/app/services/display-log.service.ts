@@ -57,7 +57,7 @@ export class DisplayLogComponent {
   constructor(
     private snackBarRef: MatSnackBarRef<DisplayLogComponent>,
     @Inject(MAT_SNACK_BAR_DATA)
-    public data: DataType
+    public data: DataType,
   ) {}
 
   public closeAlert() {

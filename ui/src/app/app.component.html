@@ -63,7 +63,7 @@
           <span>
             Mostrando {{ filters.metric?.name }} {{ filters.aggFunc?.name }}
             <ng-container *ngIf="(leftChart | async)?.id !== 'line'">
-              del {{ filters.dateStart | date: "shortDate" }} al {{ filters.dateEnd | date: "shortDate" }} |
+              del {{ filters.dateStart | date: 'shortDate' }} al {{ filters.dateEnd | date: 'shortDate' }} |
               <span *ngIf="filters.hours?.length === 24">Las 24 horas</span>
               <span *ngIf="(filters.hours?.length || 0) < 24">Horas: {{ getHoursString(filters.hours) }}</span>
             </ng-container>
@@ -233,11 +233,11 @@
                 <span *ngIf="difference.type === 'speed'">
                   ({{
                     (difference.difference >= 0 ? difference.difference : -1 * difference.difference) || 0
-                      | percent: "1.0-0"
+                      | percent: '1.0-0'
                   }})</span
                 >
                 <span *ngIf="difference.type !== 'speed'">
-                  ({{ difference.difference || 0 | percent: "1.0-0" }})</span
+                  ({{ difference.difference || 0 | percent: '1.0-0' }})</span
                 >
               </div>
               <div>
@@ -257,7 +257,7 @@
           <div fxLayout="column" fxFlex="1 1 50">
             <div *ngIf="rightFilter | async as filters" class="mat-subheading-2" style="text-align: right">
               Mostrando {{ filters.metric?.name }} {{ filters.aggFunc?.name }} del
-              {{ filters.dateStart | date: "shortDate" }} al {{ filters.dateEnd | date: "shortDate" }} |
+              {{ filters.dateStart | date: 'shortDate' }} al {{ filters.dateEnd | date: 'shortDate' }} |
               <span *ngIf="filters.hours?.length === 24">Las 24 horas</span>
               <span *ngIf="(filters.hours?.length || 0) < 24"> Horas: {{ getHoursString(filters.hours) }} </span>
             </div>

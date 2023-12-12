@@ -22,7 +22,7 @@
           required
         />
         <mat-icon style="cursor: pointer" matSuffix (click)="showPassword = !showPassword">
-          {{ showPassword ? "visibility" : "visibility_off" }}
+          {{ showPassword ? 'visibility' : 'visibility_off' }}
         </mat-icon>
         <mat-error *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched">
           Este campo es requerido

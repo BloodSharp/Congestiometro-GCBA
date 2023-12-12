@@ -7,7 +7,7 @@
     <div *ngFor="let item of extra | keyvalue">
       <div style="font-size: large; padding: 0.25em">
         <span style="font-weight: bold; margin-right: 0.25em">{{ item.key | titlecase }}:</span>
-        <span>{{ item.value | number: "1.0-0" }} {{ getUnit(item.key) | lowercase }}</span>
+        <span>{{ item.value | number: '1.0-0' }} {{ getUnit(item.key) | lowercase }}</span>
       </div>
     </div>
     <mat-divider style="margin: 0.5em 0em"></mat-divider>

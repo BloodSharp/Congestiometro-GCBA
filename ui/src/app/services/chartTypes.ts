@@ -8,7 +8,7 @@ export const charts = [
 ] as const;
 export const chartTypes = charts.map((c) => c.id);
 
-export type ChartType = typeof chartTypes[number];
+export type ChartType = (typeof chartTypes)[number];
 
 export const hours = range(24).map((value) => ({ value, view: `${value}:00 a ${value}:59` }));
 
@@ -53,7 +53,7 @@ export const metrics = [
   },
 ] as const;
 export const metricIds = metrics.map(({ id }) => id);
-export type MetricType = typeof metricIds[number];
+export type MetricType = (typeof metricIds)[number];
 
 export const aggFuncs = [
   { id: 'mean', name: 'Media' },
@@ -61,4 +61,4 @@ export const aggFuncs = [
   { id: 'last', name: 'Último' },
 ] as const;
 export const aggFuncIds = aggFuncs.map(({ id }) => id);
-export type AggFuncType = typeof aggFuncIds[number];
+export type AggFuncType = (typeof aggFuncIds)[number];

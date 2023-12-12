@@ -36,10 +36,10 @@ export class AppComponent implements AfterViewInit {
 
   public showUsers = this.activatedRoute.queryParams.pipe(map((q) => q['showUsers'] === 'true'));
   public leftChart = this.activatedRoute.queryParams.pipe(
-    map((q) => charts.find((c) => c.id === q['l-chart']) || charts[0])
+    map((q) => charts.find((c) => c.id === q['l-chart']) || charts[0]),
   );
   public rightChart = this.activatedRoute.queryParams.pipe(
-    map((q) => charts.find((c) => c.id === q['r-chart']) || charts[0])
+    map((q) => charts.find((c) => c.id === q['r-chart']) || charts[0]),
   );
   public comparableChart = this.leftChart.pipe(pluck('comparable'));
   public compare = combineLatest([
@@ -56,7 +56,7 @@ export class AppComponent implements AfterViewInit {
       dateStart: new Date(params.date_from),
       dateEnd: new Date(params.date_to),
       hours: JSON.parse(`[${params.hours.slice(1, -1)}]`),
-    }))
+    })),
   );
   public rightFilter = this.dataService.queryParams.pipe(
     filter(isValid),
@@ -67,7 +67,7 @@ export class AppComponent implements AfterViewInit {
       dateStart: new Date(params.date_from),
       dateEnd: new Date(params.date_to),
       hours: JSON.parse(`[${params.hours.slice(1, -1)}]`),
-    }))
+    })),
   );
 
   public leftMap = this.dataService.leftData.pipe(pluck('map'));
@@ -78,11 +78,11 @@ export class AppComponent implements AfterViewInit {
     this.rightChart,
     this.dataService.leftData.pipe(
       filter(isValid),
-      switchMap((data) => data.map.summary)
+      switchMap((data) => data.map.summary),
     ),
     this.dataService.rightData.pipe(
       filter(isValid),
-      switchMap((data) => data.map.summary)
+      switchMap((data) => data.map.summary),
     ),
   ]).pipe(
     map(([leftChart, rightChart, leftData, rightData]) =>
@@ -110,8 +110,8 @@ export class AppComponent implements AfterViewInit {
                 (Math.max(rightData.speed, leftData.speed) / Math.min(rightData.speed, leftData.speed) - 1),
             },
           ]
-        : null
-    )
+        : null,
+    ),
   );
   public comparisonOptions: ChartOptions = {
     responsive: true,
@@ -132,34 +132,34 @@ export class AppComponent implements AfterViewInit {
   private leftBarData = this.dataService.leftData.pipe(
     filter(isValid),
     switchMap(({ bar }) => bar.data),
-    shareReplay(1)
+    shareReplay(1),
   );
   private rightBarData = this.dataService.rightData.pipe(
     filter(isValid),
     switchMap(({ bar }) => bar.data),
-    shareReplay(1)
+    shareReplay(1),
   );
   public barSameMaximum = new BehaviorSubject(false);
   public barMaximum = combineLatest([this.leftBarData, this.rightBarData, this.barSameMaximum]).pipe(
     map(([leftBarData, rightBarData, sameMaximum]) =>
       sameMaximum
         ? Math.max(...[leftBarData, rightBarData].map(({ dataset }) => dataset.map((v) => v.data).flat()).flat())
-        : undefined
+        : undefined,
     ),
-    startWith(undefined)
+    startWith(undefined),
   );
   public leftBarConfig = combineLatest([this.leftBarData, this.barMaximum]).pipe(
     map(([{ dataset, labels, unit }, barMaximum]) => ({
       options: this.getOptions('bar', dataset.length, !isNaN(Number(labels[0])), unit, barMaximum),
       colors: this.getColors('bar', dataset.length),
-    }))
+    })),
   );
   public rightBarConfig = combineLatest([this.rightBarData, this.barMaximum]).pipe(
     tap(() => console.log(2)),
     map(([{ dataset, labels, unit }, barMaximum]) => ({
       options: this.getOptions('bar', dataset.length, !isNaN(Number(labels[0])), unit, barMaximum),
       colors: this.getColors('bar', dataset.length),
-    }))
+    })),
   );
 
   public lineWithMapDataConfig = this.dataService.leftData.pipe(
@@ -168,12 +168,12 @@ export class AppComponent implements AfterViewInit {
     map(({ dataset, labels, unit }) => ({
       options: this.getOptions('line-with-map', dataset.length, !isNaN(Number(labels[0])), unit),
       colors: this.getColors('line-with-map', dataset.length),
-    }))
+    })),
   );
 
   public initialGreaterDate = this.activatedRoute.queryParams.pipe(
     take(1),
-    map((p) => (p['greaterDate'] ? Number(p['greaterDate']) : new Date().getFullYear()))
+    map((p) => (p['greaterDate'] ? Number(p['greaterDate']) : new Date().getFullYear())),
   );
   public separatorKeysCodes: number[] = [ENTER, COMMA];
   public comparativeStreetSearch = new FormControl([]);
@@ -181,10 +181,10 @@ export class AppComponent implements AfterViewInit {
   public selectedComparativeCharts$ = merge(
     combineLatest([this.dataService.streets.pipe(take(1)), this.activatedRoute.queryParams.pipe(take(1))]).pipe(
       map(([streets, p]) =>
-        (JSON.parse(p['comparativeStreetsIds'] || '[]') as number[]).map((id) => streets[id].name)
-      )
+        (JSON.parse(p['comparativeStreetsIds'] || '[]') as number[]).map((id) => streets[id].name),
+      ),
     ),
-    this.selectedComparativeCharts
+    this.selectedComparativeCharts,
   ).pipe(shareReplay(1));
   public selectableComparativeCharts = combineLatest([
     this.dataService.leftData.pipe(filter(isValid), pluck('line')),
@@ -194,8 +194,8 @@ export class AppComponent implements AfterViewInit {
     map(([data, selected, search]) =>
       data
         .map(({ name }) => name)
-        .filter((name) => !selected.includes(name) && normalizeString(name).includes(search))
-    )
+        .filter((name) => !selected.includes(name) && normalizeString(name).includes(search)),
+    ),
   );
   public comparativeCharts = combineLatest([
     this.dataService.leftData.pipe(filter(isValid), pluck('line')),
@@ -209,7 +209,7 @@ export class AppComponent implements AfterViewInit {
       this.changeUrl({ comparativeStreetsIds: JSON.stringify(streetIds) });
       return data.filter(({ name }) => selected.includes(name));
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
   // FIXME: Dynamic minimum year
   public years = range(new Date().getFullYear() + 1 - 2021).map((v) => new Date().getFullYear() - v);
@@ -228,9 +228,9 @@ export class AppComponent implements AfterViewInit {
             options: this.getOptions('line', charts.length, !isNaN(Number(labels[0])), unit, max),
             colors: this.getColors('line', charts.length),
           };
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   public leftExportableData = combineLatest([this.leftChart, this.dataService.leftData]).pipe(
@@ -239,31 +239,31 @@ export class AppComponent implements AfterViewInit {
       if (chart.id === 'line') {
         obs = this.comparativeCharts.pipe(
           switchMap((charts) => combineLatest(charts.map(({ exportableData }) => exportableData))),
-          map((data) => data.flat())
+          map((data) => data.flat()),
         );
       } else {
         obs = leftData[chart.id].exportableData;
       }
       return obs.pipe(
         startWith([] as any[]),
-        map((csvData) => ({ csvData, chart }))
+        map((csvData) => ({ csvData, chart })),
       );
-    })
+    }),
   );
   public rightExportableData = combineLatest([this.rightChart, this.dataService.rightData]).pipe(
     switchMap(([chart, data]) =>
       (data[chart.id as 'map' | 'bar'].exportableData as Observable<any[]>).pipe(
         startWith([] as any[]),
-        map((csvData) => ({ csvData, chart }))
-      )
-    )
+        map((csvData) => ({ csvData, chart })),
+      ),
+    ),
   );
 
   constructor(
     public userService: UserService,
     public dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
   ) {}
 
   public ngAfterViewInit() {
@@ -345,7 +345,7 @@ export class AppComponent implements AfterViewInit {
     action: 'add' | 'delete',
     chart: string,
     selected: string[],
-    input?: HTMLInputElement
+    input?: HTMLInputElement,
   ) {
     const selectedComparativeCharts = selected.slice(0);
     const index = selectedComparativeCharts.indexOf(chart);

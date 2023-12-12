@@ -40,7 +40,7 @@ export class DisplayUsersComponent implements OnInit {
   public selectedUser = new Subject<User>();
   public selectedUsername = this.selectedUser.pipe(
     map((user) => (user ? user.username : 'null')),
-    startWith('null')
+    startWith('null'),
   );
   public editUserForm = new FormGroup({ password: new FormControl('', [Validators.required]) });
 
@@ -49,7 +49,10 @@ export class DisplayUsersComponent implements OnInit {
 
   public loading = new BehaviorSubject(false);
 
-  constructor(private userService: UserService, private displayLogService: DisplayLogService) {}
+  constructor(
+    private userService: UserService,
+    private displayLogService: DisplayLogService,
+  ) {}
 
   public ngOnInit() {
     this.dataSource$ = combineLatest([
@@ -57,18 +60,18 @@ export class DisplayUsersComponent implements OnInit {
       this.nameSearch.pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        map((search) => search.toLocaleLowerCase())
+        map((search) => search.toLocaleLowerCase()),
       ),
     ]).pipe(
       map(([users, nameSearch]) => {
         const data = new MatTableDataSource(
           users
             .filter((user) => user.username.toLocaleLowerCase().includes(nameSearch))
-            .sort((a, b) => (a.username.toLocaleLowerCase() > b.username.toLocaleLowerCase() ? 1 : -1))
+            .sort((a, b) => (a.username.toLocaleLowerCase() > b.username.toLocaleLowerCase() ? 1 : -1)),
         );
         data.paginator = this.paginator;
         return data;
-      })
+      }),
     );
   }
 

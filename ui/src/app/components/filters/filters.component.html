@@ -5,7 +5,7 @@
   <button mat-menu-item [matMenuTriggerFor]="chartsMenu">Tipo</button>
   <button mat-menu-item (click)="show.next(true)">Mostrar Filtro</button>
   <button *ngIf="data | async as state" mat-menu-item (click)="clone(state.otherState)">
-    Clonar filtro {{ secondary ? "izquierdo" : "derecho" }}
+    Clonar filtro {{ secondary ? 'izquierdo' : 'derecho' }}
   </button>
   <button
     *ngIf="exportableData | async as data"
@@ -37,7 +37,7 @@
           fxFlex="1 0 50"
           ngStyle.gt-md="overflow-y: auto; padding-right: 1em;"
         >
-          <div class="mat-title">Editar filtros del gráfico {{ secondary ? "derecho" : "izquierdo" }}</div>
+          <div class="mat-title">Editar filtros del gráfico {{ secondary ? 'derecho' : 'izquierdo' }}</div>
           <div class="mat-subheading-2">Filtros temporales</div>
           <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5em">
             <button
@@ -48,7 +48,7 @@
               [matTooltip]="state.syncParams.dateStart ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.dateStart ? 'primary' : ''">
-                {{ state.syncParams.dateStart ? "sync" : "sync_disabled" }}
+                {{ state.syncParams.dateStart ? 'sync' : 'sync_disabled' }}
               </mat-icon>
             </button>
             <mat-form-field appearance="fill" fxFlex="auto">
@@ -81,7 +81,7 @@
               [matTooltip]="state.syncParams.hours ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.hours ? 'primary' : ''">
-                {{ state.syncParams.hours ? "sync" : "sync_disabled" }}
+                {{ state.syncParams.hours ? 'sync' : 'sync_disabled' }}
               </mat-icon>
             </button>
             <mat-form-field appearance="fill" fxFlex="auto">
@@ -110,7 +110,7 @@
               [matTooltip]="state.syncParams.neighborhoods ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.neighborhoods ? 'primary' : ''">{{
-                state.syncParams.neighborhoods ? "sync" : "sync_disabled"
+                state.syncParams.neighborhoods ? 'sync' : 'sync_disabled'
               }}</mat-icon>
             </button>
           </div>
@@ -267,7 +267,7 @@
               [matTooltip]="state.syncParams.metric ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.metric ? 'primary' : ''">{{
-                state.syncParams.metric ? "sync" : "sync_disabled"
+                state.syncParams.metric ? 'sync' : 'sync_disabled'
               }}</mat-icon>
             </button>
           </div>

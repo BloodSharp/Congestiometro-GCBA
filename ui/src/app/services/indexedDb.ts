@@ -49,7 +49,7 @@ export class IndexedDb extends Dexie {
 
   public getLines() {
     return new Observable<Line[]>((subscriber) =>
-      liveQuery(() => this.segment_lines.toArray()).subscribe((lines) => subscriber.next(lines))
+      liveQuery(() => this.segment_lines.toArray()).subscribe((lines) => subscriber.next(lines)),
     );
   }
 
@@ -63,7 +63,7 @@ export class IndexedDb extends Dexie {
 
   public getStreets() {
     return new Observable<Street[]>((subscriber) =>
-      liveQuery(() => this.streets.toArray()).subscribe((streets) => subscriber.next(streets))
+      liveQuery(() => this.streets.toArray()).subscribe((streets) => subscriber.next(streets)),
     );
   }
 

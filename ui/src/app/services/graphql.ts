@@ -140,7 +140,6 @@ export type Admin_Levels_Aggregate_Fields = {
   variance?: Maybe<Admin_Levels_Variance_Fields>;
 };
 
-
 /** aggregate fields of "admin_levels" */
 export type Admin_Levels_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Admin_Levels_Select_Column>>;
@@ -249,7 +248,7 @@ export enum Admin_Levels_Select_Column {
   /** column name */
   Shape = 'shape',
   /** column name */
-  StreetsIds = 'streets_ids'
+  StreetsIds = 'streets_ids',
 }
 
 /** input type for updating data in table "admin_levels" */
@@ -344,7 +343,6 @@ export type Comparativo_Type_Aggregate_Fields = {
   variance?: Maybe<Comparativo_Type_Variance_Fields>;
 };
 
-
 /** aggregate fields of "comparativo_type" */
 export type Comparativo_Type_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Comparativo_Type_Select_Column>>;
@@ -422,7 +420,7 @@ export enum Comparativo_Type_Select_Column {
   /** column name */
   Val = 'val',
   /** column name */
-  Year = 'year'
+  Year = 'year',
 }
 
 /** input type for updating data in table "comparativo_type" */
@@ -518,7 +516,6 @@ export type Evolutivo_Type_Aggregate_Fields = {
   variance?: Maybe<Evolutivo_Type_Variance_Fields>;
 };
 
-
 /** aggregate fields of "evolutivo_type" */
 export type Evolutivo_Type_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -585,7 +582,7 @@ export enum Evolutivo_Type_Select_Column {
   /** column name */
   Index = 'index',
   /** column name */
-  Val = 'val'
+  Val = 'val',
 }
 
 /** input type for updating data in table "evolutivo_type" */
@@ -780,7 +777,6 @@ export type Histogram_Type_Aggregate_Fields = {
   variance?: Maybe<Histogram_Type_Variance_Fields>;
 };
 
-
 /** aggregate fields of "histogram_type" */
 export type Histogram_Type_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Histogram_Type_Select_Column>>;
@@ -861,7 +857,7 @@ export enum Histogram_Type_Select_Column {
   /** column name */
   Keep = 'keep',
   /** column name */
-  Val = 'val'
+  Val = 'val',
 }
 
 /** input type for updating data in table "histogram_type" */
@@ -953,7 +949,6 @@ export type Jam_Lines_Aggregate_Fields = {
   variance?: Maybe<Jam_Lines_Variance_Fields>;
 };
 
-
 /** aggregate fields of "jam_lines" */
 export type Jam_Lines_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Jam_Lines_Select_Column>>;
@@ -983,7 +978,7 @@ export enum Jam_Lines_Constraint {
   /** unique or primary key constraint */
   JamLinesLineKey = 'jam_lines_line_key',
   /** unique or primary key constraint */
-  JamLinesPkey = 'jam_lines_pkey'
+  JamLinesPkey = 'jam_lines_pkey',
 }
 
 /** input type for incrementing numeric columns in table "jam_lines" */
@@ -1054,7 +1049,7 @@ export enum Jam_Lines_Select_Column {
   /** column name */
   LineId = 'line_id',
   /** column name */
-  StreetId = 'street_id'
+  StreetId = 'street_id',
 }
 
 /** input type for updating data in table "jam_lines" */
@@ -1102,7 +1097,7 @@ export enum Jam_Lines_Update_Column {
   /** column name */
   LineId = 'line_id',
   /** column name */
-  StreetId = 'street_id'
+  StreetId = 'street_id',
 }
 
 /** aggregate var_pop on columns */
@@ -1170,7 +1165,6 @@ export type Jams_Agg_Line_Aggregate_Fields = {
   var_samp?: Maybe<Jams_Agg_Line_Var_Samp_Fields>;
   variance?: Maybe<Jams_Agg_Line_Variance_Fields>;
 };
-
 
 /** aggregate fields of "jams_agg_line" */
 export type Jams_Agg_Line_Aggregate_FieldsCountArgs = {
@@ -1240,7 +1234,7 @@ export enum Jams_Agg_Line_Select_Column {
   /** column name */
   Level = 'level',
   /** column name */
-  LineId = 'line_id'
+  LineId = 'line_id',
 }
 
 /** input type for updating data in table "jams_agg_line" */
@@ -1321,7 +1315,6 @@ export type Jams_Aggregate_Fields = {
   variance?: Maybe<Jams_Variance_Fields>;
 };
 
-
 /** aggregate fields of "jams" */
 export type Jams_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Jams_Select_Column>>;
@@ -1360,7 +1353,7 @@ export type Jams_Bool_Exp = {
 /** unique or primary key constraints on table "jams" */
 export enum Jams_Constraint {
   /** unique or primary key constraint */
-  JamsPkey = 'jams_pkey'
+  JamsPkey = 'jams_pkey',
 }
 
 /** input type for incrementing numeric columns in table "jams" */
@@ -1472,7 +1465,7 @@ export enum Jams_Select_Column {
   /** column name */
   StartTimestamp = 'start_timestamp',
   /** column name */
-  Uuid = 'uuid'
+  Uuid = 'uuid',
 }
 
 /** input type for updating data in table "jams" */
@@ -1558,7 +1551,7 @@ export enum Jams_Update_Column {
   /** column name */
   StartTimestamp = 'start_timestamp',
   /** column name */
-  Uuid = 'uuid'
+  Uuid = 'uuid',
 }
 
 /** aggregate var_pop on columns */
@@ -1686,126 +1679,105 @@ export type Mutation_Root = {
   update_streets_by_pk?: Maybe<Streets>;
 };
 
-
 /** mutation root */
 export type Mutation_RootDelete_Admin_LevelsArgs = {
   where: Admin_Levels_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootDelete_Comparativo_TypeArgs = {
   where: Comparativo_Type_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDelete_Evolutivo_TypeArgs = {
   where: Evolutivo_Type_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootDelete_Histogram_TypeArgs = {
   where: Histogram_Type_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDelete_Jam_LinesArgs = {
   where: Jam_Lines_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootDelete_Jam_Lines_By_PkArgs = {
   line_id: Scalars['Int'];
 };
 
-
 /** mutation root */
 export type Mutation_RootDelete_JamsArgs = {
   where: Jams_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootDelete_Jams_Agg_LineArgs = {
   where: Jams_Agg_Line_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDelete_Jams_By_PkArgs = {
   uuid: Scalars['Int'];
 };
-
 
 /** mutation root */
 export type Mutation_RootDelete_Simple_Line_TypeArgs = {
   where: Simple_Line_Type_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootDelete_StreetsArgs = {
   where: Streets_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootDelete_Streets_By_PkArgs = {
   street_id: Scalars['Int'];
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Admin_LevelsArgs = {
   objects: Array<Admin_Levels_Insert_Input>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_Admin_Levels_OneArgs = {
   object: Admin_Levels_Insert_Input;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Comparativo_TypeArgs = {
   objects: Array<Comparativo_Type_Insert_Input>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_Comparativo_Type_OneArgs = {
   object: Comparativo_Type_Insert_Input;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Evolutivo_TypeArgs = {
   objects: Array<Evolutivo_Type_Insert_Input>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_Evolutivo_Type_OneArgs = {
   object: Evolutivo_Type_Insert_Input;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Histogram_TypeArgs = {
   objects: Array<Histogram_Type_Insert_Input>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Histogram_Type_OneArgs = {
   object: Histogram_Type_Insert_Input;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_Jam_LinesArgs = {
@@ -1813,13 +1785,11 @@ export type Mutation_RootInsert_Jam_LinesArgs = {
   on_conflict?: Maybe<Jam_Lines_On_Conflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Jam_Lines_OneArgs = {
   object: Jam_Lines_Insert_Input;
   on_conflict?: Maybe<Jam_Lines_On_Conflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_JamsArgs = {
@@ -1827,18 +1797,15 @@ export type Mutation_RootInsert_JamsArgs = {
   on_conflict?: Maybe<Jams_On_Conflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Jams_Agg_LineArgs = {
   objects: Array<Jams_Agg_Line_Insert_Input>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Jams_Agg_Line_OneArgs = {
   object: Jams_Agg_Line_Insert_Input;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_Jams_OneArgs = {
@@ -1846,18 +1813,15 @@ export type Mutation_RootInsert_Jams_OneArgs = {
   on_conflict?: Maybe<Jams_On_Conflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Simple_Line_TypeArgs = {
   objects: Array<Simple_Line_Type_Insert_Input>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Simple_Line_Type_OneArgs = {
   object: Simple_Line_Type_Insert_Input;
 };
-
 
 /** mutation root */
 export type Mutation_RootInsert_StreetsArgs = {
@@ -1865,13 +1829,11 @@ export type Mutation_RootInsert_StreetsArgs = {
   on_conflict?: Maybe<Streets_On_Conflict>;
 };
 
-
 /** mutation root */
 export type Mutation_RootInsert_Streets_OneArgs = {
   object: Streets_Insert_Input;
   on_conflict?: Maybe<Streets_On_Conflict>;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdate_Admin_LevelsArgs = {
@@ -1880,14 +1842,12 @@ export type Mutation_RootUpdate_Admin_LevelsArgs = {
   where: Admin_Levels_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdate_Comparativo_TypeArgs = {
   _inc?: Maybe<Comparativo_Type_Inc_Input>;
   _set?: Maybe<Comparativo_Type_Set_Input>;
   where: Comparativo_Type_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdate_Evolutivo_TypeArgs = {
@@ -1896,14 +1856,12 @@ export type Mutation_RootUpdate_Evolutivo_TypeArgs = {
   where: Evolutivo_Type_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdate_Histogram_TypeArgs = {
   _inc?: Maybe<Histogram_Type_Inc_Input>;
   _set?: Maybe<Histogram_Type_Set_Input>;
   where: Histogram_Type_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdate_Jam_LinesArgs = {
@@ -1912,14 +1870,12 @@ export type Mutation_RootUpdate_Jam_LinesArgs = {
   where: Jam_Lines_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdate_Jam_Lines_By_PkArgs = {
   _inc?: Maybe<Jam_Lines_Inc_Input>;
   _set?: Maybe<Jam_Lines_Set_Input>;
   pk_columns: Jam_Lines_Pk_Columns_Input;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdate_JamsArgs = {
@@ -1928,14 +1884,12 @@ export type Mutation_RootUpdate_JamsArgs = {
   where: Jams_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdate_Jams_Agg_LineArgs = {
   _inc?: Maybe<Jams_Agg_Line_Inc_Input>;
   _set?: Maybe<Jams_Agg_Line_Set_Input>;
   where: Jams_Agg_Line_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdate_Jams_By_PkArgs = {
@@ -1944,7 +1898,6 @@ export type Mutation_RootUpdate_Jams_By_PkArgs = {
   pk_columns: Jams_Pk_Columns_Input;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdate_Simple_Line_TypeArgs = {
   _inc?: Maybe<Simple_Line_Type_Inc_Input>;
@@ -1952,14 +1905,12 @@ export type Mutation_RootUpdate_Simple_Line_TypeArgs = {
   where: Simple_Line_Type_Bool_Exp;
 };
 
-
 /** mutation root */
 export type Mutation_RootUpdate_StreetsArgs = {
   _inc?: Maybe<Streets_Inc_Input>;
   _set?: Maybe<Streets_Set_Input>;
   where: Streets_Bool_Exp;
 };
-
 
 /** mutation root */
 export type Mutation_RootUpdate_Streets_By_PkArgs = {
@@ -1981,7 +1932,7 @@ export enum Order_By {
   /** in descending order, nulls first */
   DescNullsFirst = 'desc_nulls_first',
   /** in descending order, nulls last */
-  DescNullsLast = 'desc_nulls_last'
+  DescNullsLast = 'desc_nulls_last',
 }
 
 export type Query_Root = {
@@ -2054,7 +2005,6 @@ export type Query_Root = {
   streets_by_pk?: Maybe<Streets>;
 };
 
-
 export type Query_RootAdmin_LevelsArgs = {
   distinct_on?: Maybe<Array<Admin_Levels_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2062,7 +2012,6 @@ export type Query_RootAdmin_LevelsArgs = {
   order_by?: Maybe<Array<Admin_Levels_Order_By>>;
   where?: Maybe<Admin_Levels_Bool_Exp>;
 };
-
 
 export type Query_RootAdmin_Levels_AggregateArgs = {
   distinct_on?: Maybe<Array<Admin_Levels_Select_Column>>;
@@ -2072,7 +2021,6 @@ export type Query_RootAdmin_Levels_AggregateArgs = {
   where?: Maybe<Admin_Levels_Bool_Exp>;
 };
 
-
 export type Query_RootComparativo_TypeArgs = {
   distinct_on?: Maybe<Array<Comparativo_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2080,7 +2028,6 @@ export type Query_RootComparativo_TypeArgs = {
   order_by?: Maybe<Array<Comparativo_Type_Order_By>>;
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
-
 
 export type Query_RootComparativo_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Comparativo_Type_Select_Column>>;
@@ -2090,7 +2037,6 @@ export type Query_RootComparativo_Type_AggregateArgs = {
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootEvolutivo_TypeArgs = {
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2099,7 +2045,6 @@ export type Query_RootEvolutivo_TypeArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootEvolutivo_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2107,7 +2052,6 @@ export type Query_RootEvolutivo_Type_AggregateArgs = {
   order_by?: Maybe<Array<Evolutivo_Type_Order_By>>;
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
-
 
 export type Query_RootGet_ComparativoArgs = {
   args: Get_Comparativo_Args;
@@ -2118,7 +2062,6 @@ export type Query_RootGet_ComparativoArgs = {
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootGet_Comparativo_AggregateArgs = {
   args: Get_Comparativo_Args;
   distinct_on?: Maybe<Array<Comparativo_Type_Select_Column>>;
@@ -2127,7 +2070,6 @@ export type Query_RootGet_Comparativo_AggregateArgs = {
   order_by?: Maybe<Array<Comparativo_Type_Order_By>>;
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
-
 
 export type Query_RootGet_EvolutivoArgs = {
   args: Get_Evolutivo_Args;
@@ -2138,7 +2080,6 @@ export type Query_RootGet_EvolutivoArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootGet_Evolutivo_AggregateArgs = {
   args: Get_Evolutivo_Args;
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -2147,7 +2088,6 @@ export type Query_RootGet_Evolutivo_AggregateArgs = {
   order_by?: Maybe<Array<Evolutivo_Type_Order_By>>;
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
-
 
 export type Query_RootGet_Jams_LinesArgs = {
   args: Get_Jams_Lines_Args;
@@ -2158,7 +2098,6 @@ export type Query_RootGet_Jams_LinesArgs = {
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
 
-
 export type Query_RootGet_Jams_Lines_AggregateArgs = {
   args: Get_Jams_Lines_Args;
   distinct_on?: Maybe<Array<Jams_Agg_Line_Select_Column>>;
@@ -2167,7 +2106,6 @@ export type Query_RootGet_Jams_Lines_AggregateArgs = {
   order_by?: Maybe<Array<Jams_Agg_Line_Order_By>>;
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
-
 
 export type Query_RootGet_LinesArgs = {
   args: Get_Lines_Args;
@@ -2178,7 +2116,6 @@ export type Query_RootGet_LinesArgs = {
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
 
-
 export type Query_RootGet_Lines_AggregateArgs = {
   args: Get_Lines_Args;
   distinct_on?: Maybe<Array<Simple_Line_Type_Select_Column>>;
@@ -2187,7 +2124,6 @@ export type Query_RootGet_Lines_AggregateArgs = {
   order_by?: Maybe<Array<Simple_Line_Type_Order_By>>;
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
-
 
 export type Query_RootGet_PredictivoArgs = {
   args: Get_Predictivo_Args;
@@ -2198,7 +2134,6 @@ export type Query_RootGet_PredictivoArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootGet_Predictivo_AggregateArgs = {
   args: Get_Predictivo_Args;
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -2207,7 +2142,6 @@ export type Query_RootGet_Predictivo_AggregateArgs = {
   order_by?: Maybe<Array<Evolutivo_Type_Order_By>>;
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
-
 
 export type Query_RootGet_SummaryArgs = {
   args: Get_Summary_Args;
@@ -2218,7 +2152,6 @@ export type Query_RootGet_SummaryArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootGet_Summary_AggregateArgs = {
   args: Get_Summary_Args;
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -2228,7 +2161,6 @@ export type Query_RootGet_Summary_AggregateArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Query_RootHistogram_TypeArgs = {
   distinct_on?: Maybe<Array<Histogram_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2236,7 +2168,6 @@ export type Query_RootHistogram_TypeArgs = {
   order_by?: Maybe<Array<Histogram_Type_Order_By>>;
   where?: Maybe<Histogram_Type_Bool_Exp>;
 };
-
 
 export type Query_RootHistogram_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Histogram_Type_Select_Column>>;
@@ -2246,7 +2177,6 @@ export type Query_RootHistogram_Type_AggregateArgs = {
   where?: Maybe<Histogram_Type_Bool_Exp>;
 };
 
-
 export type Query_RootJam_LinesArgs = {
   distinct_on?: Maybe<Array<Jam_Lines_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2254,7 +2184,6 @@ export type Query_RootJam_LinesArgs = {
   order_by?: Maybe<Array<Jam_Lines_Order_By>>;
   where?: Maybe<Jam_Lines_Bool_Exp>;
 };
-
 
 export type Query_RootJam_Lines_AggregateArgs = {
   distinct_on?: Maybe<Array<Jam_Lines_Select_Column>>;
@@ -2264,11 +2193,9 @@ export type Query_RootJam_Lines_AggregateArgs = {
   where?: Maybe<Jam_Lines_Bool_Exp>;
 };
 
-
 export type Query_RootJam_Lines_By_PkArgs = {
   line_id: Scalars['Int'];
 };
-
 
 export type Query_RootJamsArgs = {
   distinct_on?: Maybe<Array<Jams_Select_Column>>;
@@ -2278,7 +2205,6 @@ export type Query_RootJamsArgs = {
   where?: Maybe<Jams_Bool_Exp>;
 };
 
-
 export type Query_RootJams_Agg_LineArgs = {
   distinct_on?: Maybe<Array<Jams_Agg_Line_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2286,7 +2212,6 @@ export type Query_RootJams_Agg_LineArgs = {
   order_by?: Maybe<Array<Jams_Agg_Line_Order_By>>;
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
-
 
 export type Query_RootJams_Agg_Line_AggregateArgs = {
   distinct_on?: Maybe<Array<Jams_Agg_Line_Select_Column>>;
@@ -2296,7 +2221,6 @@ export type Query_RootJams_Agg_Line_AggregateArgs = {
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
 
-
 export type Query_RootJams_AggregateArgs = {
   distinct_on?: Maybe<Array<Jams_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2305,11 +2229,9 @@ export type Query_RootJams_AggregateArgs = {
   where?: Maybe<Jams_Bool_Exp>;
 };
 
-
 export type Query_RootJams_By_PkArgs = {
   uuid: Scalars['Int'];
 };
-
 
 export type Query_RootSimple_Line_TypeArgs = {
   distinct_on?: Maybe<Array<Simple_Line_Type_Select_Column>>;
@@ -2319,7 +2241,6 @@ export type Query_RootSimple_Line_TypeArgs = {
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
 
-
 export type Query_RootSimple_Line_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Simple_Line_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2327,7 +2248,6 @@ export type Query_RootSimple_Line_Type_AggregateArgs = {
   order_by?: Maybe<Array<Simple_Line_Type_Order_By>>;
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
-
 
 export type Query_RootStreetsArgs = {
   distinct_on?: Maybe<Array<Streets_Select_Column>>;
@@ -2337,7 +2257,6 @@ export type Query_RootStreetsArgs = {
   where?: Maybe<Streets_Bool_Exp>;
 };
 
-
 export type Query_RootStreets_AggregateArgs = {
   distinct_on?: Maybe<Array<Streets_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2345,7 +2264,6 @@ export type Query_RootStreets_AggregateArgs = {
   order_by?: Maybe<Array<Streets_Order_By>>;
   where?: Maybe<Streets_Bool_Exp>;
 };
-
 
 export type Query_RootStreets_By_PkArgs = {
   street_id: Scalars['Int'];
@@ -2380,7 +2298,6 @@ export type Simple_Line_Type_Aggregate_Fields = {
   var_samp?: Maybe<Simple_Line_Type_Var_Samp_Fields>;
   variance?: Maybe<Simple_Line_Type_Variance_Fields>;
 };
-
 
 /** aggregate fields of "simple_line_type" */
 export type Simple_Line_Type_Aggregate_FieldsCountArgs = {
@@ -2450,7 +2367,7 @@ export enum Simple_Line_Type_Select_Column {
   /** column name */
   LineId = 'line_id',
   /** column name */
-  StreetId = 'street_id'
+  StreetId = 'street_id',
 }
 
 /** input type for updating data in table "simple_line_type" */
@@ -2554,7 +2471,6 @@ export type Streets_Aggregate_Fields = {
   variance?: Maybe<Streets_Variance_Fields>;
 };
 
-
 /** aggregate fields of "streets" */
 export type Streets_Aggregate_FieldsCountArgs = {
   columns?: Maybe<Array<Streets_Select_Column>>;
@@ -2585,7 +2501,7 @@ export type Streets_Bool_Exp = {
 /** unique or primary key constraints on table "streets" */
 export enum Streets_Constraint {
   /** unique or primary key constraint */
-  StreetsPkey = 'streets_pkey'
+  StreetsPkey = 'streets_pkey',
 }
 
 /** input type for incrementing numeric columns in table "streets" */
@@ -2674,7 +2590,7 @@ export enum Streets_Select_Column {
   /** column name */
   StreetSufix = 'street_sufix',
   /** column name */
-  StreetType = 'street_type'
+  StreetType = 'street_type',
 }
 
 /** input type for updating data in table "streets" */
@@ -2731,7 +2647,7 @@ export enum Streets_Update_Column {
   /** column name */
   StreetSufix = 'street_sufix',
   /** column name */
-  StreetType = 'street_type'
+  StreetType = 'street_type',
 }
 
 /** aggregate var_pop on columns */
@@ -2825,7 +2741,6 @@ export type Subscription_Root = {
   streets_by_pk?: Maybe<Streets>;
 };
 
-
 export type Subscription_RootAdmin_LevelsArgs = {
   distinct_on?: Maybe<Array<Admin_Levels_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2833,7 +2748,6 @@ export type Subscription_RootAdmin_LevelsArgs = {
   order_by?: Maybe<Array<Admin_Levels_Order_By>>;
   where?: Maybe<Admin_Levels_Bool_Exp>;
 };
-
 
 export type Subscription_RootAdmin_Levels_AggregateArgs = {
   distinct_on?: Maybe<Array<Admin_Levels_Select_Column>>;
@@ -2843,7 +2757,6 @@ export type Subscription_RootAdmin_Levels_AggregateArgs = {
   where?: Maybe<Admin_Levels_Bool_Exp>;
 };
 
-
 export type Subscription_RootComparativo_TypeArgs = {
   distinct_on?: Maybe<Array<Comparativo_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2851,7 +2764,6 @@ export type Subscription_RootComparativo_TypeArgs = {
   order_by?: Maybe<Array<Comparativo_Type_Order_By>>;
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootComparativo_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Comparativo_Type_Select_Column>>;
@@ -2861,7 +2773,6 @@ export type Subscription_RootComparativo_Type_AggregateArgs = {
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootEvolutivo_TypeArgs = {
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2870,7 +2781,6 @@ export type Subscription_RootEvolutivo_TypeArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootEvolutivo_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -2878,7 +2788,6 @@ export type Subscription_RootEvolutivo_Type_AggregateArgs = {
   order_by?: Maybe<Array<Evolutivo_Type_Order_By>>;
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootGet_ComparativoArgs = {
   args: Get_Comparativo_Args;
@@ -2889,7 +2798,6 @@ export type Subscription_RootGet_ComparativoArgs = {
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootGet_Comparativo_AggregateArgs = {
   args: Get_Comparativo_Args;
   distinct_on?: Maybe<Array<Comparativo_Type_Select_Column>>;
@@ -2898,7 +2806,6 @@ export type Subscription_RootGet_Comparativo_AggregateArgs = {
   order_by?: Maybe<Array<Comparativo_Type_Order_By>>;
   where?: Maybe<Comparativo_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootGet_EvolutivoArgs = {
   args: Get_Evolutivo_Args;
@@ -2909,7 +2816,6 @@ export type Subscription_RootGet_EvolutivoArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootGet_Evolutivo_AggregateArgs = {
   args: Get_Evolutivo_Args;
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -2918,7 +2824,6 @@ export type Subscription_RootGet_Evolutivo_AggregateArgs = {
   order_by?: Maybe<Array<Evolutivo_Type_Order_By>>;
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootGet_Jams_LinesArgs = {
   args: Get_Jams_Lines_Args;
@@ -2929,7 +2834,6 @@ export type Subscription_RootGet_Jams_LinesArgs = {
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
 
-
 export type Subscription_RootGet_Jams_Lines_AggregateArgs = {
   args: Get_Jams_Lines_Args;
   distinct_on?: Maybe<Array<Jams_Agg_Line_Select_Column>>;
@@ -2938,7 +2842,6 @@ export type Subscription_RootGet_Jams_Lines_AggregateArgs = {
   order_by?: Maybe<Array<Jams_Agg_Line_Order_By>>;
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
-
 
 export type Subscription_RootGet_LinesArgs = {
   args: Get_Lines_Args;
@@ -2949,7 +2852,6 @@ export type Subscription_RootGet_LinesArgs = {
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootGet_Lines_AggregateArgs = {
   args: Get_Lines_Args;
   distinct_on?: Maybe<Array<Simple_Line_Type_Select_Column>>;
@@ -2958,7 +2860,6 @@ export type Subscription_RootGet_Lines_AggregateArgs = {
   order_by?: Maybe<Array<Simple_Line_Type_Order_By>>;
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootGet_PredictivoArgs = {
   args: Get_Predictivo_Args;
@@ -2969,7 +2870,6 @@ export type Subscription_RootGet_PredictivoArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootGet_Predictivo_AggregateArgs = {
   args: Get_Predictivo_Args;
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -2978,7 +2878,6 @@ export type Subscription_RootGet_Predictivo_AggregateArgs = {
   order_by?: Maybe<Array<Evolutivo_Type_Order_By>>;
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootGet_SummaryArgs = {
   args: Get_Summary_Args;
@@ -2989,7 +2888,6 @@ export type Subscription_RootGet_SummaryArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootGet_Summary_AggregateArgs = {
   args: Get_Summary_Args;
   distinct_on?: Maybe<Array<Evolutivo_Type_Select_Column>>;
@@ -2999,7 +2897,6 @@ export type Subscription_RootGet_Summary_AggregateArgs = {
   where?: Maybe<Evolutivo_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootHistogram_TypeArgs = {
   distinct_on?: Maybe<Array<Histogram_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3007,7 +2904,6 @@ export type Subscription_RootHistogram_TypeArgs = {
   order_by?: Maybe<Array<Histogram_Type_Order_By>>;
   where?: Maybe<Histogram_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootHistogram_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Histogram_Type_Select_Column>>;
@@ -3017,7 +2913,6 @@ export type Subscription_RootHistogram_Type_AggregateArgs = {
   where?: Maybe<Histogram_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootJam_LinesArgs = {
   distinct_on?: Maybe<Array<Jam_Lines_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3025,7 +2920,6 @@ export type Subscription_RootJam_LinesArgs = {
   order_by?: Maybe<Array<Jam_Lines_Order_By>>;
   where?: Maybe<Jam_Lines_Bool_Exp>;
 };
-
 
 export type Subscription_RootJam_Lines_AggregateArgs = {
   distinct_on?: Maybe<Array<Jam_Lines_Select_Column>>;
@@ -3035,11 +2929,9 @@ export type Subscription_RootJam_Lines_AggregateArgs = {
   where?: Maybe<Jam_Lines_Bool_Exp>;
 };
 
-
 export type Subscription_RootJam_Lines_By_PkArgs = {
   line_id: Scalars['Int'];
 };
-
 
 export type Subscription_RootJamsArgs = {
   distinct_on?: Maybe<Array<Jams_Select_Column>>;
@@ -3049,7 +2941,6 @@ export type Subscription_RootJamsArgs = {
   where?: Maybe<Jams_Bool_Exp>;
 };
 
-
 export type Subscription_RootJams_Agg_LineArgs = {
   distinct_on?: Maybe<Array<Jams_Agg_Line_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3057,7 +2948,6 @@ export type Subscription_RootJams_Agg_LineArgs = {
   order_by?: Maybe<Array<Jams_Agg_Line_Order_By>>;
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
-
 
 export type Subscription_RootJams_Agg_Line_AggregateArgs = {
   distinct_on?: Maybe<Array<Jams_Agg_Line_Select_Column>>;
@@ -3067,7 +2957,6 @@ export type Subscription_RootJams_Agg_Line_AggregateArgs = {
   where?: Maybe<Jams_Agg_Line_Bool_Exp>;
 };
 
-
 export type Subscription_RootJams_AggregateArgs = {
   distinct_on?: Maybe<Array<Jams_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3076,11 +2965,9 @@ export type Subscription_RootJams_AggregateArgs = {
   where?: Maybe<Jams_Bool_Exp>;
 };
 
-
 export type Subscription_RootJams_By_PkArgs = {
   uuid: Scalars['Int'];
 };
-
 
 export type Subscription_RootSimple_Line_TypeArgs = {
   distinct_on?: Maybe<Array<Simple_Line_Type_Select_Column>>;
@@ -3090,7 +2977,6 @@ export type Subscription_RootSimple_Line_TypeArgs = {
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
 
-
 export type Subscription_RootSimple_Line_Type_AggregateArgs = {
   distinct_on?: Maybe<Array<Simple_Line_Type_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3098,7 +2984,6 @@ export type Subscription_RootSimple_Line_Type_AggregateArgs = {
   order_by?: Maybe<Array<Simple_Line_Type_Order_By>>;
   where?: Maybe<Simple_Line_Type_Bool_Exp>;
 };
-
 
 export type Subscription_RootStreetsArgs = {
   distinct_on?: Maybe<Array<Streets_Select_Column>>;
@@ -3108,7 +2993,6 @@ export type Subscription_RootStreetsArgs = {
   where?: Maybe<Streets_Bool_Exp>;
 };
 
-
 export type Subscription_RootStreets_AggregateArgs = {
   distinct_on?: Maybe<Array<Streets_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -3116,7 +3000,6 @@ export type Subscription_RootStreets_AggregateArgs = {
   order_by?: Maybe<Array<Streets_Order_By>>;
   where?: Maybe<Streets_Bool_Exp>;
 };
-
 
 export type Subscription_RootStreets_By_PkArgs = {
   street_id: Scalars['Int'];
@@ -3148,20 +3031,48 @@ export type Timestamptz_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['timestamptz']>>;
 };
 
-export type LinesQueryVariables = Exact<{ [key: string]: never; }>;
+export type LinesQueryVariables = Exact<{ [key: string]: never }>;
 
+export type LinesQuery = {
+  __typename?: 'query_root';
+  jam_lines: Array<{
+    __typename?: 'jam_lines';
+    street_id: number;
+    line_id: number;
+    line?: any | null | undefined;
+  }>;
+};
 
-export type LinesQuery = { __typename?: 'query_root', jam_lines: Array<{ __typename?: 'jam_lines', street_id: number, line_id: number, line?: any | null | undefined }> };
+export type StreetsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type StreetsQueryVariables = Exact<{ [key: string]: never; }>;
+export type StreetsQuery = {
+  __typename?: 'query_root';
+  streets: Array<{
+    __typename?: 'streets';
+    street_id: number;
+    street_type: number;
+    street_name: string;
+    street_sufix?: string | null | undefined;
+    line: any;
+  }>;
+};
 
+export type Admin_LevelsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type StreetsQuery = { __typename?: 'query_root', streets: Array<{ __typename?: 'streets', street_id: number, street_type: number, street_name: string, street_sufix?: string | null | undefined, line: any }> };
-
-export type Admin_LevelsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type Admin_LevelsQuery = { __typename?: 'query_root', admin_levels: Array<{ __typename?: 'admin_levels', greater_admin_level_id: number, greater_admin_level_name: string, lower_admin_level_id: number, lower_admin_level_name: string, lines_ids: string, streets_ids: string, shape: any, last_update?: any | null | undefined }> };
+export type Admin_LevelsQuery = {
+  __typename?: 'query_root';
+  admin_levels: Array<{
+    __typename?: 'admin_levels';
+    greater_admin_level_id: number;
+    greater_admin_level_name: string;
+    lower_admin_level_id: number;
+    lower_admin_level_name: string;
+    lines_ids: string;
+    streets_ids: string;
+    shape: any;
+    last_update?: any | null | undefined;
+  }>;
+};
 
 export type JamsQueryVariables = Exact<{
   date_from?: Maybe<Scalars['timestamp']>;
@@ -3172,8 +3083,10 @@ export type JamsQueryVariables = Exact<{
   working_days?: Maybe<Scalars['_int4']>;
 }>;
 
-
-export type JamsQuery = { __typename?: 'query_root', get_jams_lines: Array<{ __typename?: 'jams_agg_line', line_id: number, level: number }> };
+export type JamsQuery = {
+  __typename?: 'query_root';
+  get_jams_lines: Array<{ __typename?: 'jams_agg_line'; line_id: number; level: number }>;
+};
 
 export type EvolutivoQueryVariables = Exact<{
   date_from?: Maybe<Scalars['timestamp']>;
@@ -3185,8 +3098,10 @@ export type EvolutivoQueryVariables = Exact<{
   working_days?: Maybe<Scalars['_int4']>;
 }>;
 
-
-export type EvolutivoQuery = { __typename?: 'query_root', get_evolutivo: Array<{ __typename?: 'evolutivo_type', index: string, val: number }> };
+export type EvolutivoQuery = {
+  __typename?: 'query_root';
+  get_evolutivo: Array<{ __typename?: 'evolutivo_type'; index: string; val: number }>;
+};
 
 export type ComparativoQueryVariables = Exact<{
   date_from?: Maybe<Scalars['timestamp']>;
@@ -3198,8 +3113,10 @@ export type ComparativoQueryVariables = Exact<{
   working_days?: Maybe<Scalars['_int4']>;
 }>;
 
-
-export type ComparativoQuery = { __typename?: 'query_root', get_comparativo: Array<{ __typename?: 'comparativo_type', year: number, month: number, val: number }> };
+export type ComparativoQuery = {
+  __typename?: 'query_root';
+  get_comparativo: Array<{ __typename?: 'comparativo_type'; year: number; month: number; val: number }>;
+};
 
 export type SummaryQueryVariables = Exact<{
   date_from?: Maybe<Scalars['timestamp']>;
@@ -3210,8 +3127,10 @@ export type SummaryQueryVariables = Exact<{
   working_days?: Maybe<Scalars['_int4']>;
 }>;
 
-
-export type SummaryQuery = { __typename?: 'query_root', get_summary: Array<{ __typename?: 'evolutivo_type', index: string, val: number }> };
+export type SummaryQuery = {
+  __typename?: 'query_root';
+  get_summary: Array<{ __typename?: 'evolutivo_type'; index: string; val: number }>;
+};
 
 export type PredictivoQueryVariables = Exact<{
   date_from?: Maybe<Scalars['timestamp']>;
@@ -3223,179 +3142,257 @@ export type PredictivoQueryVariables = Exact<{
   working_days?: Maybe<Scalars['_int4']>;
 }>;
 
-
-export type PredictivoQuery = { __typename?: 'query_root', get_predictivo: Array<{ __typename?: 'evolutivo_type', index: string, val: number }> };
+export type PredictivoQuery = {
+  __typename?: 'query_root';
+  get_predictivo: Array<{ __typename?: 'evolutivo_type'; index: string; val: number }>;
+};
 
 export const LinesDocument = gql`
-    query lines {
-  jam_lines {
-    street_id
-    line_id
-    line
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class LinesGQL extends Apollo.Query<LinesQuery, LinesQueryVariables> {
-    document = LinesDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+  query lines {
+    jam_lines {
+      street_id
+      line_id
+      line
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LinesGQL extends Apollo.Query<LinesQuery, LinesQueryVariables> {
+  document = LinesDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const StreetsDocument = gql`
-    query streets {
-  streets {
-    street_id
-    street_type
-    street_name
-    street_sufix
-    line
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class StreetsGQL extends Apollo.Query<StreetsQuery, StreetsQueryVariables> {
-    document = StreetsDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+  query streets {
+    streets {
+      street_id
+      street_type
+      street_name
+      street_sufix
+      line
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class StreetsGQL extends Apollo.Query<StreetsQuery, StreetsQueryVariables> {
+  document = StreetsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const Admin_LevelsDocument = gql`
-    query admin_levels {
-  admin_levels {
-    greater_admin_level_id
-    greater_admin_level_name
-    lower_admin_level_id
-    lower_admin_level_name
-    lines_ids
-    streets_ids
-    shape
-    last_update
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class Admin_LevelsGQL extends Apollo.Query<Admin_LevelsQuery, Admin_LevelsQueryVariables> {
-    document = Admin_LevelsDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+  query admin_levels {
+    admin_levels {
+      greater_admin_level_id
+      greater_admin_level_name
+      lower_admin_level_id
+      lower_admin_level_name
+      lines_ids
+      streets_ids
+      shape
+      last_update
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class Admin_LevelsGQL extends Apollo.Query<Admin_LevelsQuery, Admin_LevelsQueryVariables> {
+  document = Admin_LevelsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const JamsDocument = gql`
-    query jams($date_from: timestamp, $date_to: timestamp, $hours: _int4, $lines: _int4, $aggFunc: String, $working_days: _int4) {
-  get_jams_lines(
-    args: {date_from: $date_from, date_to: $date_to, hours: $hours, lines: $lines, agg_func: $aggFunc, working_days: $working_days}
+  query jams(
+    $date_from: timestamp
+    $date_to: timestamp
+    $hours: _int4
+    $lines: _int4
+    $aggFunc: String
+    $working_days: _int4
   ) {
-    line_id
-    level
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class JamsGQL extends Apollo.Query<JamsQuery, JamsQueryVariables> {
-    document = JamsDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+    get_jams_lines(
+      args: {
+        date_from: $date_from
+        date_to: $date_to
+        hours: $hours
+        lines: $lines
+        agg_func: $aggFunc
+        working_days: $working_days
+      }
+    ) {
+      line_id
+      level
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class JamsGQL extends Apollo.Query<JamsQuery, JamsQueryVariables> {
+  document = JamsDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const EvolutivoDocument = gql`
-    query evolutivo($date_from: timestamp, $date_to: timestamp, $hours: _int4, $lines: _int4, $metric: String, $aggFunc: String, $working_days: _int4) {
-  get_evolutivo(
-    args: {date_from: $date_from, date_to: $date_to, hours: $hours, lines: $lines, metric: $metric, agg_func: $aggFunc, working_days: $working_days}
+  query evolutivo(
+    $date_from: timestamp
+    $date_to: timestamp
+    $hours: _int4
+    $lines: _int4
+    $metric: String
+    $aggFunc: String
+    $working_days: _int4
   ) {
-    index
-    val
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class EvolutivoGQL extends Apollo.Query<EvolutivoQuery, EvolutivoQueryVariables> {
-    document = EvolutivoDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+    get_evolutivo(
+      args: {
+        date_from: $date_from
+        date_to: $date_to
+        hours: $hours
+        lines: $lines
+        metric: $metric
+        agg_func: $aggFunc
+        working_days: $working_days
+      }
+    ) {
+      index
+      val
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class EvolutivoGQL extends Apollo.Query<EvolutivoQuery, EvolutivoQueryVariables> {
+  document = EvolutivoDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const ComparativoDocument = gql`
-    query comparativo($date_from: timestamp, $date_to: timestamp, $hours: _int4, $lines: _int4, $metric: String, $aggFunc: String, $working_days: _int4) {
-  get_comparativo(
-    args: {date_from: $date_from, date_to: $date_to, hours: $hours, lines: $lines, metric: $metric, agg_func: $aggFunc, working_days: $working_days}
+  query comparativo(
+    $date_from: timestamp
+    $date_to: timestamp
+    $hours: _int4
+    $lines: _int4
+    $metric: String
+    $aggFunc: String
+    $working_days: _int4
   ) {
-    year
-    month
-    val
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ComparativoGQL extends Apollo.Query<ComparativoQuery, ComparativoQueryVariables> {
-    document = ComparativoDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+    get_comparativo(
+      args: {
+        date_from: $date_from
+        date_to: $date_to
+        hours: $hours
+        lines: $lines
+        metric: $metric
+        agg_func: $aggFunc
+        working_days: $working_days
+      }
+    ) {
+      year
+      month
+      val
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ComparativoGQL extends Apollo.Query<ComparativoQuery, ComparativoQueryVariables> {
+  document = ComparativoDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const SummaryDocument = gql`
-    query summary($date_from: timestamp, $date_to: timestamp, $hours: _int4, $lines: _int4, $aggFunc: String, $working_days: _int4) {
-  get_summary(
-    args: {date_from: $date_from, date_to: $date_to, hours: $hours, lines: $lines, agg_func: $aggFunc, working_days: $working_days}
+  query summary(
+    $date_from: timestamp
+    $date_to: timestamp
+    $hours: _int4
+    $lines: _int4
+    $aggFunc: String
+    $working_days: _int4
   ) {
-    index
-    val
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class SummaryGQL extends Apollo.Query<SummaryQuery, SummaryQueryVariables> {
-    document = SummaryDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+    get_summary(
+      args: {
+        date_from: $date_from
+        date_to: $date_to
+        hours: $hours
+        lines: $lines
+        agg_func: $aggFunc
+        working_days: $working_days
+      }
+    ) {
+      index
+      val
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class SummaryGQL extends Apollo.Query<SummaryQuery, SummaryQueryVariables> {
+  document = SummaryDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const PredictivoDocument = gql`
-    query predictivo($date_from: timestamp, $date_to: timestamp, $hours: _int4, $lines: _int4, $metric: String, $aggFunc: String, $working_days: _int4) {
-  get_predictivo(
-    args: {date_from: $date_from, date_to: $date_to, hours: $hours, lines: $lines, metric: $metric, agg_func: $aggFunc, working_days: $working_days}
+  query predictivo(
+    $date_from: timestamp
+    $date_to: timestamp
+    $hours: _int4
+    $lines: _int4
+    $metric: String
+    $aggFunc: String
+    $working_days: _int4
   ) {
-    index
-    val
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class PredictivoGQL extends Apollo.Query<PredictivoQuery, PredictivoQueryVariables> {
-    document = PredictivoDocument;
-    
-    constructor(apollo: Apollo.Apollo) {
-      super(apollo);
+    get_predictivo(
+      args: {
+        date_from: $date_from
+        date_to: $date_to
+        hours: $hours
+        lines: $lines
+        metric: $metric
+        agg_func: $aggFunc
+        working_days: $working_days
+      }
+    ) {
+      index
+      val
     }
   }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class PredictivoGQL extends Apollo.Query<PredictivoQuery, PredictivoQueryVariables> {
+  document = PredictivoDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
