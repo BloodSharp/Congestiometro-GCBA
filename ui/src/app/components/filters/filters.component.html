@@ -92,8 +92,8 @@
             </mat-form-field>
             <mat-checkbox
               (change)="state.form.controls.hours.setValue($event.checked ? hoursIds : [])"
-              [checked]="state.form.value.hours.length === hours.length"
-              [indeterminate]="state.form.value.hours.length > 0 && state.form.value.hours.length < hours.length"
+              [checked]="state.form.value.hours?.length === hours.length"
+              [indeterminate]="state.form.value.hours!.length > 0 && state.form.value.hours!.length < hours.length"
               [disabled]="state.syncParams.hours"
             >
               Todas las horas
@@ -120,8 +120,8 @@
               <mat-form-field appearance="fill" fxFlex="auto">
                 <mat-label>Barrio</mat-label>
                 <mat-select formControlName="neighborhoods" multiple [disabled]="state.syncParams.neighborhoods">
-                  <mat-select-trigger *ngIf="state.form.value.neighborhoods.length > 0">
-                    {{ state.form.value.neighborhoods.length }} barrios seleccionados
+                  <mat-select-trigger *ngIf="state.form.value.neighborhoods!.length > 0">
+                    {{ state.form.value.neighborhoods?.length }} barrios seleccionados
                   </mat-select-trigger>
                   <div *ngFor="let adminLevel2 of groupedNeighborhoods | async" fxLayout="row">
                     <mat-checkbox
@@ -129,12 +129,14 @@
                         setSelectedNeighborhoods(
                           state.form.controls.neighborhoods,
                           $event.checked,
-                          state.form.value.neighborhoods,
+                          state.form.value.neighborhoods || [],
                           adminLevel2.neighborhoodIds
                         )
                       "
-                      [checked]="allSelected(state.form.value.neighborhoods, adminLevel2.neighborhoods)"
-                      [indeterminate]="someSelected(state.form.value.neighborhoods, adminLevel2.neighborhoods)"
+                      [checked]="allSelected(state.form.value.neighborhoods || [], adminLevel2.neighborhoods)"
+                      [indeterminate]="
+                        someSelected(state.form.value.neighborhoods || [], adminLevel2.neighborhoods)
+                      "
                       class="mat-optgroup-label"
                     ></mat-checkbox>
                     <mat-optgroup [label]="adminLevel2.label | titlecase" fxFlex="auto">
@@ -150,10 +152,10 @@
               </mat-form-field>
               <mat-checkbox
                 (change)="state.form.controls.neighborhoods.setValue($event.checked ? state.neighborhoodsIds : [])"
-                [checked]="state.form.value.neighborhoods.length === state.neighborhoodsIds.length"
+                [checked]="state.form.value.neighborhoods!.length === state.neighborhoodsIds.length"
                 [indeterminate]="
-                  state.form.value.neighborhoods.length > 0 &&
-                  state.form.value.neighborhoods.length < state.neighborhoodsIds.length
+                  state.form.value.neighborhoods!.length > 0 &&
+                  state.form.value.neighborhoods!.length < state.neighborhoodsIds.length
                 "
                 [disabled]="state.syncParams.neighborhoods"
               >
