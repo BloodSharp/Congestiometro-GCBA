@@ -154,10 +154,8 @@ export class FiltersComponent {
       }),
       startWith([]),
     ),
-    this.data.pipe(
-      switchMap(({ form }) =>
-        form.controls.neighborhoods.valueChanges.pipe(startWith(form.controls.neighborhoods.value)),
-      ),
+    this.data.pipe(map((data: any) => data['form'])).pipe(
+      map((form) => form.controls.neighborhoods.valueChanges.pipe(startWith(form.controls.neighborhoods.value))),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
     ) as Observable<number[]>,
     this.dataService.neighborhoods,
