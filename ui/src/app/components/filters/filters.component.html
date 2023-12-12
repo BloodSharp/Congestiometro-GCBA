@@ -25,7 +25,7 @@
   </ng-container>
 </mat-menu>
 
-<div [fxShow]="show$ | async">
+<div [hidden]="show$ | async">
   <div id="backdrop"></div>
   <div fxLayout="column" fxLayoutAlign="center center" id="dialog-wrapper">
     <mat-card *ngIf="data | async as state" fxLayout="column">
