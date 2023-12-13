@@ -90,7 +90,7 @@ export class DisplayUsersComponent implements OnInit {
     return this.userService
       .editUser(username, password)
       .then(() => {
-        this.selectedUser.next();
+        this.selectedUser.next({ username, isAdmin: false });
         this.editUserForm.reset();
         this.displayLogService.openLogSuccess('Usuario editado');
       })
