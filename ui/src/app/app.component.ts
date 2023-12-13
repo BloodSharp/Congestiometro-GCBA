@@ -113,7 +113,7 @@ export class AppComponent implements AfterViewInit {
         : null,
     ),
   );
-  public comparisonOptions: ChartOptions = {
+  public comparisonOptions = {
     responsive: true,
     scales: {
       yAxes: [{ ticks: { display: false } }],
@@ -122,7 +122,7 @@ export class AppComponent implements AfterViewInit {
           ticks: {
             min: -1,
             max: 1,
-            callback: (v) => (Number(v) * 100).toLocaleString('es-ar', { maximumFractionDigits: 0 }) + '%',
+            callback: (v: any) => (Number(v) * 100).toLocaleString('es-ar', { maximumFractionDigits: 0 }) + '%',
           },
         },
       ],
