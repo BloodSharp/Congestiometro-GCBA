@@ -160,7 +160,6 @@
                   [datasets]="barData.dataset"
                   [labels]="barData.labels"
                   [options]="config.options"
-                  [colors]="config.colors"
                   chartType="bar"
                   [legend]="showLabels(barData.dataset)"
                 >
@@ -181,7 +180,6 @@
                   [datasets]="dataInfo.dataset"
                   [labels]="dataInfo.labels"
                   [options]="config.options"
-                  [colors]="config.colors"
                   chartType="line"
                   [legend]="showLabels(dataInfo.dataset)"
                 >
@@ -201,7 +199,6 @@
                   [datasets]="lineWithMapData.dataset"
                   [labels]="lineWithMapData.labels"
                   [options]="config.options"
-                  [colors]="config.colors"
                   chartType="line"
                   [legend]="showLabels(lineWithMapData.dataset)"
                 >
@@ -246,7 +243,6 @@
                   [datasets]="[{ data: [difference.difference] }]"
                   [labels]="[difference.label]"
                   [options]="comparisonOptions"
-                  [colors]="[{ backgroundColor: 'rgb(154 208 245)' }]"
                   chartType="horizontalBar"
                   [legend]="false"
                 >
@@ -286,7 +282,6 @@
                       [datasets]="barData.dataset"
                       [labels]="barData.labels"
                       [options]="config.options"
-                      [colors]="config.colors"
                       chartType="bar"
                       [legend]="showLabels(barData.dataset)"
                     >
