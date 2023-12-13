@@ -84,10 +84,10 @@ export class DisplayUsersComponent implements OnInit {
     this.nameSearch.next('');
   }
 
-  public editUser(username: string, password: string) {
+  public async editUser(username: string, password: string) {
     if (!confirm('¿Está seguro que desea editar este usuario?')) return;
     this.loading.next(true);
-    return this.userService
+    return await this.userService
       .editUser(username, password)
       .then(() => {
         this.selectedUser.next({ username, isAdmin: false });
