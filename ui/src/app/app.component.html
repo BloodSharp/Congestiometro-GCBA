@@ -22,7 +22,11 @@
           <span class="mat-subheading-1">Usar comparativa</span>
         </mat-slide-toggle>
 
-        <app-filters [exportableData]="rightExportableData" [secondary]="true" [fxShow]="compare | async" fxHide>
+        <app-filters
+          [exportableData]="rightExportableData"
+          [secondary]="true"
+          [hidden]="(compare | async) === false"
+        >
           Cambiar gráfico derecho
         </app-filters>
         <button mat-icon-button [matMenuTriggerFor]="menuLink">
