@@ -354,7 +354,7 @@ export class AppComponent implements AfterViewInit {
     this.selectedComparativeCharts.next(selectedComparativeCharts);
     if (input) {
       input.value = '';
-      this.comparativeStreetSearch.setValue('');
+      this.comparativeStreetSearch.setValue('' as never);
       input.blur();
       // setTimeout(() => input.focus(), 10);
     }
