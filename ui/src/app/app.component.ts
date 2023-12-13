@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataset, ChartOptions } from 'chart.js';
 
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
 import {
@@ -331,7 +331,7 @@ export class AppComponent implements AfterViewInit {
 
   public getHoursString = (times: number[]) => times.map((value) => `${value}hs`).join(', ');
 
-  public showLabels = (data: ChartDataSets[]) => data.some((v) => !!v.label);
+  public showLabels = (data: ChartDataset[]) => data.some((v) => !!v.label);
 
   public async selectLineYear(greaterDate: number) {
     return this.router.navigate([], {
