@@ -91,7 +91,7 @@
                 class="no-border-top"
                 fxFlex="auto"
               >
-                <mat-chip-list #chipList>
+                <mat-chip-grid #chipList>
                   <mat-chip
                     *ngFor="let chart of selected"
                     (removed)="toggleComparativeChart('delete', chart, selected)"
@@ -108,7 +108,7 @@
                     [matChipInputFor]="chipList"
                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   />
-                </mat-chip-list>
+                </mat-chip-grid>
                 <mat-autocomplete
                   #auto="matAutocomplete"
                   (optionSelected)="toggleComparativeChart('add', $event.option.value, selected, streetInput)"
