@@ -43,9 +43,9 @@
     "zone.js": "~0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~17.0.6",
-    "@angular-devkit/build-webpack": "^0.1700.6",
-    "@angular/cli": "~17.0.6",
+    "@angular-devkit/build-angular": "~17.0.7",
+    "@angular-devkit/build-webpack": "^0.1700.7",
+    "@angular/cli": "~17.0.7",
     "@angular/compiler-cli": "~17.0.6",
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/introspection": "4.0.0",
