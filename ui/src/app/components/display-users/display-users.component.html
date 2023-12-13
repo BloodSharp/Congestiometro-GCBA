@@ -96,7 +96,7 @@
     </table>
   </div>
   <mat-paginator
-    [fxHide]="(dataSource$ | async)?.data?.length === 0"
+    [hidden]="(dataSource$ | async)?.data?.length === 0"
     [pageSizeOptions]="pageSizeOptions"
   ></mat-paginator>
 </div>
