@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-/* TODO: reemplazar el MediaObserver por contenido de Angular moderno
 import { MediaObserver } from 'ngx-flexible-layout';
-*/
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
@@ -28,7 +26,7 @@ import VectorSource from 'ol/source/Vector';
 import GeometryType from 'ol/geom/GeometryType';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
-import { LineString, Polygon, MultiPolygon } from 'ol/geom';
+import { LineString, Polygon, MultiPolygon, Point } from 'ol/geom';
 import { Fill, Stroke, Style } from 'ol/style';
 
 import {
@@ -36,6 +34,7 @@ import {
   point as turfPoint,
   polygon as turfPolygon,
   multiPolygon as turfMultiPolygon,
+  geometry,
 } from '@turf/turf';
 import booleanIntersects from '@turf/boolean-intersects';
 
@@ -46,6 +45,8 @@ import { DisplayLogService } from 'src/app/services/display-log.service';
 import { AdminLevel } from 'src/app/services/indexedDb';
 import { charts, ChartType, aggFuncs, hours, metrics } from 'src/app/services/chartTypes';
 import { normalizeString } from 'src/app/services/utils';
+import { Coordinate } from 'ol/coordinate';
+import { DrawEvent } from 'ol/interaction/Draw';
 
 export const getTurfFeature = (polygon: Polygon | MultiPolygon) => {
   return polygon instanceof Polygon
@@ -251,22 +252,24 @@ export class FiltersComponent {
 
   public selectedStreets = new Map<number, string>();
 
+  private getCoordinatesArray(drawEvent: DrawEvent): [number, number][] {
+    const coordinates = (drawEvent.feature.getGeometry() as LineString)?.getCoordinates();
+    let coordinatesArray: [number, number][] = [];
+    coordinates?.forEach((coord) => {
+      const coordinatePoints = toLonLat(coord);
+      coordinatesArray.push([Number(coordinatePoints[0]), Number(coordinatePoints[1])]);
+    });
+    return coordinatesArray;
+  }
+
   constructor(
     private router: Router,
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
-    private displayLogService: DisplayLogService, //media: MediaObserver
+    private displayLogService: DisplayLogService,
+    media: MediaObserver,
   ) {
-    /* TODO: Arreglar el renderizado 
-    this.draw.on('drawend', (drawEvent) =>
-      this.mapPolygon.next(
-        drawEvent.feature
-          .getGeometry()
-          .getCoordinates()[0]
-          ?.map((c: any) => toLonLat(c)) || []
-      )
-    );
-    */
+    this.draw.on('drawend', (drawEvent) => this.mapPolygon.next(this.getCoordinatesArray(drawEvent)));
     this.subscriptions.push(
       ...[
         dataService.ready
@@ -290,16 +293,14 @@ export class FiltersComponent {
             });
             this.map.addInteraction(this.draw);
           }),
-        /* TODO: Arreglar el MediaObserver
         media
           .asObservable()
           .pipe(
             map(() => media.isActive('lt-lg')),
             distinctUntilChanged(),
-            debounceTime(100)
+            debounceTime(100),
           )
           .subscribe(() => (this.map ? this.map.updateSize() : null)),
-        */
       ],
     );
   }
