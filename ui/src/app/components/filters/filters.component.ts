@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 /* TODO: reemplazar el MediaObserver por contenido de Angular moderno
-import { MediaObserver } from '@angular/flex-layout';
+import { MediaObserver } from 'ngx-flexible-layout';
 */
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';

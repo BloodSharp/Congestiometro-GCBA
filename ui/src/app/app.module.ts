@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import localeEsAR from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAR, 'es-AR');
 
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from 'ngx-flexible-layout';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
