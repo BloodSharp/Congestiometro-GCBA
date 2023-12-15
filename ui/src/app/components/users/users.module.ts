@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { ButtonIconModule } from 'src/app/components/button-icon/button-icon.module';
+import { Apollo, ApolloModule } from 'apollo-angular';
 
 @NgModule({
   declarations: [UsersComponent],
@@ -29,7 +30,9 @@ import { ButtonIconModule } from 'src/app/components/button-icon/button-icon.mod
     MatDividerModule,
     DisplayUsersModule,
     ButtonIconModule,
+    ApolloModule,
   ],
+  providers: [Apollo],
   exports: [UsersComponent],
 })
 export class UsersModule {}
