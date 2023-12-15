@@ -5,7 +5,7 @@ import { Apollo } from 'apollo-angular';
 import { fromEvent, merge, of, Subject, timer } from 'rxjs';
 import { catchError, map, mapTo, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import jwt_decode, { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 export interface DBUser {
   username: string;
 }
