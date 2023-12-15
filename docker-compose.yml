@@ -71,5 +71,3 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./.caddy:/root/.caddy
       - ./ui/dist:/var/www
-
-
