@@ -6,7 +6,7 @@
     "prettier": "prettier",
     "serve": "ng serve -o",
     "build": "ng build -c staging",
-    "format": "prettier --write \"./**/*.json\" \"src/**/*.ts\" \"test/**/*.ts\" \"src/**/*.spec.ts\" \"src/**/*.html\" \"src/**/*.css\" --single-quote true --trailing-comma all --tab-width 2",
+    "format": "prettier --write \"./**/*.json\" \"src/**/*.ts\" \"test/**/*.ts\" \"src/**/*.spec.ts\" \"src/**/*.html\" \"src/**/*.css\" \"src/**/*.scss\" --single-quote true --trailing-comma all --tab-width 2",
     "codegen": "graphql-codegen --config ../graphql.config.yml --watch"
   },
   "dependencies": {
