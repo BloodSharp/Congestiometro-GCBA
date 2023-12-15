@@ -23,11 +23,24 @@ import { OSM } from 'ol/source';
 import { defaults as defaultInteractions, Draw } from 'ol/interaction';
 import { fromLonLat, toLonLat } from 'ol/proj';
 import VectorSource from 'ol/source/Vector';
-import GeometryType from 'ol/geom/GeometryType';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import { LineString, Polygon, MultiPolygon, Point } from 'ol/geom';
 import { Fill, Stroke, Style } from 'ol/style';
+
+// Extraer definición manualmente del siguiente import debido a que falla la importación:
+// import GeometryType from 'ol/geom/GeometryType';
+enum GeometryType {
+  POINT = 'Point',
+  LINE_STRING = 'LineString',
+  LINEAR_RING = 'LinearRing',
+  POLYGON = 'Polygon',
+  MULTI_POINT = 'MultiPoint',
+  MULTI_LINE_STRING = 'MultiLineString',
+  MULTI_POLYGON = 'MultiPolygon',
+  GEOMETRY_COLLECTION = 'GeometryCollection',
+  CIRCLE = 'Circle',
+}
 
 import {
   booleanContains,
