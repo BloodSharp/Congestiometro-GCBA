@@ -173,18 +173,17 @@ export class FiltersComponent {
         form.controls.neighborhoods.valueChanges.pipe(startWith(form.controls.neighborhoods.value)),
       ),
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-    ) as Observable<number[]>,
+    ) as Observable<number[] | null>,
     this.dataService.neighborhoods,
     this.dataService.streets,
     this.dataService.lines,
   ]).pipe(
     switchMap(([coordinates, selectedNeighborhoodIds, neighborhoods, streets, lines]) => {
-      if (coordinates.length === 0 && selectedNeighborhoodIds.length === 0) return of(Object.values(streets));
+      if (coordinates.length === 0 && (selectedNeighborhoodIds?.length === 0 || selectedNeighborhoodIds === null))
+        return of(Object.values(streets));
 
-      const selectedNeighborhoods = neighborhoods.filter((n) =>
-        selectedNeighborhoodIds.length > 0
-          ? selectedNeighborhoodIds.some((id) => id === n.lowerAdminLevelId)
-          : false,
+      const selectedNeighborhoods = neighborhoods.filter(
+        (n) => selectedNeighborhoodIds?.some((id) => id === n.lowerAdminLevelId),
       );
 
       if (selectedNeighborhoods.length > 0 && coordinates.length > 0) {
