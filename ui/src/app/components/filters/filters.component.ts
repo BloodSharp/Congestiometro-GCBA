@@ -272,9 +272,13 @@ export class FiltersComponent {
   private getCoordinatesArray(drawEvent: DrawEvent): [number, number][] {
     const coordinates = (drawEvent.feature.getGeometry() as LineString)?.getCoordinates();
     let coordinatesArray: [number, number][] = [];
-    coordinates?.forEach((coord) => {
-      const coordinatePoints = toLonLat(coord);
-      coordinatesArray.push([Number(coordinatePoints[0]), Number(coordinatePoints[1])]);
+    coordinates?.forEach((coords) => {
+      coords?.forEach((point: any) => {
+        const coordinatePoints = toLonLat(point);
+        const pointObject = { x: Number(coordinatePoints[0] || null), y: Number(coordinatePoints[1] || null) };
+        if (Number.isNaN(pointObject.x) || Number.isNaN(pointObject.y)) return;
+        coordinatesArray.push([pointObject.x, pointObject.y]);
+      });
     });
     return coordinatesArray;
   }
