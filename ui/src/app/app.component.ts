@@ -113,19 +113,22 @@ export class AppComponent implements AfterViewInit {
         : null,
     ),
   );
-  public comparisonOptions = {
+  public comparisonOptions: any = {
     responsive: true,
     scales: {
-      yAxes: [{ ticks: { display: false } }],
-      xAxes: [
-        {
-          ticks: {
-            min: -1,
-            max: 1,
-            callback: (v: any) => (Number(v) * 100).toLocaleString('es-ar', { maximumFractionDigits: 0 }) + '%',
-          },
+      y: {
+        ticks: {
+          display: false,
         },
-      ],
+      },
+      x: {
+        ticks: {
+          min: -1,
+          max: 1,
+          callback: (value: any, _index: any, _ticks: any) =>
+            (Number(value) * 100).toLocaleString('es-ar', { maximumFractionDigits: 0 }) + '%',
+        },
+      },
     },
   };
 
@@ -288,19 +291,17 @@ export class AppComponent implements AfterViewInit {
       responsive: true,
       maintainAspectRatio: type === 'line' ? true : datasetLength > 4,
       scales: {
-        yAxes: [
-          {
-            scaleLabel: { display: true, labelString: `[ ${unit} ]`, padding: 0, fontSize: 16 },
-            ticks: {
-              suggestedMax: max,
-              beginAtZero: true,
-              maxTicksLimit: datasetLength > 4 ? 5 : undefined,
-              callback: (v: number) =>
-                v.toLocaleString('es-ar', { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
-            },
+        y: {
+          title: { display: true, text: `[ ${unit} ]`, padding: 0, fontSize: 16 },
+          ticks: {
+            suggestedMax: max,
+            beginAtZero: true,
+            maxTicksLimit: datasetLength > 4 ? 5 : undefined,
+            callback: (v: number) =>
+              v.toLocaleString('es-ar', { minimumFractionDigits: 0, maximumFractionDigits: 2 }),
           },
-        ],
-        xAxes: [{ scaleLabel: { display: true, labelString: `[ ${xLabel} ]`, padding: 0, fontSize: 16 } }],
+        },
+        x: { title: { display: true, text: `[ ${xLabel} ]`, padding: 0, fontSize: 16 } },
       },
     };
   }
