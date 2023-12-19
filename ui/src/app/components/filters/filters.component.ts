@@ -180,7 +180,9 @@ export class FiltersComponent {
       if (coordinates.length === 0 && selectedNeighborhoodIds.length === 0) return of(Object.values(streets));
 
       const selectedNeighborhoods = neighborhoods.filter((n) =>
-        selectedNeighborhoodIds.some((id) => id === n.lowerAdminLevelId),
+        selectedNeighborhoodIds.length > 0
+          ? selectedNeighborhoodIds.some((id) => id === n.lowerAdminLevelId)
+          : false,
       );
 
       if (selectedNeighborhoods.length > 0 && coordinates.length > 0) {
