@@ -5,8 +5,8 @@
 >
   <ng-container *ngIf="dataService.ready | async; else loading">
     <mat-toolbar role="toolbar" color="primary" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em">
-      <img src="/assets/logo-w.png" alt="escudo ciudad de buenos aires" style="height: 75%" />
-      <span style="color: white">Congestiómetro</span>
+      <img src="/assets/logo-w.svg" alt="escudo ciudad de buenos aires" style="height: 75%" />
+      <span style="color: black">Congestiómetro</span>
       <div fxLayout="row" fxLayoutAlign="space-between center center" fxLayoutGap="1em" fxFlex="1 0 auto">
         <ng-container *ngIf="leftChart | async as chartType">
           <app-filters [exportableData]="leftExportableData">
@@ -299,7 +299,7 @@
 
 <ng-template #loading>
   <mat-toolbar fxLayout="column" color="primary" fxLayoutAlign="center center" style="height: 100vh; width: 100vw">
-    <img src="/assets/logo-w.png" alt="escudo ciudad de buenos aire" style="height: 15%; margin-bottom: 2em" />
+    <img src="/assets/logo-w.svg" alt="escudo ciudad de buenos aire" style="height: 15%; margin-bottom: 2em" />
     <div>Bienvenido al congestiómetro de la Ciudad de Buenos aires</div>
     <div>Estamos cargando los datos necesarios, esta operación puede demorar unos segundos</div>
     <div style="margin-top: 5em">{{ dataService.dataState | async }}</div>
@@ -308,8 +308,8 @@
 
 <ng-template #login>
   <mat-toolbar role="toolbar" color="primary" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em">
-    <img src="/assets/logo-w.png" alt="escudo ciudad de buenos aires" style="height: 75%" />
-    <span style="color: white">Congestiómetro</span>
+    <img src="/assets/logo-w.svg" alt="escudo ciudad de buenos aires" style="height: 75%" />
+    <span style="color: black">Congestiómetro</span>
   </mat-toolbar>
   <app-login></app-login>
 </ng-template>
