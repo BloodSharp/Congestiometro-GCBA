@@ -28,7 +28,7 @@
 <div [fxShow]="show$ | async">
   <div id="backdrop"></div>
   <div fxLayout="column" fxLayoutAlign="center center" id="dialog-wrapper">
-    <mat-card *ngIf="data | async as state" fxLayout="column" style="width: 90%">
+    <mat-card *ngIf="data | async as state" fxLayout="column" style="width: 90%; height: 90%">
       <mat-card-content fxLayout="row" fxLayout.lt-lg="column" style="padding: 1em; overflow-y: auto">
         <form
           [formGroup]="state.form"
