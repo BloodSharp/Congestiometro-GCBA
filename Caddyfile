@@ -1,6 +1,7 @@
 :80 {
   root * /var/www
   route {
+    header -Server
     handle /graphql/* {
       uri strip_prefix /graphql
       reverse_proxy graphql-engine:8080
