@@ -230,7 +230,7 @@ watch('/config/streets.json', { usePolling: true }).on('change', async (path) =>
   }
 });
 createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ username }) =>
-  console.log('Created admin user with password set in process.env["ADMIN_SECRET"]')
+  console.log('Created admin user with password set in process.env["ADMIN_SECRET"]'),
 );
 (async function () {
   const headers = { 'X-Hasura-Admin-Secret': process.env['ADMIN_SECRET'] || 'congestiometro' };
@@ -271,7 +271,7 @@ createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ use
         .post('http://graphql-engine:8080/v1/query', body, { headers })
         .then(() => console.log(name, 'OK'))
         .catch(() => console.log(name, 'ERROR:'));
-    }
+    },
   );
 })()
   .then(() => console.log('Hasura initialized correctely'))
