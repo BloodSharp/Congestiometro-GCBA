@@ -158,7 +158,6 @@ export class AppComponent implements AfterViewInit {
     })),
   );
   public rightBarConfig = combineLatest([this.rightBarData, this.barMaximum]).pipe(
-    tap(() => console.log(2)),
     map(([{ dataset, labels, unit }, barMaximum]) => ({
       options: this.getOptions('bar', dataset.length, !isNaN(Number(labels[0])), unit, barMaximum),
       colors: this.getColors('bar', dataset.length),
