@@ -5,7 +5,8 @@
   "main": "./lib/index.js",
   "scripts": {
     "serve": "nodemon",
-    "start": "tsc && node ./lib/index.js"
+    "start": "tsc && node ./lib/index.js",
+    "format": "prettier --write \"./**/*.json\" \"src/**/*.ts\" \"test/**/*.ts\" \"src/**/*.spec.ts\" \"src/**/*.html\" \"src/**/*.css\" \"src/**/*.scss\" --single-quote true --trailing-comma all --tab-width 2"
   },
   "author": "Rafael Crescenzi",
   "license": "ISC",
@@ -27,5 +28,8 @@
     "pg": "^8.7.1",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
+  },
+  "devDependencies": {
+    "prettier": "3.1.1"
   }
 }
