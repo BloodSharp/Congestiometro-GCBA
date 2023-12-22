@@ -183,7 +183,7 @@ app.patch('/users/:username', async (req: express.Request, res: express.Response
   };
   try {
     const result = await db.query(query);
-    if (result.rowCount > 0) {
+    if (result.rowCount !== null && result.rowCount > 0) {
       res.sendStatus(200);
     } else {
       res.status(400).json({ message: 'No hay usuario con ese nombre' });
