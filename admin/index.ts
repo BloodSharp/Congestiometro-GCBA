@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 
 import dayjs from 'dayjs';
 import { Pool } from 'pg';
+import helmet from 'helmet';
 
 const db = new Pool();
 
@@ -49,6 +50,7 @@ async function setUserTokens(user: any, res: express.Response) {
 
 const app = express();
 app.disable('x-powered-by');
+app.use(helmet());
 app.use(urlencoded({ extended: false }));
 app.use(jsonBodyParser());
 app.use(cookieParser());
