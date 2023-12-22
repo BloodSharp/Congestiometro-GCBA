@@ -77,14 +77,19 @@ export class FiltersComponent implements OnInit {
   @Input() exportableData!: Observable<{ csvData: any[]; chart: (typeof charts)[number] }>;
   @Input() secondary = false;
 
+  constructor(
+    private router: Router,
+    private dataService: DataService,
+    private activatedRoute: ActivatedRoute,
+    private displayLogService: DisplayLogService,
+    private media: MediaObserver,
+  ) {}
+
   private mapOptions: MapOptions = {};
   private setupMapOptions(mapOptions: MapOptions) {
     this.mapOptions = mapOptions;
     this.map = new OlMap(this.mapOptions);
     this.map.addInteraction(this.draw);
-  }
-  private drawEndCallback(drawEvent: DrawEvent) {
-    this.mapPolygon.next(this.getCoordinatesArray(drawEvent));
   }
 
   public maxDate = timer(0, 1000 * 60 * 60).pipe(map(() => new Date()));
@@ -293,17 +298,11 @@ export class FiltersComponent implements OnInit {
     return coordinatesArray;
   }
 
-  constructor(
-    private router: Router,
-    private dataService: DataService,
-    private activatedRoute: ActivatedRoute,
-    private displayLogService: DisplayLogService,
-    private media: MediaObserver,
-  ) {}
-
   private async initializeMapContext(previousCenter: Coordinate | undefined, previousZoom: number | undefined) {
     if (this.subscriptions.length > 0) return;
-    this.draw.on('drawend', this.drawEndCallback);
+    this.draw.on('drawend', (drawEvent: DrawEvent) => {
+      this.mapPolygon?.next(this.getCoordinatesArray(drawEvent));
+    });
     this.subscriptions.push(
       ...[
         this.dataService.ready
