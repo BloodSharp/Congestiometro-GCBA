@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MediaObserver } from 'ngx-flexible-layout';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
@@ -60,6 +60,7 @@ import { charts, ChartType, aggFuncs, hours, metrics } from 'src/app/services/ch
 import { normalizeString } from 'src/app/services/utils';
 import { Coordinate } from 'ol/coordinate';
 import { DrawEvent } from 'ol/interaction/Draw';
+import { MapOptions } from 'ol/Map';
 
 export const getTurfFeature = (polygon: Polygon | MultiPolygon) => {
   return polygon instanceof Polygon
@@ -72,9 +73,19 @@ export const getTurfFeature = (polygon: Polygon | MultiPolygon) => {
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss'],
 })
-export class FiltersComponent {
+export class FiltersComponent implements OnInit {
   @Input() exportableData!: Observable<{ csvData: any[]; chart: (typeof charts)[number] }>;
   @Input() secondary = false;
+
+  private mapOptions: MapOptions = {};
+  private setupMapOptions(mapOptions: MapOptions) {
+    this.mapOptions = mapOptions;
+    this.map = new OlMap(this.mapOptions);
+    this.map.addInteraction(this.draw);
+  }
+  private drawEndCallback(drawEvent: DrawEvent) {
+    this.mapPolygon.next(this.getCoordinatesArray(drawEvent));
+  }
 
   public maxDate = timer(0, 1000 * 60 * 60).pipe(map(() => new Date()));
   public charts = charts;
@@ -287,12 +298,15 @@ export class FiltersComponent {
     private dataService: DataService,
     private activatedRoute: ActivatedRoute,
     private displayLogService: DisplayLogService,
-    media: MediaObserver,
-  ) {
-    this.draw.on('drawend', (drawEvent) => this.mapPolygon.next(this.getCoordinatesArray(drawEvent)));
+    private media: MediaObserver,
+  ) {}
+
+  private async initializeMapContext(previousCenter: Coordinate | undefined, previousZoom: number | undefined) {
+    if (this.subscriptions.length > 0) return;
+    this.draw.on('drawend', this.drawEndCallback);
     this.subscriptions.push(
       ...[
-        dataService.ready
+        this.dataService.ready
           .pipe(
             take(1),
             switchMap(() => this.show$),
@@ -301,28 +315,47 @@ export class FiltersComponent {
             take(1),
           )
           .subscribe(() => {
-            this.map = new OlMap({
+            this.setupMapOptions({
               interactions: defaultInteractions(),
               target: `${this.secondary ? 'r' : 'l'}-filter-map`,
               layers: [
                 new TileLayer({ source: new OSM(), preload: 4 }),
                 new VectorLayer({ source: this.drawnPolygon }),
               ],
-              view: new View({ center: fromLonLat([-58.453, -34.62]), zoom: 12.1 }),
+              view: new View({
+                center: previousCenter === undefined ? fromLonLat([-58.453, -34.62]) : previousCenter,
+                zoom: previousZoom === undefined ? 12.1 : previousZoom,
+              }),
               controls: [],
             });
-            this.map.addInteraction(this.draw);
           }),
-        media
+        this.media
           .asObservable()
           .pipe(
-            map(() => media.isActive('lt-lg')),
+            map(() => this.media.isActive('lt-lg')),
             distinctUntilChanged(),
             debounceTime(100),
           )
           .subscribe(() => (this.map ? this.map.updateSize() : null)),
       ],
     );
+  }
+
+  async ngOnInit() {
+    const drawListeners = this.draw.getListeners('drawend');
+    const previousCenter = undefined; // TODO: Ver porque falla esto luego => this.map?.getView().getCenter();
+    const previousZoom = undefined; // TODO: Ver porque falla esto luego => this.map?.getView().getZoom();
+    if (drawListeners !== undefined && drawListeners !== null && drawListeners.length > 0) {
+      drawListeners?.forEach((listener) => this.draw.removeEventListener('drawend', listener));
+    }
+    if (this.subscriptions.length > 0) {
+      this.subscriptions.map((s) => s.unsubscribe());
+      this.subscriptions.splice(0, this.subscriptions.length);
+    }
+    if (!!this.map) {
+      this.map.dispose();
+    }
+    this.initializeMapContext(previousCenter, previousZoom);
   }
 
   public changeChartType(newType: ChartType) {

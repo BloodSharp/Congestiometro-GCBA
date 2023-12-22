@@ -3,7 +3,7 @@
 </button>
 <mat-menu #filterMenu="matMenu">
   <button mat-menu-item [matMenuTriggerFor]="chartsMenu">Tipo</button>
-  <button mat-menu-item (click)="show.next(true)">Mostrar Filtro</button>
+  <button mat-menu-item (click)="show.next(true); this.ngOnInit()">Mostrar Filtro</button>
   <button *ngIf="data | async as state" mat-menu-item (click)="clone(state.otherState)">
     Clonar filtro {{ secondary ? 'izquierdo' : 'derecho' }}
   </button>
