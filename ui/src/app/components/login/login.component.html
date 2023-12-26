@@ -8,7 +8,13 @@
       id="login-form"
     >
       <mat-form-field>
-        <input matInput formControlName="username" placeholder="Usuario" type="text" required />
+        <input
+          matInput
+          formControlName="username"
+          [placeholder]="this.loginForm.controls['username'].value?.toString()?.length === 0 ? 'Usuario' : ''"
+          type="text"
+          required
+        />
         <mat-error *ngIf="!loginForm.controls['username'].valid && loginForm.controls['username'].touched">
           Este campo es requerido
         </mat-error>
@@ -17,7 +23,7 @@
         <input
           matInput
           formControlName="password"
-          placeholder="Contraseña"
+          [placeholder]="this.loginForm.controls['password'].value?.toString().length === 0 ? 'Contraseña' : ''"
           [type]="showPassword ? 'text' : 'password'"
           required
         />
