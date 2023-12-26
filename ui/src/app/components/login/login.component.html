@@ -14,6 +14,7 @@
           [placeholder]="this.loginForm.controls['username'].value?.toString()?.length === 0 ? 'Usuario' : ''"
           type="text"
           required
+          autocomplete="off"
         />
         <mat-error *ngIf="!loginForm.controls['username'].valid && loginForm.controls['username'].touched">
           Este campo es requerido
@@ -26,6 +27,7 @@
           [placeholder]="this.loginForm.controls['password'].value?.toString().length === 0 ? 'Contraseña' : ''"
           [type]="showPassword ? 'text' : 'password'"
           required
+          autocomplete="off"
         />
         <mat-icon style="cursor: pointer" matSuffix (click)="showPassword = !showPassword">
           {{ showPassword ? 'visibility' : 'visibility_off' }}
