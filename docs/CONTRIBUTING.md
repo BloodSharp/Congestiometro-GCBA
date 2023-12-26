@@ -28,10 +28,17 @@
 
 Para poder correr la aplicación localmente en modo de desarrollo, deberás seguir las pautas establecidas en el [manual de instalación](INSTALL.md), pero, en lugar de correr el script `startup.sh` deberas:
 
-1. Correr el script `startup.debug.sh`
-2. Correr `npm --prefix ./ui install`
-3. Correr `npm --prefix ./ui run serve`
-4. Correr `npm --prefix ./ui run codegen`
+```bash
+startup.sh development
+```
+
+## Configuración de producción
+
+Para poder desplegar la aplicación en modo de producción, deberás seguir las pautas establecidas en el [manual de instalación](INSTALL.md) y ejecutar el script `startup.sh`
+
+```bash
+startup.sh
+```
 
 Para desarrollar cambios, podrás editar archivos en distitntas carpetas que contienen partes específicas de la aplicación, a saber:
 
@@ -43,4 +50,3 @@ Para desarrollar cambios, podrás editar archivos en distitntas carpetas que con
 ## Logs
 
 Para ver los logs deberás correr `docker compose logs <servicio>` o `docker-compose logs <servicio>` según tengas docker desktop o docker engine con el plugin de compose.
-
