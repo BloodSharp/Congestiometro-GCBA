@@ -32,6 +32,8 @@
           },
           "configurations": {
             "production": {
+              "sourceMap": false,
+              "optimization": true,
               "budgets": [],
               "fileReplacements": [
                 {
