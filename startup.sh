@@ -1,27 +1,28 @@
 #!/bin/bash
 
+ENVIRONTMENT_MODE="production"
+
 if [ "$#" -eq 0 ]; then
     echo "No se pasaron parámetros al script, estableciendo modo producción..."
-    ENVIRONTMEND_MODE="production"
+    ENVIRONTMENT_MODE="production"
 fi
 
 if [ "$1" == "development" ]; then
     echo "Estableciendo modo desarrollo..."
-    ENVIRONTMEND_MODE="development"
+    ENVIRONTMENT_MODE="development"
 fi
 
-# Inicializando la configuración del servicio administrador
-npm --prefix ./admin install
-npm --prefix ./admin format
-npm --prefix ./admin start
+CURRENT_DIRECTORY=$(pwd)
 
 # Inicializando el contenedor del frontend
-npm --prefix ./ui install
-npm --prefix ./ui format
-if [ ENVIRONTMEND_MODE == "production" ]; then
-    npm --prefix ./ui run build-production
-elif [ ENVIRONTMEND_MODE == "development" ]; then
-    npm --prefix ./ui run build
+cd ./ui
+npm install
+npm run format
+if [ "$ENVIRONTMENT_MODE" = "production" ]; then
+    npm run build-production
+elif [ "$ENVIRONTMENT_MODE" = "development" ]; then
+    npm run build
 fi
+cd $CURRENT_DIRECTORY
 
 docker-compose up -d
