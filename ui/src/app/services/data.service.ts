@@ -20,17 +20,7 @@ import { WKT } from 'ol/format';
 import { MultiLineString as OlMLS, MultiPolygon, Polygon } from 'ol/geom';
 
 import { BehaviorSubject, combineLatest, from, Observable, of, ReplaySubject, timer } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  pluck,
-  shareReplay,
-  startWith,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { AggFuncType, metrics, MetricType } from './chartTypes';
 import {
@@ -339,7 +329,7 @@ export class DataService {
 
   public leftData = this.queryParams.pipe(
     filter(isValid),
-    pluck('left'),
+    map((data) => data['left']),
     map((x) => ({
       map: this.getMapData(x.params),
       line: this.getComparativo(x.params, x.streets, x.lines, x.greaterDate),
@@ -349,7 +339,7 @@ export class DataService {
   );
   public rightData = this.queryParams.pipe(
     filter(isValid),
-    pluck('right'),
+    map((data) => data['right']),
     map((x) => ({ map: this.getMapData(x.params), bar: this.getEvolutivo(x.params).bar })),
     shareReplay(1),
   );
@@ -368,13 +358,16 @@ export class DataService {
     );
 
     return {
-      lines: lines.pipe(pluck('lines'), startWith(null)),
+      lines: lines.pipe(
+        map((data) => data['lines']),
+        startWith(null),
+      ),
       summary: this.summaryGQL.fetch(params).pipe(
         map((res) => res.data.get_summary),
         map((rows) => Object.fromEntries(rows.map(({ index, val }) => [index, val]))),
         map((rows) => rows as { delay: number; length: number; speed: number }),
       ),
-      exportableData: lines.pipe(pluck('exportableData')),
+      exportableData: lines.pipe(map((data) => data['exportableData'])),
     };
   }
 
@@ -422,8 +415,8 @@ export class DataService {
 
         return {
           name,
-          data: res.pipe(pluck('data')),
-          exportableData: res.pipe(pluck('exportableData')),
+          data: res.pipe(map((data) => data['data'])),
+          exportableData: res.pipe(map((data) => data['exportableData'])),
         } as ComparativeData;
       });
   }
@@ -493,18 +486,18 @@ export class DataService {
         };
       }),
     );
-    const bar = obs.pipe(pluck('evolutivo'));
-    const line_with_map = obs.pipe(pluck('predictivo'));
+    const bar = obs.pipe(map((data) => data['evolutivo']));
+    const line_with_map = obs.pipe(map((data) => data['predictivo']));
     return {
       bar: {
-        data: bar.pipe(pluck('data')),
-        exportableData: bar.pipe(pluck('exportableData')),
-        noEvents: bar.pipe(pluck('noEvents')),
+        data: bar.pipe(map((data) => data['data'])),
+        exportableData: bar.pipe(map((data) => data['exportableData'])),
+        noEvents: bar.pipe(map((data) => data['noEvents'])),
       },
       'line-with-map': {
-        data: line_with_map.pipe(pluck('data')),
-        exportableData: line_with_map.pipe(pluck('exportableData')),
-        noEvents: line_with_map.pipe(pluck('noEvents')),
+        data: line_with_map.pipe(map((data) => data['data'])),
+        exportableData: line_with_map.pipe(map((data) => data['exportableData'])),
+        noEvents: line_with_map.pipe(map((data) => data['noEvents'])),
       },
     };
   }

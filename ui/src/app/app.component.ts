@@ -11,7 +11,6 @@ import {
   distinctUntilChanged,
   filter,
   map,
-  pluck,
   shareReplay,
   startWith,
   switchMap,
@@ -41,7 +40,7 @@ export class AppComponent implements AfterViewInit {
   public rightChart = this.activatedRoute.queryParams.pipe(
     map((q) => charts.find((c) => c.id === q['r-chart']) || charts[0]),
   );
-  public comparableChart = this.leftChart.pipe(pluck('comparable'));
+  public comparableChart = this.leftChart.pipe(map((data) => data['comparable']));
   public compare = combineLatest([
     this.activatedRoute.queryParams.pipe(map((q) => q['compare'] === 'true')),
     this.comparableChart,
@@ -49,7 +48,7 @@ export class AppComponent implements AfterViewInit {
 
   public leftFilter = this.dataService.queryParams.pipe(
     filter(isValid),
-    pluck('left'),
+    map((data) => data['left']),
     map(({ params }) => ({
       metric: metrics.find(({ id }) => id === params.metric),
       aggFunc: aggFuncs.find(({ id }) => id === params.aggFunc),
@@ -60,7 +59,7 @@ export class AppComponent implements AfterViewInit {
   );
   public rightFilter = this.dataService.queryParams.pipe(
     filter(isValid),
-    pluck('right'),
+    map((data) => data['right']),
     map(({ params }) => ({
       metric: metrics.find(({ id }) => id === params.metric),
       aggFunc: aggFuncs.find(({ id }) => id === params.aggFunc),
@@ -70,8 +69,8 @@ export class AppComponent implements AfterViewInit {
     })),
   );
 
-  public leftMap = this.dataService.leftData.pipe(pluck('map'));
-  public rightMap = this.dataService.rightData.pipe(pluck('map'));
+  public leftMap = this.dataService.leftData.pipe(map((data) => data['map']));
+  public rightMap = this.dataService.rightData.pipe(map((data) => data['map']));
 
   public mapDifferences = combineLatest([
     this.leftChart,
@@ -189,7 +188,10 @@ export class AppComponent implements AfterViewInit {
     this.selectedComparativeCharts,
   ).pipe(shareReplay(1));
   public selectableComparativeCharts = combineLatest([
-    this.dataService.leftData.pipe(filter(isValid), pluck('line')),
+    this.dataService.leftData.pipe(
+      filter(isValid),
+      map((data) => data['line']),
+    ),
     this.selectedComparativeCharts$.pipe(distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))),
     this.comparativeStreetSearch.valueChanges.pipe(startWith('')) as Observable<string>,
   ]).pipe(
@@ -200,7 +202,10 @@ export class AppComponent implements AfterViewInit {
     ),
   );
   public comparativeCharts = combineLatest([
-    this.dataService.leftData.pipe(filter(isValid), pluck('line')),
+    this.dataService.leftData.pipe(
+      filter(isValid),
+      map((data) => data['line']),
+    ),
     this.selectedComparativeCharts$.pipe(distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b))),
     this.dataService.streets,
   ]).pipe(
