@@ -2,7 +2,7 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, combineLatest, Subscription, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, firstValueFrom, Subscription, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Feature, Map, View } from 'ol';
@@ -76,7 +76,7 @@ export class VectorMapComponent implements OnInit {
   ) {}
 
   public async ngOnInit() {
-    await timer(100).toPromise();
+    await firstValueFrom(timer(100));
     this.subscription = combineLatest([
       this.dataService.neighborhoods,
       this.dataService.urlParams.pipe(map(({ left }) => left.state.neighborhoods || [])),

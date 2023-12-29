@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 
-import { fromEvent, merge, of, Subject, timer } from 'rxjs';
+import { firstValueFrom, fromEvent, merge, of, Subject, timer } from 'rxjs';
 import { catchError, map, mapTo, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 import { jwtDecode } from 'jwt-decode';
@@ -48,7 +48,7 @@ export class UserService {
   }
 
   public async login(username: string, password: string) {
-    const { token } = (await this.http.post('/auth/login', { username, password }).toPromise()) as {
+    const { token } = (await firstValueFrom(await this.http.post('/auth/login', { username, password }))) as {
       token: string;
     };
     localStorage.setItem('token', token);
@@ -75,9 +75,9 @@ export class UserService {
   }
 
   public createUser = (username: string, password: string) => {
-    return this.http
-      .post<User>('/auth/users', { username, password }, { headers: this.getAuthHeaders() })
-      .toPromise();
+    return firstValueFrom(
+      this.http.post<User>('/auth/users', { username, password }, { headers: this.getAuthHeaders() }),
+    );
   };
 
   public getUsers() {
@@ -87,12 +87,12 @@ export class UserService {
   }
 
   public editUser(username: string, password: string) {
-    return this.http
-      .patch(`/auth/users/${username}`, { password }, { headers: this.getAuthHeaders() })
-      .toPromise();
+    return firstValueFrom(
+      this.http.patch(`/auth/users/${username}`, { password }, { headers: this.getAuthHeaders() }),
+    );
   }
 
   public deleteUser = (username: string) => {
-    return this.http.delete(`/auth/users/${username}`, { headers: this.getAuthHeaders() }).toPromise();
+    return firstValueFrom(this.http.delete(`/auth/users/${username}`, { headers: this.getAuthHeaders() }));
   };
 }
