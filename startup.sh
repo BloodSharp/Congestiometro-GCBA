@@ -16,5 +16,5 @@ fi
 if [ "$ENVIRONTMENT_MODE" = "production" ]; then
     docker-compose up -d
 elif [ "$ENVIRONTMENT_MODE" = "development" ]; then
-    docker-compose up -f docker-compose.debug.yml -d
+    docker-compose -f docker-compose.debug.yml up -d
 fi
