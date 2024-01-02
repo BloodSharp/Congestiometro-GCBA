@@ -12,17 +12,9 @@ if [ "$1" == "development" ]; then
     ENVIRONTMENT_MODE="development"
 fi
 
-CURRENT_DIRECTORY=$(pwd)
-
-# Inicializando el contenedor del frontend
-cd ./ui
-npm install
-npm run format
+# Inicializando los contenedores del congestioemtro
 if [ "$ENVIRONTMENT_MODE" = "production" ]; then
-    npm run build-production
+    docker-compose up -d
 elif [ "$ENVIRONTMENT_MODE" = "development" ]; then
-    npm run build
+    docker-compose up -f docker-compose.debug.yml -d
 fi
-cd $CURRENT_DIRECTORY
-
-docker-compose up -d
