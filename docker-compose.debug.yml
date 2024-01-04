@@ -65,7 +65,6 @@ services:
     image: node:20-alpine
     depends_on:
       - "postgres"
-    restart: always
     volumes:
       - ./ui:/src
     working_dir: /src
