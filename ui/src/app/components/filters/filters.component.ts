@@ -226,13 +226,16 @@ export class FiltersComponent implements OnInit {
         linesIds = linesIds
           .map((lineId) => lines[lineId])
           // .filter((s) => booleanContains(polygon, s.turfLine))
-          .filter((s) => s.coordinates.some((point) => booleanContains(polygon, turfPoint(point))))
-          .map((l) => l.id);
+          .filter((s) => s?.coordinates.some((point) => booleanContains(polygon, turfPoint(point))))
+          .map((l) => l?.id);
       }
 
-      const streetIds = linesIds.map((lineId) => lines[lineId]).map(({ streetId }) => streetId);
-      const filteredStreetIds = Array.from(new Set<number>(streetIds).values());
-      const filteredStreets = filteredStreetIds.map((streetId) => streets[streetId]);
+      const streetIds = linesIds?.map((lineId) => lines[lineId])?.map((data) => data?.streetId);
+      const filteredStreetIds =
+        streetIds !== undefined && streetIds !== null && streetIds?.length > 0
+          ? Array.from(new Set<number>(streetIds).values())
+          : [];
+      const filteredStreets = filteredStreetIds?.map((streetId) => streets[streetId]);
 
       return this.data.pipe(map((data) => data['form'])).pipe(
         switchMap((form) =>
@@ -248,7 +251,8 @@ export class FiltersComponent implements OnInit {
                 if (autoSelectStreets || autoSelectAvenues) {
                   this.selectedStreets.clear();
                   const selectedStreets = filteredStreets.filter(
-                    (street) => (autoSelectAvenues && street.type > 1) || (autoSelectStreets && street.type === 1),
+                    (street) =>
+                      (autoSelectAvenues && street?.type > 1) || (autoSelectStreets && street?.type === 1),
                   );
                   for (const street of selectedStreets) {
                     this.selectedStreets.set(street.id, street.name);
@@ -275,7 +279,9 @@ export class FiltersComponent implements OnInit {
   ]).pipe(
     map(([search, streets]) => {
       if (search.length <= 3) return [];
-      const filteredStreets = streets.filter(({ name }) => normalizeString(name).includes(search));
+      const filteredStreets = streets.filter((currentStreet) =>
+        currentStreet?.name?.length > 0 ? normalizeString(currentStreet?.name).includes(search) : false,
+      );
       const sorted = filteredStreets.sort((a, b) => (a.name > b.name ? 1 : -1));
       return sorted;
     }),

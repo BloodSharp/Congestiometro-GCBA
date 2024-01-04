@@ -285,14 +285,14 @@ export class DataService {
         if (mapPolygon?.length > 0) {
           const polygon = getTurfFeature(new Polygon([mapPolygon]));
           lines = (lines.length > 0 ? lines.map((lineId) => allLines[lineId]) : Object.values(allLines))
-            .filter((l) => booleanContains(polygon, lineString(l.coordinates)))
-            .map((l) => l.id);
+            .filter((l) => (l?.coordinates ? booleanContains(polygon, lineString(l?.coordinates)) : false))
+            .map((l) => l?.id);
         }
 
-        lines = lines.filter((lineId) => streets.includes(allLines[lineId].streetId));
+        lines = lines.filter((lineId) => streets.includes(allLines[lineId]?.streetId));
       } else {
         lines = Object.values(allLines)
-          .filter((line) => streets.includes(line.streetId))
+          .filter((line) => streets.includes(line?.streetId))
           .map(({ id }) => id);
       }
     }
