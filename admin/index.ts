@@ -255,8 +255,9 @@ createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ use
     };
     return axios
       .post('http://graphql-engine:8080/v1/query', body, { headers })
-      .then(() => console.log(name, 'OK'))
-      .catch(() => console.log(name, 'ERROR:'));
+      .then(() => console.log('OK: ' + name))
+      .catch(() => console.log('ERROR: ' + name));
+      });
   });
   ['get_jams_lines', 'get_evolutivo', 'get_comparativo', 'get_summary', 'get_predictivo', 'get_lines'].map(
     (name) => {
@@ -269,8 +270,8 @@ createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ use
       };
       return axios
         .post('http://graphql-engine:8080/v1/query', body, { headers })
-        .then(() => console.log(name, 'OK'))
-        .catch(() => console.log(name, 'ERROR:'));
+        .then(() => console.log('OK: ' + name))
+        .catch(() => console.log('ERROR: ' + name));
     },
   );
 })()
