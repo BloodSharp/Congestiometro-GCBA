@@ -257,7 +257,6 @@ createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ use
       .post('http://graphql-engine:8080/v1/query', body, { headers })
       .then(() => console.log('OK: ' + name))
       .catch(() => console.log('ERROR: ' + name));
-      });
   });
   ['get_jams_lines', 'get_evolutivo', 'get_comparativo', 'get_summary', 'get_predictivo', 'get_lines'].map(
     (name) => {
