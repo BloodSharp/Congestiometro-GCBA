@@ -65,8 +65,6 @@ services:
       sh -c "gunicorn --bind 0.0.0.0:6001 --workers 1 --threads 1 --timeout 0 main:app"
   ui:
     image: node:20-alpine
-    depends_on:
-      - "postgres"
     volumes:
       - ./ui:/src
     working_dir: /src
@@ -74,8 +72,6 @@ services:
       sh -c "npm i && npm run build"
   caddy:
     image: caddy/caddy
-    depends_on:
-      - "ui"
     restart: always
     ports:
       - "80:80"
