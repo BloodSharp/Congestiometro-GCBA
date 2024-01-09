@@ -1,7 +1,12 @@
 <div fxLayout="column" fxLayoutGap="1em" style="padding: 1em">
   <ng-container *ngIf="(userService.currentUser | async)?.isAdmin; else notAllowed">
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="1em">
-      <app-button-icon tooltip="Volver" icon="arrow_back" (clickEvent)="cancel.emit()"></app-button-icon>
+      <app-button-icon
+        tooltip="Volver"
+        icon="arrow_back"
+        sizeIcon="1em"
+        (clickEvent)="cancel.emit()"
+      ></app-button-icon>
       <div class="mat-headline no-margin-bottom">Administración de Usuarios</div>
       <button
         *ngIf="!(creatingNewUser | async)"
