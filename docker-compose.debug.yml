@@ -2,6 +2,8 @@ version: "3.6"
 services:
   postgres:
     image: postgis/postgis:14-3.1-alpine
+    ports:
+      - "5432:5432"
     shm_size: 1g
     restart: always
     volumes:
@@ -17,8 +19,7 @@ services:
       - "postgres"
     restart: always
     volumes:
-      - ./ui:/src/frontend
-      - ./admin:/src/backend
+      - ./admin:/src
       - ./config:/config
     working_dir: /src
     environment:
@@ -29,7 +30,7 @@ services:
       PGPASSWORD: congestiometro
       ADMIN_SECRET: ${ADMIN_SECRET:-congestiometro}
     command: >
-      sh -c "npm --prefix ./frontend i && npm --prefix ./frontend run build && npm --prefix ./backend i && npm --prefix ./backend run serve"
+      sh -c "npm i && npm run serve"
   graphql-engine:
     image: hasura/graphql-engine:v2.0.10
     depends_on:
@@ -62,10 +63,15 @@ services:
     working_dir: /src
     command: >
       sh -c "gunicorn --bind 0.0.0.0:6001 --workers 1 --threads 1 --timeout 0 main:app"
+  ui:
+    image: node:20-alpine
+    volumes:
+      - ./ui:/src
+    working_dir: /src
+    command: >
+      sh -c "npm i && npm run build"
   caddy:
     image: caddy/caddy
-    depends_on:
-      - "admin"
     restart: always
     ports:
       - "80:80"
