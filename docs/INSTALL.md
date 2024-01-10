@@ -26,6 +26,8 @@ git clone git@github.com:EL-BID/Congestiometro-GCBA.git
 
    - ADMIN_SECRET: la clave de administración que servirá para resguardar todo el sistema (por defecto es ==congestiometro==)
 
+   - HASHURA_SECRET: debe contener una clave única diferente a la clave especificada en ADMIN_SECRET.
+
 4. Hacer ejecutables los scripts de la raíz del proyecto
 
 ```bash
