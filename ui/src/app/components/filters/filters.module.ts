@@ -33,6 +33,7 @@ import { MatMenuModule } from '@angular/material/menu';
     RouterModule,
     FlexLayoutModule,
     MatMenuModule,
+    MatButtonModule,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
