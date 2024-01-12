@@ -179,7 +179,12 @@
                 Autoseleccionar avenidas
               </mat-slide-toggle>
 
-              <button mat-fab extended color="primary" (click)="this.selectedStreets.clear()">
+              <button
+                *ngIf="this.selectedStreets.size > 0"
+                mat-raised-button
+                color="primary"
+                (click)="this.selectedStreets.clear()"
+              >
                 <mat-icon>delete</mat-icon>
                 Eliminar selección de calles
               </button>
