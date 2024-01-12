@@ -42,7 +42,7 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_NO_OF_RETRIES: 5
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASHURA_SECRET:-congestiometro}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${ADMIN_SECRET:-congestiometro}
       HASURA_GRAPHQL_AUTH_HOOK: http://admin:8888/hasura
   ETL:
     image: etl
