@@ -30,7 +30,7 @@ services:
     command: >
       sh -c "npm i && npm start"
   graphql-engine:
-    image: hasura/graphql-engine:v2.0.10
+    image: hasura/graphql-engine:v2.36.2
     depends_on:
       - "admin"
     restart: always
