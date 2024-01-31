@@ -456,6 +456,8 @@ from (
   ) t
 group by 1 $$ LANGUAGE sql STABLE;
 ---
+
+---
 CREATE OR REPLACE FUNCTION get_lines(polygon text) RETURNS SETOF simple_line_type AS $$
 SELECT line_id,
   street_id

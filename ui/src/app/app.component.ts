@@ -282,7 +282,7 @@ export class AppComponent implements AfterViewInit {
   }
 
   private getColors(type: ChartType, datasetLength: number) {
-    const dense = datasetLength === 0 ? 0 : { map: 0, bar: 1, line: 0.2, 'line-with-map': 0 }[type];
+    const dense = datasetLength === 0 ? 0 : { map: 0, bar: 1, line: 0.2, 'line-with-map': 0, ranking: 0 }[type];
     return [
       { backgroundColor: `rgba(77,83,96,${dense})`, borderColor: 'rgba(77,83,96,1)' },
       { backgroundColor: `rgba(255,0,0,${dense})`, borderColor: 'red' },

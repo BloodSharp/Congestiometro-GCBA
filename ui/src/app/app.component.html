@@ -210,6 +210,22 @@
             </div>
           </ng-container>
         </ng-container>
+
+        <ng-container *ngIf="(leftChart | async)?.id == 'ranking'">
+          <ng-container *ngIf="data['ranking'].data | async as rankingData; else loadingData">
+            <div *ngIf="!(data['ranking'].noEvents | async); else noEvents" fxLayout="row" fxFlex="1 0 auto">
+              <!-- <div fxFlex="50">
+                <canvas *ngIf="lineWithMapDataConfig | async as config" baseChart [datasets]="lineWithMapData.dataset"
+                  [labels]="lineWithMapData.labels" [options]="config.options" chartType="line"
+                  [legend]="showLabels(lineWithMapData.dataset)">
+                </canvas>
+              </div> -->
+              <!-- <div fxFlex="50">
+                <app-vector-map></app-vector-map>
+              </div> -->
+            </div>
+          </ng-container>
+        </ng-container>
       </div>
 
       <ng-container *ngIf="compare | async">

@@ -84,6 +84,12 @@ export interface ComparativeData {
   exportableData: Observable<{ street: string; year: number; month: number; val: number }[]>;
 }
 
+export interface RankingData {
+  name: string;
+  data: Observable<{ dataset: { label: string; data: number[] }[]; labels: string[]; unit: string }>;
+  exportableData: Observable<{ street: string; year: number; month: number; val: number }[]>;
+}
+
 @Injectable({ providedIn: 'root' })
 export class DataService {
   public dataState = new BehaviorSubject('Verificando datos de calles');
@@ -333,6 +339,7 @@ export class DataService {
     map((x) => ({
       map: this.getMapData(x.params),
       line: this.getComparativo(x.params, x.streets, x.lines, x.greaterDate),
+      ranking: this.getEstadistico(x.params, x.streets, x.lines),
       ...this.getEvolutivo(x.params),
     })),
     shareReplay(1),
@@ -418,6 +425,89 @@ export class DataService {
           data: res.pipe(map((data) => data['data'])),
           exportableData: res.pipe(map((data) => data['exportableData'])),
         } as ComparativeData;
+      });
+  }
+
+  private getEstadistico(queryParams: QueryParams, streets: Street[], allLines: Line[] /*, greaterDate: number*/) {
+    //const firstYear = greaterDate - 1;
+    const { metric, ...params } = queryParams;
+    /*
+    params['date_from'] = `${firstYear}/1/1 00:00:00`;
+    params['date_to'] = `${greaterDate}/12/31 23:59:59`;
+    */
+    const dateFrom = new Date(params['date_from']);
+    const dateTo = new Date(params['date_to']);
+    return streets
+      .sort((a, b) => (a.name > b.name ? 1 : -1))
+      .map(({ id, name }) => {
+        const lines = `{${allLines.filter(({ streetId }) => id === streetId).map(({ id }) => id)}}`;
+        const res = this.comparativoGQL.fetch({ ...params, metric, lines }).pipe(
+          map((v) => v.data.get_comparativo),
+          map((data) => {
+            /*
+            const extra = range(24).map((m) => ({
+              year: firstYear + Math.floor(m / 12),
+              month: (m % 12) + 1,
+              val: 0,
+            }));
+            */
+            const extra = [
+              {
+                year: dateFrom.getFullYear(),
+                month: dateFrom.getMonth() + 1,
+                val: 0,
+              },
+              {
+                year: dateTo.getFullYear(),
+                month: dateTo.getMonth() + 1,
+                val: 0,
+              },
+            ];
+            // const filled = [...data.map((v) => ({ ...v, val: Math.max(v.val, 0) })), ...extra]
+            //   .filter(
+            //     (val, idx, arr) => arr.findIndex((v) => val.year === v.year && val.month === v.month) === idx,
+            //   )
+            //   .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year));
+            const filled = [...data.map((v) => ({ ...v, val: Math.max(v.val, 0) })), ...extra]
+              .filter((val, idx, arr) => arr.findIndex((v) => val.date === v.date) === idx)
+              .sort((a, b) => (a.date === b.date ? a.month - b.month : a.year - b.year));
+            /*
+            return {
+              data: {
+                dataset: [
+                  {
+                    label: String(firstYear),
+                    data: filled.filter((r) => r.year === firstYear).map((v) => v.val),
+                  },
+                  {
+                    label: String(firstYear + 1),
+                    data: filled.filter((r) => r.year === firstYear + 1).map((v) => v.val),
+                  },
+                ],
+                labels: filled.filter((r) => r.year === firstYear).map((v) => ('0' + v.month).slice(-2)),
+                unit: metrics.filter(({ id }) => id === metric)[0].unit,
+              },
+              exportableData: filled.map((f) => ({ street: name, ...f })),
+            };
+            */
+
+            return {
+              data: {
+                dataset: {
+                  label: `Datos de ${dateFrom.toDateString()}`,
+                  data: filled.filter((r) => r.year === dateFrom.getFullYear()),
+                },
+                exportableData: {},
+              },
+            };
+          }),
+        );
+
+        return {
+          name: '',
+          data: res.pipe(map((data) => data['data'])),
+          exportableData: res.pipe(map((data) => data['exportableData'])),
+        } as RankingData;
       });
   }
 

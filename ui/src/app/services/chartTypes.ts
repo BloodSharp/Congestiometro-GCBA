@@ -5,6 +5,7 @@ export const charts = [
   { id: 'bar', name: 'Evolutivo', comparable: true },
   { id: 'line', name: 'Comparativo', comparable: false },
   { id: 'line-with-map', name: 'Predictivo', comparable: false },
+  { id: 'ranking', name: 'Estadístico', comparable: false },
 ] as const;
 export const chartTypes = charts.map((c) => c.id);
 

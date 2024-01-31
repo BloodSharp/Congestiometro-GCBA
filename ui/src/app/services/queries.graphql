@@ -149,3 +149,29 @@ query predictivo(
     val
   }
 }
+
+query estadistica(
+  $date_from: timestamp
+  $date_to: timestamp
+  $hours: _int4
+  $lines: _int4
+  $metric: String
+  $aggFunc: String
+  $working_days: _int4
+) {
+  get_estadistica(
+    args: {
+      date_from: $date_from
+      date_to: $date_to
+      hours: $hours
+      lines: $lines
+      metric: $metric
+      agg_func: $aggFunc
+      working_days: $working_days
+    }
+  ) {
+    year
+    month
+    val
+  }
+}
