@@ -456,7 +456,44 @@ from (
   ) t
 group by 1 $$ LANGUAGE sql STABLE;
 ---
-
+CREATE OR REPLACE FUNCTION get_estadistica(
+    date_from timestamp,
+    date_to timestamp,
+    hours int [],
+    streets_id [],
+    working_days int [],
+    metric text,
+    agg_func text,
+    limit int)
+SELECT
+  public.streets.street_id,
+	public.streets.street_name,
+	public.streets.street_sufix,
+	public.jams."hour",
+	public.jams.delay,
+	public.jams.length,
+	public.jams.speed,
+	public.jams."level",
+	public.jams.start_timestamp,
+	public.jams.end_timestamp,
+	public.jam_lines.line
+  FROM public.streets
+INNER JOIN public.jam_lines
+	ON public.streets.street_id  = public.jam_lines.street_id
+INNER JOIN public.jams
+	ON public.jam_lines.line_id = public.jams.line_id
+WHERE
+	(
+	public.jams.delay > 0 AND
+	public.jams.start_timestamp >= date_from::TIMESTAMP AND
+	public.jams.end_timestamp <= date_to::TIMESTAMP
+	)
+ORDER BY
+	public.jams.delay desc,
+	public.jams.length desc,
+	public.jams."level" desc,
+	public.jams.speed asc
+LIMIT limit;
 ---
 CREATE OR REPLACE FUNCTION get_lines(polygon text) RETURNS SETOF simple_line_type AS $$
 SELECT line_id,
