@@ -136,37 +136,37 @@ export class FiltersComponent implements OnInit {
 
   private updateData() {
     return combineLatest([this.dataService.urlParams, this.dataService.streets]).pipe(
-    map(([v, streets]) => ({ v: this.secondary ? v.right : v.left, streets })),
-    map(({ v, streets }) => {
-      if (v.state.mapPolygon) this.mapPolygon.next(v.state.mapPolygon);
-      if (v.state.streets) {
-        this.selectedStreets.clear();
-        for (const { id, name } of (v.state.streets as number[]).map((id) => streets[id])) {
-          this.selectedStreets.set(id, name);
+      map(([v, streets]) => ({ v: this.secondary ? v.right : v.left, streets })),
+      map(({ v, streets }) => {
+        if (v.state.mapPolygon) this.mapPolygon.next(v.state.mapPolygon);
+        if (v.state.streets) {
+          this.selectedStreets.clear();
+          for (const { id, name } of (v.state.streets as number[]).map((id) => streets[id])) {
+            this.selectedStreets.set(id, name);
+          }
         }
-      }
-      return v;
-    }),
-    withLatestFrom(this.dataService.neighborhoods),
-    map(([{ syncParams, state, otherState }, neighborhoods]) => ({
-      syncParams,
-      otherState,
-      neighborhoodsIds: (neighborhoods || []).map((n) => n.lowerAdminLevelId),
-      form: new FormGroup({
-        // TODO: default date now
-        dateStart: new FormControl(state.dateStart ? new Date(state.dateStart) : new Date(2022, 0, 1)),
-        dateEnd: new FormControl(state.dateEnd ? new Date(state.dateEnd) : new Date(2022, 1, 25)),
-        hours: new FormControl(state.hours ? state.hours : [17, 18]),
-        neighborhoods: new FormControl(state.neighborhoods ? state.neighborhoods : []),
-        metric: new FormControl(state.metric || metrics[0].id),
-        aggFunc: new FormControl(state.aggFunc || aggFuncs[0].id),
-        workingDays: new FormControl(state.workingDays || '{1,0}'),
-        autoSelectStreets: new FormControl(state.autoSelectStreets),
-        autoSelectAvenues: new FormControl(state.autoSelectAvenues),
+        return v;
       }),
-    })),
-    shareReplay(1),
-  );
+      withLatestFrom(this.dataService.neighborhoods),
+      map(([{ syncParams, state, otherState }, neighborhoods]) => ({
+        syncParams,
+        otherState,
+        neighborhoodsIds: (neighborhoods || []).map((n) => n.lowerAdminLevelId),
+        form: new FormGroup({
+          // TODO: default date now
+          dateStart: new FormControl(state.dateStart ? new Date(state.dateStart) : new Date(2022, 0, 1)),
+          dateEnd: new FormControl(state.dateEnd ? new Date(state.dateEnd) : new Date(2022, 1, 25)),
+          hours: new FormControl(state.hours ? state.hours : [17, 18]),
+          neighborhoods: new FormControl(state.neighborhoods ? state.neighborhoods : []),
+          metric: new FormControl(state.metric || metrics[0].id),
+          aggFunc: new FormControl(state.aggFunc || aggFuncs[0].id),
+          workingDays: new FormControl(state.workingDays || '{1,0}'),
+          autoSelectStreets: new FormControl(state.autoSelectStreets),
+          autoSelectAvenues: new FormControl(state.autoSelectAvenues),
+        }),
+      })),
+      shareReplay(1),
+    );
   }
 
   public data = this.updateData();
@@ -384,32 +384,6 @@ export class FiltersComponent implements OnInit {
       this.map.dispose();
     }
     this.initializeMapContext(previousCenter, previousZoom);
-    let totalSelectedAvenues = 0;
-    let totalSelectedStreets = 0;
-    await firstValueFrom(
-      combineLatest([this.dataService.urlParams, this.dataService.streets]).pipe(
-        map(([v, streets]) => ({ v: this.secondary ? v.right : v.left, streets })),
-        map(({ v }) => {
-          if (v.state.mapPolygon) this.mapPolygon.next(v.state.mapPolygon);
-          if (v.state.streets) {
-            this.filteredStreets.forEach((v) =>
-              v.forEach((street) => {
-                if (street?.type > 1) {
-                  totalSelectedAvenues++;
-                } else if (street?.type === 1) {
-                  totalSelectedStreets++;
-                }
-              }),
-            );
-          }
-        }),
-      ),
-    );
-    // Establecemos el estado de los 'toggles' a falso según corresponda
-    this.data.forEach((v) => {
-      v?.form?.controls?.autoSelectAvenues?.setValue(totalSelectedAvenues > 0);
-      v?.form?.controls?.autoSelectStreets?.setValue(totalSelectedStreets > 0);
-    });
   }
 
   public changeChartType(newType: ChartType) {
