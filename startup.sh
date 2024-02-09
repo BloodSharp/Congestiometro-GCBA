@@ -14,7 +14,7 @@ fi
 
 # Inicializando los contenedores del congestioemtro
 if [ "$ENVIRONTMENT_MODE" = "production" ]; then
-    docker-compose up -d
+    docker-compose up --build -d
 elif [ "$ENVIRONTMENT_MODE" = "development" ]; then
     docker-compose -f docker-compose.debug.yml up -d
 fi
