@@ -188,7 +188,7 @@
                 *ngIf="this.selectedStreets.size > 0"
                 mat-raised-button
                 color="primary"
-                (click)="this.selectedStreets.clear()"
+                (click)="this.clearAllSelectedStreetsAndDisableToggles()"
               >
                 Eliminar selección de calles
               </button>

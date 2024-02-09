@@ -3,7 +3,7 @@ import { MediaObserver } from 'ngx-flexible-layout';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 
-import { BehaviorSubject, combineLatest, merge, Observable, of, Subscription, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, firstValueFrom, merge, Observable, of, Subscription, timer } from 'rxjs';
 import {
   debounceTime,
   distinctUntilChanged,
@@ -134,7 +134,8 @@ export class FiltersComponent implements OnInit {
   public map!: OlMap;
   private subscriptions: Subscription[] = [];
 
-  public data = combineLatest([this.dataService.urlParams, this.dataService.streets]).pipe(
+  private updateData() {
+    return combineLatest([this.dataService.urlParams, this.dataService.streets]).pipe(
     map(([v, streets]) => ({ v: this.secondary ? v.right : v.left, streets })),
     map(({ v, streets }) => {
       if (v.state.mapPolygon) this.mapPolygon.next(v.state.mapPolygon);
@@ -166,6 +167,9 @@ export class FiltersComponent implements OnInit {
     })),
     shareReplay(1),
   );
+  }
+
+  public data = this.updateData();
 
   public geoFilteredStreets = combineLatest([
     this.mapPolygon.pipe(
@@ -289,6 +293,25 @@ export class FiltersComponent implements OnInit {
 
   public selectedStreets = new Map<number, string>();
 
+  clearAllSelectedStreetsAndDisableToggles() {
+    // Eliminamos las calles seleccionadas
+    this.selectedStreets.clear();
+    // Verificar cual de ambos filtros estamos utilizando actualmente
+    const sidePanelFilter = this.secondary ? 'right' : 'left';
+    // Establecemos la selección en los parámetros de la URL con valores
+    // falsos para evitar seleccionar automáticamente la próxima vez
+    this.dataService.urlParams.forEach((params) => {
+      if (params[sidePanelFilter].state?.streets?.length > 0) params[sidePanelFilter].state.streets = [];
+      params[sidePanelFilter].state.autoSelectAvenues = false;
+      params[sidePanelFilter].state.autoSelectStreets = false;
+    });
+    // Establecemos el estado de los 'toggles' a falso según corresponda
+    this.data.forEach((v) => {
+      v?.form?.controls?.autoSelectAvenues?.setValue(false);
+      v?.form?.controls?.autoSelectStreets?.setValue(false);
+    });
+  }
+
   private getCoordinatesArray(drawEvent: DrawEvent): [number, number][] {
     const coordinates = (drawEvent.feature.getGeometry() as LineString)?.getCoordinates();
     let coordinatesArray: [number, number][] = [];
@@ -346,6 +369,7 @@ export class FiltersComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // Reinicia por completo el contexto del mapa del filtro
     const drawListeners = this.draw.getListeners('drawend');
     const previousCenter = undefined; // TODO: Ver porque falla esto luego => this.map?.getView().getCenter();
     const previousZoom = undefined; // TODO: Ver porque falla esto luego => this.map?.getView().getZoom();
@@ -360,6 +384,32 @@ export class FiltersComponent implements OnInit {
       this.map.dispose();
     }
     this.initializeMapContext(previousCenter, previousZoom);
+    let totalSelectedAvenues = 0;
+    let totalSelectedStreets = 0;
+    await firstValueFrom(
+      combineLatest([this.dataService.urlParams, this.dataService.streets]).pipe(
+        map(([v, streets]) => ({ v: this.secondary ? v.right : v.left, streets })),
+        map(({ v }) => {
+          if (v.state.mapPolygon) this.mapPolygon.next(v.state.mapPolygon);
+          if (v.state.streets) {
+            this.filteredStreets.forEach((v) =>
+              v.forEach((street) => {
+                if (street?.type > 1) {
+                  totalSelectedAvenues++;
+                } else if (street?.type === 1) {
+                  totalSelectedStreets++;
+                }
+              }),
+            );
+          }
+        }),
+      ),
+    );
+    // Establecemos el estado de los 'toggles' a falso según corresponda
+    this.data.forEach((v) => {
+      v?.form?.controls?.autoSelectAvenues?.setValue(totalSelectedAvenues > 0);
+      v?.form?.controls?.autoSelectStreets?.setValue(totalSelectedStreets > 0);
+    });
   }
 
   public changeChartType(newType: ChartType) {
