@@ -56,3 +56,6 @@ data_old2
 *.7z
 *.zip
 __pycache__
+
+# Bun.sh support
+bun.lockb
