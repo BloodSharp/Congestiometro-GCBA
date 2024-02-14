@@ -12,7 +12,8 @@ services:
     environment:
       POSTGRES_PASSWORD: ${ADMIN_SECRET:-congestiometro}
   admin:
-    image: node:20-alpine
+    #image: node:20-alpine
+    image: oven/bun:alpine
     depends_on:
       - "postgres"
     restart: always
@@ -27,8 +28,10 @@ services:
       PGUSER: postgres
       PGPASSWORD: congestiometro
       ADMIN_SECRET: ${ADMIN_SECRET:-congestiometro}
+    #command: >
+    #  sh -c "npm i && npm start"
     command: >
-      sh -c "npm i && npm start"
+      sh -c "apk add libstdc++ && bun install && bun run start:bun"
   graphql-engine:
     image: hasura/graphql-engine:v2.36.2
     depends_on:

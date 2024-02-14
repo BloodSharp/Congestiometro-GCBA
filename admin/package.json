@@ -6,6 +6,7 @@
   "scripts": {
     "serve": "nodemon",
     "start": "tsc && node ./lib/index.js",
+    "start:bun": "bun index.ts",
     "format": "prettier --write \"./**/*.json\" \"src/**/*.ts\" --single-quote true --trailing-comma all --tab-width 2"
   },
   "author": "Rafael Crescenzi",
