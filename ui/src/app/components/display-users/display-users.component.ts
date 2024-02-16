@@ -54,6 +54,9 @@ export class DisplayUsersComponent implements OnInit {
     private displayLogService: DisplayLogService,
   ) {}
 
+  /**
+   * ngOnInit function initializes the user list component using a page limit and the search field function.
+   */
   public ngOnInit() {
     this.dataSource$ = combineLatest([
       this.users,
@@ -79,11 +82,19 @@ export class DisplayUsersComponent implements OnInit {
     this.nameSearch.next((event.target as HTMLInputElement).value);
   }
 
+  /**
+   * This function clear the search function filter.
+   */
   public clearSearch() {
     this.searchInput.nativeElement.value = '';
     this.nameSearch.next('');
   }
 
+  /**
+   * Updates the user password by the user's name.
+   * @param {string} username The unique username.
+   * @param {string} password  The new password for the user.
+   */
   public async editUser(username: string, password: string) {
     if (!confirm('¿Está seguro que desea editar este usuario?')) return;
     this.loading.next(true);
