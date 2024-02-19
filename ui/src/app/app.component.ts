@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
-import { ChartDataset, ChartOptions } from 'chart.js';
+import { ChartDataset } from 'chart.js';
 
 import { BehaviorSubject, combineLatest, merge, Observable, Subject } from 'rxjs';
 import {
