@@ -28,6 +28,11 @@ export class LoginComponent {
     });
   }
 
+  /**
+   * Sets the user authorization by specifying the username and password.
+   * @param {string} username The username as string.
+   * @param {string} password The password as string.
+   */
   public login(username: string, password: string) {
     this.errorMessage.next('');
     this.loading.next(true);

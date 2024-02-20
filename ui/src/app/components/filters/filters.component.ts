@@ -97,6 +97,10 @@ export class FiltersComponent implements OnInit {
   public aggFuncs = aggFuncs;
   public hours = hours;
   public hoursIds = hours.map((h) => h.value);
+  /**
+   * @type {Observable<{label: string, neighborhoods: AdminLevel[], neighborhoodIds: number[]}[]>} All the data
+   * related to the districts area and their neighborhoods.
+   */
   public groupedNeighborhoods = this.dataService.neighborhoods.pipe(
     map((neighborhoods) =>
       (neighborhoods || [])
@@ -134,6 +138,11 @@ export class FiltersComponent implements OnInit {
   public map!: OlMap;
   private subscriptions: Subscription[] = [];
 
+  /**
+   * Updates the data source using the current state, the synchronization parameters, the other state parameters
+   * as well the neighborhoods.
+   * @returns Returns the updated data source including the current filter options.
+   */
   private updateData() {
     return combineLatest([this.dataService.urlParams, this.dataService.streets]).pipe(
       map(([v, streets]) => ({ v: this.secondary ? v.right : v.left, streets })),
@@ -171,6 +180,11 @@ export class FiltersComponent implements OnInit {
 
   public data = this.updateData();
 
+  /**
+   * Gets the selected streets by the filter properties and geographic area specified by the map polygon.
+   * @returns {Observable<Street[]>} Return the selected streets by the filter properties and geographic area
+   * specified by the map polygon.
+   */
   public geoFilteredStreets = combineLatest([
     this.mapPolygon.pipe(
       distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
@@ -273,6 +287,10 @@ export class FiltersComponent implements OnInit {
   );
 
   public streetSearch = new FormControl('');
+
+  /**
+   * @type {Observable<Street[]>} Returns the selected streets from the current filter.
+   */
   public filteredStreets = combineLatest([
     this.streetSearch.valueChanges.pipe(
       filter((v) => typeof v === 'string'),
@@ -293,6 +311,9 @@ export class FiltersComponent implements OnInit {
 
   public selectedStreets = new Map<number, string>();
 
+  /**
+   * Clear all the selected streets and disable the streets and avenues automatic selection toggles.
+   */
   clearAllSelectedStreetsAndDisableToggles() {
     // Eliminamos las calles seleccionadas
     this.selectedStreets.clear();
@@ -326,6 +347,13 @@ export class FiltersComponent implements OnInit {
     return coordinatesArray;
   }
 
+  /**
+   * Initializes the map with the given coordinates and zoom level.
+   * @param {Coordinate | undefined} previousCenter Sets the center of the map, if not specified the default
+   * coordinate will be Buenos Aires city coordinates (Longitude -58.453 and latitude -34.62)
+   * @param {number | undefined} previousZoom Sets the zoom level of the map, if not specified the default
+   * value will be 12.1
+   */
   private async initializeMapContext(previousCenter: Coordinate | undefined, previousZoom: number | undefined) {
     if (this.subscriptions.length > 0) return;
     this.draw.on('drawend', (drawEvent: DrawEvent) => {
@@ -368,6 +396,9 @@ export class FiltersComponent implements OnInit {
     );
   }
 
+  /**
+   * Initializes the map context and rendering listener function.
+   */
   async ngOnInit() {
     // Reinicia por completo el contexto del mapa del filtro
     const drawListeners = this.draw.getListeners('drawend');
@@ -386,6 +417,15 @@ export class FiltersComponent implements OnInit {
     this.initializeMapContext(previousCenter, previousZoom);
   }
 
+  /**
+   * Sets the current chart type filter
+   * @param {ChartType} newType A string type value with the following values:
+   * - **map**: The chart type should display a map with jams information.
+   * - **bar**: The chart type should display a bar chart, showcase information about the specific time information.
+   * - **line**: The chart type should display a line chart, showcase information about the specific streets information between the current year and the previous one.
+   * - **line-with-map**: The chart type should display a line chart as well a map, the data should contain the actual data and the predicted data by the IA.
+   * @returns {Promise<boolean>} A promise that resolves to true if the navigation was successful, otherwise returns false.
+   */
   public changeChartType(newType: ChartType) {
     return this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -394,6 +434,11 @@ export class FiltersComponent implements OnInit {
     });
   }
 
+  /**
+   * Copy the other filter state to the current state.
+   * @param otherState The current state which is being updated from the other state.
+   * @returns {Promise<boolean>} A promise that resolves to true if the navigation was successful, otherwise returns false.
+   */
   public clone(otherState: any) {
     return this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -402,6 +447,15 @@ export class FiltersComponent implements OnInit {
     });
   }
 
+  /**
+   * The apply function button action which will assign and update the data and page.
+   * @param state The current state which is being updated.
+   * @param sync The syncrhonous data to be applied to the other state.
+   * @param otherState The other state data.
+   * @param {[number, number][]} mapPolygon The map polygon coordinates array which contains the latitude and
+   * longitude for every point in the map.
+   * @returns {Promise<boolean>} A promise that resolves to true if the navigation was successful, otherwise returns false.
+   */
   public apply(state: any, sync: any, otherState: any, mapPolygon: [number, number][]) {
     this.show.next(false);
     const completeState = {
@@ -425,12 +479,24 @@ export class FiltersComponent implements OnInit {
     });
   }
 
+  /**
+   * Returns a boolean value indicating whether all the city neighborhoods are selected.
+   * @param {number[]} selectedNeighborhoods The selected neighborhoods array selection by id.
+   * @param {AdminLevel[]} allNeighborhoods All the neighborhood from the city.
+   * @returns {boolean} Returns a boolean value indicating whether all the neighboorhoods are selected.
+   */
   public allSelected(selectedNeighborhoods: number[], allNeighborhoods: AdminLevel[]) {
     return allNeighborhoods.every((neighborhood) =>
       selectedNeighborhoods.includes(neighborhood.lowerAdminLevelId),
     );
   }
 
+  /**
+   * Returns a boolean value indicated wheter at least 1 or more neighborhoods are selected.
+   * @param {number[]} selectedNeighborhoods The selected neighborhoods array selection by id.
+   * @param {AdminLevel[]} allNeighborhoods All the neighborhood from the city.
+   * @returns {boolean} Returns a boolean value indicating whether at least 1 or more neighboorhoods are selected.
+   */
   public someSelected(selectedNeighborhoods: number[], allNeighborhoods: AdminLevel[]) {
     return (
       !this.allSelected(selectedNeighborhoods, allNeighborhoods) &&
@@ -438,6 +504,13 @@ export class FiltersComponent implements OnInit {
     );
   }
 
+  /**
+   * Sets the neighborhood selection by the specified checkboxes at the neighborhood list or their districts.
+   * @param {AbstractControl} control The control to set the active neighborhood selection.
+   * @param {boolean} select The boolean value indicating whether the neighborhood is being selected or not.
+   * @param {number[]} selectedNeighborhoods The selected neighborhood by the specified city's identifier.
+   * @param {number[]} neighborhoodIds The neighborhoods range by their city's identifiers.
+   */
   public setSelectedNeighborhoods(
     control: AbstractControl,
     select: boolean,
@@ -455,6 +528,11 @@ export class FiltersComponent implements OnInit {
     control.setValue(newNeighborhoods);
   }
 
+  /**
+   * Download the filter selection data as a csv (Comma-separated Values) file.
+   * @param {{csvData: any[], chart: (typeof charts)[number]}} param0 The data to be downloaded.
+   * @see FiltersComponent.exportableData
+   */
   public download({ csvData, chart }: { csvData: any[]; chart: (typeof charts)[number] }) {
     const headers = (Object.keys(csvData[0]) as (keyof (typeof csvData)[0])[]).filter((h) => h !== '__typename');
     const csv = [
@@ -465,6 +543,9 @@ export class FiltersComponent implements OnInit {
     saveAs(new Blob([csv], { type: 'text/csv' }), `${chart.name.toLocaleLowerCase()}.csv`);
   }
 
+  /**
+   * Destroy the map subcriptions context to release memory resources.
+   */
   public ngOnDestroy() {
     this.subscriptions.map((s) => s.unsubscribe());
   }
