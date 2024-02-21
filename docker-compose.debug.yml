@@ -30,7 +30,7 @@ services:
       PGPASSWORD: congestiometro
       ADMIN_SECRET: ${ADMIN_SECRET:-congestiometro}
     command: >
-      sh -c "npm i && npm run serve"
+      sh -c "npm i && npm run start"
   graphql-engine:
     image: hasura/graphql-engine:v2.36.2
     depends_on:

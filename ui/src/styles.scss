@@ -48,7 +48,18 @@ $webapp-accent: mat.define-palette($accent-colors, A200, A100, A400);
 $webapp-warn: mat.define-palette(mat.$red-palette);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$webapp-theme: mat.define-light-theme($webapp-primary, $webapp-accent, $webapp-warn);
+//$webapp-theme: mat.define-light-theme($webapp-primary, $webapp-accent, $webapp-warn);
+$webapp-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $webapp-primary,
+      accent: $webapp-accent,
+      warn: $webapp-warn,
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -75,8 +86,8 @@ router-outlet + * {
 }
 
 .error {
-  background-color: mat.get-color-from-palette($webapp-warn, '900');
-  color: mat.get-color-from-palette($webapp-warn, '900-contrast');
+  background-color: mat.get-theme-color($webapp-theme, warn, 900) !important;
+  color: mat.get-theme-color($webapp-theme, warn, 900-contrast) !important;
 }
 
 ::-webkit-scrollbar {
