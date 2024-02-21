@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { MapComponent } from './map.component';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from 'ngx-flexible-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';

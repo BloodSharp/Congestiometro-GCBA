@@ -10,6 +10,7 @@ import cookieParser from 'cookie-parser';
 
 import dayjs from 'dayjs';
 import { Pool } from 'pg';
+import helmet from 'helmet';
 
 const db = new Pool();
 
@@ -49,6 +50,7 @@ async function setUserTokens(user: any, res: express.Response) {
 
 const app = express();
 app.disable('x-powered-by');
+app.use(helmet());
 app.use(urlencoded({ extended: false }));
 app.use(jsonBodyParser());
 app.use(cookieParser());
@@ -181,7 +183,7 @@ app.patch('/users/:username', async (req: express.Request, res: express.Response
   };
   try {
     const result = await db.query(query);
-    if (result.rowCount > 0) {
+    if (result.rowCount !== null && result.rowCount > 0) {
       res.sendStatus(200);
     } else {
       res.status(400).json({ message: 'No hay usuario con ese nombre' });
@@ -228,7 +230,7 @@ watch('/config/streets.json', { usePolling: true }).on('change', async (path) =>
   }
 });
 createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ username }) =>
-  console.log('Created admin user with password set in process.env["ADMIN_SECRET"]')
+  console.log('Created admin user with password set in process.env["ADMIN_SECRET"]'),
 );
 (async function () {
   const headers = { 'X-Hasura-Admin-Secret': process.env['ADMIN_SECRET'] || 'congestiometro' };
@@ -253,8 +255,8 @@ createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ use
     };
     return axios
       .post('http://graphql-engine:8080/v1/query', body, { headers })
-      .then(() => console.log(name, 'OK'))
-      .catch(() => console.log(name, 'ERROR:'));
+      .then(() => console.log('OK: ' + name))
+      .catch(() => console.log('ERROR: ' + name));
   });
   ['get_jams_lines', 'get_evolutivo', 'get_comparativo', 'get_summary', 'get_predictivo', 'get_lines'].map(
     (name) => {
@@ -267,9 +269,9 @@ createUser('admin', process.env['ADMIN_SECRET'] || 'congestiometro').then(({ use
       };
       return axios
         .post('http://graphql-engine:8080/v1/query', body, { headers })
-        .then(() => console.log(name, 'OK'))
-        .catch(() => console.log(name, 'ERROR:'));
-    }
+        .then(() => console.log('OK: ' + name))
+        .catch(() => console.log('ERROR: ' + name));
+    },
   );
 })()
   .then(() => console.log('Hasura initialized correctely'))

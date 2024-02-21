@@ -40,7 +40,7 @@ export class DisplayUsersComponent implements OnInit {
   public selectedUser = new Subject<User>();
   public selectedUsername = this.selectedUser.pipe(
     map((user) => (user ? user.username : 'null')),
-    startWith('null')
+    startWith('null'),
   );
   public editUserForm = new FormGroup({ password: new FormControl('', [Validators.required]) });
 
@@ -49,26 +49,32 @@ export class DisplayUsersComponent implements OnInit {
 
   public loading = new BehaviorSubject(false);
 
-  constructor(private userService: UserService, private displayLogService: DisplayLogService) {}
+  constructor(
+    private userService: UserService,
+    private displayLogService: DisplayLogService,
+  ) {}
 
+  /**
+   * ngOnInit function initializes the user list component using a page limit and the search field function.
+   */
   public ngOnInit() {
     this.dataSource$ = combineLatest([
       this.users,
       this.nameSearch.pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        map((search) => search.toLocaleLowerCase())
+        map((search) => search.toLocaleLowerCase()),
       ),
     ]).pipe(
       map(([users, nameSearch]) => {
         const data = new MatTableDataSource(
           users
             .filter((user) => user.username.toLocaleLowerCase().includes(nameSearch))
-            .sort((a, b) => (a.username.toLocaleLowerCase() > b.username.toLocaleLowerCase() ? 1 : -1))
+            .sort((a, b) => (a.username.toLocaleLowerCase() > b.username.toLocaleLowerCase() ? 1 : -1)),
         );
         data.paginator = this.paginator;
         return data;
-      })
+      }),
     );
   }
 
@@ -76,18 +82,26 @@ export class DisplayUsersComponent implements OnInit {
     this.nameSearch.next((event.target as HTMLInputElement).value);
   }
 
+  /**
+   * This function clear the search function filter.
+   */
   public clearSearch() {
     this.searchInput.nativeElement.value = '';
     this.nameSearch.next('');
   }
 
-  public editUser(username: string, password: string) {
+  /**
+   * Updates the user password by the user's name.
+   * @param {string} username The unique username.
+   * @param {string} password  The new password for the user.
+   */
+  public async editUser(username: string, password: string) {
     if (!confirm('¿Está seguro que desea editar este usuario?')) return;
     this.loading.next(true);
-    return this.userService
+    return await this.userService
       .editUser(username, password)
       .then(() => {
-        this.selectedUser.next();
+        this.selectedUser.next({ username, isAdmin: false });
         this.editUserForm.reset();
         this.displayLogService.openLogSuccess('Usuario editado');
       })

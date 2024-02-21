@@ -32,10 +32,16 @@ git clone git@github.com:EL-BID/Congestiometro-GCBA.git
 chmod +x *.sh
 ```
 
-5. Ejecutar el script de inicio
+5. Ejecutar el script de inicio **(modo producción)**
 
 ```bash
    ./startup.sh
+```
+
+5. Ejecutar el script de inicio **(modo desarrollo)**
+
+```bash
+   ./startup.sh development
 ```
 
 6. Para detener su ejecución correr el script de detención
@@ -44,10 +50,16 @@ chmod +x *.sh
    ./stop.sh
 ```
 
-7. La primera vez que se corre el sistema, luego de la sincronización de datos, es necesario correr
+7. La primera vez que se corre el sistema, luego de la sincronización de datos, es necesario correr **(modo producción)**
 
 ```bash
    ./reset.sh
+```
+
+7. La primera vez que se corre el sistema, luego de la sincronización de datos, es necesario correr **(modo desarrollo)**
+
+```bash
+   ./reset.sh development
 ```
 
 ## Requisitos de hardware

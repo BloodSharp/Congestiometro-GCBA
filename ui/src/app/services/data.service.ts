@@ -20,17 +20,7 @@ import { WKT } from 'ol/format';
 import { MultiLineString as OlMLS, MultiPolygon, Polygon } from 'ol/geom';
 
 import { BehaviorSubject, combineLatest, from, Observable, of, ReplaySubject, timer } from 'rxjs';
-import {
-  distinctUntilChanged,
-  filter,
-  map,
-  pluck,
-  shareReplay,
-  startWith,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
 import { AggFuncType, metrics, MetricType } from './chartTypes';
 import {
@@ -125,7 +115,7 @@ export class DataService {
           map(({ data }) =>
             data.jam_lines.map(({ line_id, street_id, line }) => {
               return { id: line_id, streetId: street_id, coordinates: line.coordinates } as BaseLine;
-            })
+            }),
           ),
           switchMap((lines) => {
             console.log('Guardando datos de segmentos localmente...');
@@ -135,17 +125,20 @@ export class DataService {
           tap(() => {
             console.log('Datos de segmentos guardados...');
             this.dataState.next('Datos de segmentos guardados...');
-          })
+          }),
         );
       }
     }),
     map((data) =>
-      data.reduce((prev, line) => {
-        prev[line.id] = { ...line, turfLine: lineString(line.coordinates) };
-        return prev;
-      }, {} as { [key: number]: Line })
+      data.reduce(
+        (prev, line) => {
+          prev[line.id] = { ...line, turfLine: lineString(line.coordinates) };
+          return prev;
+        },
+        {} as { [key: number]: Line },
+      ),
     ),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public streets = combineLatest([
@@ -173,9 +166,9 @@ export class DataService {
                     name: `${street_name} ${street_sufix}`.trim(),
                     type: street_type,
                     shape: line,
-                  } as BaseStreet)
+                  }) as BaseStreet,
               )
-              .sort((a, b) => (a.name > b.name ? 1 : -1))
+              .sort((a, b) => (a.name > b.name ? 1 : -1)),
           ),
           switchMap((streets) => {
             console.log('Guardando datos de calles localmente...');
@@ -185,22 +178,25 @@ export class DataService {
           tap(() => {
             console.log('Datos de calles guardados...');
             this.dataState.next('Datos de calles guardados. Procesando segmentos...');
-          })
+          }),
         );
       }
     }),
     map((data) =>
-      data.reduce((prev, street) => {
-        prev[street.id] = {
-          ...street,
-          turfLine: multiLineString(
-            street.shape.type === 'MultiLineString' ? street.shape.coordinates : [street.shape.coordinates]
-          ),
-        };
-        return prev;
-      }, {} as { [key: number]: Street })
+      data.reduce(
+        (prev, street) => {
+          prev[street.id] = {
+            ...street,
+            turfLine: multiLineString(
+              street.shape.type === 'MultiLineString' ? street.shape.coordinates : [street.shape.coordinates],
+            ),
+          };
+          return prev;
+        },
+        {} as { [key: number]: Street },
+      ),
     ),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public neighborhoods = this.adminLevelsGQL.fetch().pipe(
@@ -224,10 +220,10 @@ export class DataService {
               adminLevel.shape === 'Polygon'
                 ? new Polygon(adminLevel.shape.coordinates)
                 : new MultiPolygon(adminLevel.shape.coordinates),
-          } as AdminLevel)
-      )
+          }) as AdminLevel,
+      ),
     ),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public ready = timer(0, 60 * 60 * 1000).pipe(
@@ -236,7 +232,7 @@ export class DataService {
     map(() => {
       this.dataState.next('Datos cargados, iniciando aplicación...');
       return true;
-    })
+    }),
   );
 
   public urlParams = this.activatedRoute.queryParams.pipe(
@@ -268,7 +264,7 @@ export class DataService {
       };
     }),
     distinctUntilChanged((a, b) => JSON.stringify(a) === JSON.stringify(b)),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   private getQueryParams(filters: any, allLines: { [key: number]: Line }, allNeighborhoods: AdminLevel[]) {
@@ -289,14 +285,14 @@ export class DataService {
         if (mapPolygon?.length > 0) {
           const polygon = getTurfFeature(new Polygon([mapPolygon]));
           lines = (lines.length > 0 ? lines.map((lineId) => allLines[lineId]) : Object.values(allLines))
-            .filter((l) => booleanContains(polygon, lineString(l.coordinates)))
-            .map((l) => l.id);
+            .filter((l) => (l?.coordinates ? booleanContains(polygon, lineString(l?.coordinates)) : false))
+            .map((l) => l?.id);
         }
 
-        lines = lines.filter((lineId) => streets.includes(allLines[lineId].streetId));
+        lines = lines.filter((lineId) => streets.includes(allLines[lineId]?.streetId));
       } else {
         lines = Object.values(allLines)
-          .filter((line) => streets.includes(line.streetId))
+          .filter((line) => streets.includes(line?.streetId))
           .map(({ id }) => id);
       }
     }
@@ -328,24 +324,24 @@ export class DataService {
       };
       return { left, right: validateSync(right.params).length === 0 ? right : left };
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public leftData = this.queryParams.pipe(
     filter(isValid),
-    pluck('left'),
+    map((data) => data['left']),
     map((x) => ({
       map: this.getMapData(x.params),
       line: this.getComparativo(x.params, x.streets, x.lines, x.greaterDate),
       ...this.getEvolutivo(x.params),
     })),
-    shareReplay(1)
+    shareReplay(1),
   );
   public rightData = this.queryParams.pipe(
     filter(isValid),
-    pluck('right'),
+    map((data) => data['right']),
     map((x) => ({ map: this.getMapData(x.params), bar: this.getEvolutivo(x.params).bar })),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   private getMapData(queryParams: QueryParams) {
@@ -358,17 +354,20 @@ export class DataService {
           lines: jams.map((jam) => ({ color: jam.level || 1, line: jam.line })),
           exportableData: jams.map((jam) => ({ ...jam, line: `"${wkt.writeGeometry(new OlMLS([jam.line]))}"` })),
         };
-      })
+      }),
     );
 
     return {
-      lines: lines.pipe(pluck('lines'), startWith(null)),
+      lines: lines.pipe(
+        map((data) => data['lines']),
+        startWith(null),
+      ),
       summary: this.summaryGQL.fetch(params).pipe(
         map((res) => res.data.get_summary),
         map((rows) => Object.fromEntries(rows.map(({ index, val }) => [index, val]))),
-        map((rows) => rows as { delay: number; length: number; speed: number })
+        map((rows) => rows as { delay: number; length: number; speed: number }),
       ),
-      exportableData: lines.pipe(pluck('exportableData')),
+      exportableData: lines.pipe(map((data) => data['exportableData'])),
     };
   }
 
@@ -391,7 +390,7 @@ export class DataService {
             }));
             const filled = [...data.map((v) => ({ ...v, val: Math.max(v.val, 0) })), ...extra]
               .filter(
-                (val, idx, arr) => arr.findIndex((v) => val.year === v.year && val.month === v.month) === idx
+                (val, idx, arr) => arr.findIndex((v) => val.year === v.year && val.month === v.month) === idx,
               )
               .sort((a, b) => (a.year === b.year ? a.month - b.month : a.year - b.year));
             return {
@@ -411,13 +410,13 @@ export class DataService {
               },
               exportableData: filled.map((f) => ({ street: name, ...f })),
             };
-          })
+          }),
         );
 
         return {
           name,
-          data: res.pipe(pluck('data')),
-          exportableData: res.pipe(pluck('exportableData')),
+          data: res.pipe(map((data) => data['data'])),
+          exportableData: res.pipe(map((data) => data['exportableData'])),
         } as ComparativeData;
       });
   }
@@ -439,13 +438,13 @@ export class DataService {
         datas.map((data) => {
           const fill = filling
             .filter(
-              (label) => !data.some((v) => (sameDay ? Number(v.label) === Number(label) : v.label === label))
+              (label) => !data.some((v) => (sameDay ? Number(v.label) === Number(label) : v.label === label)),
             )
             .map((hour) => ({ label: hour, val: 0 }));
           return [...data, ...fill]
             .sort((a, b) => (sameDay ? Number(a.label) - Number(b.label) : a.label > b.label ? 1 : -1))
             .map((v) => (sameDay ? { ...v, label: ('0' + v.label).slice(-2) } : v));
-        })
+        }),
       ),
       map(([data, predictiveData]) => {
         const commonDataset = {
@@ -485,20 +484,20 @@ export class DataService {
             noEvents: data.every((v) => v.val === 0) && predictiveData.every((v) => v.val === 0),
           },
         };
-      })
+      }),
     );
-    const bar = obs.pipe(pluck('evolutivo'));
-    const line_with_map = obs.pipe(pluck('predictivo'));
+    const bar = obs.pipe(map((data) => data['evolutivo']));
+    const line_with_map = obs.pipe(map((data) => data['predictivo']));
     return {
       bar: {
-        data: bar.pipe(pluck('data')),
-        exportableData: bar.pipe(pluck('exportableData')),
-        noEvents: bar.pipe(pluck('noEvents')),
+        data: bar.pipe(map((data) => data['data'])),
+        exportableData: bar.pipe(map((data) => data['exportableData'])),
+        noEvents: bar.pipe(map((data) => data['noEvents'])),
       },
       'line-with-map': {
-        data: line_with_map.pipe(pluck('data')),
-        exportableData: line_with_map.pipe(pluck('exportableData')),
-        noEvents: line_with_map.pipe(pluck('noEvents')),
+        data: line_with_map.pipe(map((data) => data['data'])),
+        exportableData: line_with_map.pipe(map((data) => data['exportableData'])),
+        noEvents: line_with_map.pipe(map((data) => data['noEvents'])),
       },
     };
   }
@@ -513,7 +512,7 @@ export class DataService {
     public predictivoGQL: PredictivoGQL,
     private linesGQL: LinesGQL,
     private streetsGQL: StreetsGQL,
-    private adminLevelsGQL: Admin_LevelsGQL
+    private adminLevelsGQL: Admin_LevelsGQL,
   ) {
     const localVersion = window.localStorage.getItem(this.indexedDbVersionItem);
     const newVersion = !localVersion || Number(localVersion) !== this.indexedDbVersion;

@@ -3,9 +3,9 @@
 </button>
 <mat-menu #filterMenu="matMenu">
   <button mat-menu-item [matMenuTriggerFor]="chartsMenu">Tipo</button>
-  <button mat-menu-item (click)="show.next(true)">Mostrar Filtro</button>
+  <button mat-menu-item (click)="show.next(true); this.ngOnInit()">Mostrar Filtro</button>
   <button *ngIf="data | async as state" mat-menu-item (click)="clone(state.otherState)">
-    Clonar filtro {{ secondary ? "izquierdo" : "derecho" }}
+    Clonar filtro {{ secondary ? 'izquierdo' : 'derecho' }}
   </button>
   <button
     *ngIf="exportableData | async as data"
@@ -28,7 +28,7 @@
 <div [fxShow]="show$ | async">
   <div id="backdrop"></div>
   <div fxLayout="column" fxLayoutAlign="center center" id="dialog-wrapper">
-    <mat-card *ngIf="data | async as state" fxLayout="column">
+    <mat-card *ngIf="data | async as state" fxLayout="column" style="width: 90%; max-height: 90%">
       <mat-card-content fxLayout="row" fxLayout.lt-lg="column" style="padding: 1em; overflow-y: auto">
         <form
           [formGroup]="state.form"
@@ -37,7 +37,7 @@
           fxFlex="1 0 50"
           ngStyle.gt-md="overflow-y: auto; padding-right: 1em;"
         >
-          <div class="mat-title">Editar filtros del gráfico {{ secondary ? "derecho" : "izquierdo" }}</div>
+          <div class="mat-title">Editar filtros del gráfico {{ secondary ? 'derecho' : 'izquierdo' }}</div>
           <div class="mat-subheading-2">Filtros temporales</div>
           <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="0.5em">
             <button
@@ -48,7 +48,7 @@
               [matTooltip]="state.syncParams.dateStart ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.dateStart ? 'primary' : ''">
-                {{ state.syncParams.dateStart ? "sync" : "sync_disabled" }}
+                {{ state.syncParams.dateStart ? 'sync' : 'sync_disabled' }}
               </mat-icon>
             </button>
             <mat-form-field appearance="fill" fxFlex="auto">
@@ -81,7 +81,7 @@
               [matTooltip]="state.syncParams.hours ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.hours ? 'primary' : ''">
-                {{ state.syncParams.hours ? "sync" : "sync_disabled" }}
+                {{ state.syncParams.hours ? 'sync' : 'sync_disabled' }}
               </mat-icon>
             </button>
             <mat-form-field appearance="fill" fxFlex="auto">
@@ -92,8 +92,8 @@
             </mat-form-field>
             <mat-checkbox
               (change)="state.form.controls.hours.setValue($event.checked ? hoursIds : [])"
-              [checked]="state.form.value.hours.length === hours.length"
-              [indeterminate]="state.form.value.hours.length > 0 && state.form.value.hours.length < hours.length"
+              [checked]="state.form.value.hours?.length === hours.length"
+              [indeterminate]="state.form.value.hours!.length > 0 && state.form.value.hours!.length < hours.length"
               [disabled]="state.syncParams.hours"
             >
               Todas las horas
@@ -110,7 +110,7 @@
               [matTooltip]="state.syncParams.neighborhoods ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.neighborhoods ? 'primary' : ''">{{
-                state.syncParams.neighborhoods ? "sync" : "sync_disabled"
+                state.syncParams.neighborhoods ? 'sync' : 'sync_disabled'
               }}</mat-icon>
             </button>
           </div>
@@ -120,8 +120,8 @@
               <mat-form-field appearance="fill" fxFlex="auto">
                 <mat-label>Barrio</mat-label>
                 <mat-select formControlName="neighborhoods" multiple [disabled]="state.syncParams.neighborhoods">
-                  <mat-select-trigger *ngIf="state.form.value.neighborhoods.length > 0">
-                    {{ state.form.value.neighborhoods.length }} barrios seleccionados
+                  <mat-select-trigger *ngIf="state.form.value.neighborhoods!.length > 0">
+                    {{ state.form.value.neighborhoods?.length }} barrios seleccionados
                   </mat-select-trigger>
                   <div *ngFor="let adminLevel2 of groupedNeighborhoods | async" fxLayout="row">
                     <mat-checkbox
@@ -129,12 +129,14 @@
                         setSelectedNeighborhoods(
                           state.form.controls.neighborhoods,
                           $event.checked,
-                          state.form.value.neighborhoods,
+                          state.form.value.neighborhoods || [],
                           adminLevel2.neighborhoodIds
                         )
                       "
-                      [checked]="allSelected(state.form.value.neighborhoods, adminLevel2.neighborhoods)"
-                      [indeterminate]="someSelected(state.form.value.neighborhoods, adminLevel2.neighborhoods)"
+                      [checked]="allSelected(state.form.value.neighborhoods || [], adminLevel2.neighborhoods)"
+                      [indeterminate]="
+                        someSelected(state.form.value.neighborhoods || [], adminLevel2.neighborhoods)
+                      "
                       class="mat-optgroup-label"
                     ></mat-checkbox>
                     <mat-optgroup [label]="adminLevel2.label | titlecase" fxFlex="auto">
@@ -150,10 +152,10 @@
               </mat-form-field>
               <mat-checkbox
                 (change)="state.form.controls.neighborhoods.setValue($event.checked ? state.neighborhoodsIds : [])"
-                [checked]="state.form.value.neighborhoods.length === state.neighborhoodsIds.length"
+                [checked]="state.form.value.neighborhoods!.length === state.neighborhoodsIds.length"
                 [indeterminate]="
-                  state.form.value.neighborhoods.length > 0 &&
-                  state.form.value.neighborhoods.length < state.neighborhoodsIds.length
+                  state.form.value.neighborhoods!.length > 0 &&
+                  state.form.value.neighborhoods!.length < state.neighborhoodsIds.length
                 "
                 [disabled]="state.syncParams.neighborhoods"
               >
@@ -161,7 +163,12 @@
               </mat-checkbox>
             </div>
 
-            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="1em">
+            <div
+              class="automatic-selection-flex-container"
+              fxLayout="row"
+              fxLayoutAlign="start center"
+              fxLayoutGap="1em"
+            >
               <mat-slide-toggle
                 formControlName="autoSelectStreets"
                 color="primary"
@@ -176,6 +183,15 @@
               >
                 Autoseleccionar avenidas
               </mat-slide-toggle>
+
+              <button
+                *ngIf="this.selectedStreets.size > 0"
+                mat-raised-button
+                color="primary"
+                (click)="this.clearAllSelectedStreetsAndDisableToggles()"
+              >
+                Eliminar selección de calles
+              </button>
             </div>
 
             <div fxLayout="column">
@@ -267,7 +283,7 @@
               [matTooltip]="state.syncParams.metric ? 'Sincronizado' : 'No sincronizado'"
             >
               <mat-icon [color]="state.syncParams.metric ? 'primary' : ''">{{
-                state.syncParams.metric ? "sync" : "sync_disabled"
+                state.syncParams.metric ? 'sync' : 'sync_disabled'
               }}</mat-icon>
             </button>
           </div>

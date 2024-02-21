@@ -13,7 +13,7 @@
         <th mat-header-cell *matHeaderCellDef style="padding-top: 1.5em">{{ col.title }}</th>
         <td mat-cell *matCellDef="let element" [ngSwitch]="col.pipe" style="vertical-align: middle">
           <span *ngSwitchCase="'role'" [matTooltip]="element.isAdmin ? 'Admin' : 'Usuario'">
-            <mat-icon style="color: grey">{{ element.isAdmin ? "admin_panel_settings" : "person" }}</mat-icon>
+            <mat-icon style="color: grey">{{ element.isAdmin ? 'admin_panel_settings' : 'person' }}</mat-icon>
           </span>
           <span *ngSwitchCase="'options'" fxLayout="row wrap" fxLayoutAlign="end center">
             <ng-container *ngIf="!element.isAdmin">
@@ -59,17 +59,22 @@
             </mat-form-field>
 
             <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="1em" style="padding-bottom: 1em">
-              <button mat-flat-button color="warn" (click)="selectedUser.next()" fxFlex.lt-md="auto">
+              <button
+                mat-flat-button
+                color="warn"
+                (click)="selectedUser.next({ username, isAdmin: false })"
+                fxFlex.lt-md="auto"
+              >
                 Cancelar
               </button>
               <button
                 mat-raised-button
                 color="primary"
-                (click)="editUser(username, editUserForm.value.password)"
+                (click)="editUser(username, editUserForm.value.password!.valueOf())"
                 [disabled]="!editUserForm.valid && (loading | async)"
                 fxFlex.lt-md="auto"
               >
-                {{ (loading | async) ? "Editando usuario..." : "Guardar" }}
+                {{ (loading | async) ? 'Editando usuario...' : 'Guardar' }}
               </button>
             </div>
           </form>
@@ -91,7 +96,7 @@
     </table>
   </div>
   <mat-paginator
-    [fxHide]="(dataSource$ | async)?.data?.length === 0"
+    [hidden]="(dataSource$ | async)?.data?.length === 0"
     [pageSizeOptions]="pageSizeOptions"
   ></mat-paginator>
 </div>

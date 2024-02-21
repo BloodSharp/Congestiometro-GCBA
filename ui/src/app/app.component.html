@@ -5,8 +5,8 @@
 >
   <ng-container *ngIf="dataService.ready | async; else loading">
     <mat-toolbar role="toolbar" color="primary" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em">
-      <img src="/assets/logo-w.png" alt="escudo ciudad de buenos aires" style="height: 75%" />
-      <span style="color: white">Congestiómetro</span>
+      <img src="/assets/logo-w.svg" alt="escudo ciudad de buenos aires" style="height: 75%" />
+      <span style="color: black">Congestiómetro</span>
       <div fxLayout="row" fxLayoutAlign="space-between center center" fxLayoutGap="1em" fxFlex="1 0 auto">
         <ng-container *ngIf="leftChart | async as chartType">
           <app-filters [exportableData]="leftExportableData">
@@ -63,7 +63,7 @@
           <span>
             Mostrando {{ filters.metric?.name }} {{ filters.aggFunc?.name }}
             <ng-container *ngIf="(leftChart | async)?.id !== 'line'">
-              del {{ filters.dateStart | date: "shortDate" }} al {{ filters.dateEnd | date: "shortDate" }} |
+              del {{ filters.dateStart | date: 'shortDate' }} al {{ filters.dateEnd | date: 'shortDate' }} |
               <span *ngIf="filters.hours?.length === 24">Las 24 horas</span>
               <span *ngIf="(filters.hours?.length || 0) < 24">Horas: {{ getHoursString(filters.hours) }}</span>
             </ng-container>
@@ -87,7 +87,7 @@
                 class="no-border-top"
                 fxFlex="auto"
               >
-                <mat-chip-list #chipList>
+                <mat-chip-grid #chipList>
                   <mat-chip
                     *ngFor="let chart of selected"
                     (removed)="toggleComparativeChart('delete', chart, selected)"
@@ -104,7 +104,7 @@
                     [matChipInputFor]="chipList"
                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                   />
-                </mat-chip-list>
+                </mat-chip-grid>
                 <mat-autocomplete
                   #auto="matAutocomplete"
                   (optionSelected)="toggleComparativeChart('add', $event.option.value, selected, streetInput)"
@@ -160,7 +160,6 @@
                   [datasets]="barData.dataset"
                   [labels]="barData.labels"
                   [options]="config.options"
-                  [colors]="config.colors"
                   chartType="bar"
                   [legend]="showLabels(barData.dataset)"
                 >
@@ -181,7 +180,6 @@
                   [datasets]="dataInfo.dataset"
                   [labels]="dataInfo.labels"
                   [options]="config.options"
-                  [colors]="config.colors"
                   chartType="line"
                   [legend]="showLabels(dataInfo.dataset)"
                 >
@@ -201,7 +199,6 @@
                   [datasets]="lineWithMapData.dataset"
                   [labels]="lineWithMapData.labels"
                   [options]="config.options"
-                  [colors]="config.colors"
                   chartType="line"
                   [legend]="showLabels(lineWithMapData.dataset)"
                 >
@@ -233,11 +230,11 @@
                 <span *ngIf="difference.type === 'speed'">
                   ({{
                     (difference.difference >= 0 ? difference.difference : -1 * difference.difference) || 0
-                      | percent: "1.0-0"
+                      | percent: '1.0-0'
                   }})</span
                 >
                 <span *ngIf="difference.type !== 'speed'">
-                  ({{ difference.difference || 0 | percent: "1.0-0" }})</span
+                  ({{ difference.difference || 0 | percent: '1.0-0' }})</span
                 >
               </div>
               <div>
@@ -246,7 +243,6 @@
                   [datasets]="[{ data: [difference.difference] }]"
                   [labels]="[difference.label]"
                   [options]="comparisonOptions"
-                  [colors]="[{ backgroundColor: 'rgb(154 208 245)' }]"
                   chartType="horizontalBar"
                   [legend]="false"
                 >
@@ -257,7 +253,7 @@
           <div fxLayout="column" fxFlex="1 1 50">
             <div *ngIf="rightFilter | async as filters" class="mat-subheading-2" style="text-align: right">
               Mostrando {{ filters.metric?.name }} {{ filters.aggFunc?.name }} del
-              {{ filters.dateStart | date: "shortDate" }} al {{ filters.dateEnd | date: "shortDate" }} |
+              {{ filters.dateStart | date: 'shortDate' }} al {{ filters.dateEnd | date: 'shortDate' }} |
               <span *ngIf="filters.hours?.length === 24">Las 24 horas</span>
               <span *ngIf="(filters.hours?.length || 0) < 24"> Horas: {{ getHoursString(filters.hours) }} </span>
             </div>
@@ -286,7 +282,6 @@
                       [datasets]="barData.dataset"
                       [labels]="barData.labels"
                       [options]="config.options"
-                      [colors]="config.colors"
                       chartType="bar"
                       [legend]="showLabels(barData.dataset)"
                     >
@@ -304,7 +299,7 @@
 
 <ng-template #loading>
   <mat-toolbar fxLayout="column" color="primary" fxLayoutAlign="center center" style="height: 100vh; width: 100vw">
-    <img src="/assets/logo-w.png" alt="escudo ciudad de buenos aire" style="height: 15%; margin-bottom: 2em" />
+    <img src="/assets/logo-w.svg" alt="escudo ciudad de buenos aire" style="height: 15%; margin-bottom: 2em" />
     <div>Bienvenido al congestiómetro de la Ciudad de Buenos aires</div>
     <div>Estamos cargando los datos necesarios, esta operación puede demorar unos segundos</div>
     <div style="margin-top: 5em">{{ dataService.dataState | async }}</div>
@@ -313,8 +308,8 @@
 
 <ng-template #login>
   <mat-toolbar role="toolbar" color="primary" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1em">
-    <img src="/assets/logo-w.png" alt="escudo ciudad de buenos aires" style="height: 75%" />
-    <span style="color: white">Congestiómetro</span>
+    <img src="/assets/logo-w.svg" alt="escudo ciudad de buenos aires" style="height: 75%" />
+    <span style="color: black">Congestiómetro</span>
   </mat-toolbar>
   <app-login></app-login>
 </ng-template>

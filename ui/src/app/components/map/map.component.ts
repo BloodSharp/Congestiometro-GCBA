@@ -55,13 +55,13 @@ export class MapComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.redraw.pipe(debounceTime(100)).subscribe(() => {
         if (this.map) this.map.updateSize();
-      })
+      }),
     );
     this.subscriptions.push(
       this.data
         .pipe(
           switchMap(({ lines }) => lines),
-          filter(isValid)
+          filter(isValid),
         )
         .subscribe((lines) => {
           if (!this.map) {
@@ -88,14 +88,14 @@ export class MapComponent implements OnInit, OnDestroy {
                   feature.setStyle([
                     new Style({ stroke: new Stroke({ color: this.colors[color - 1] || 'black', width: 4 }) }),
                   ]);
-                  return feature;
-                })
+                  return feature as never;
+                }),
             );
 
             this.view.fit(this.lineVectorSource.getExtent(), { size: this.map.getSize(), maxZoom: 13 });
           }
           this.lineVectorSource.changed();
-        })
+        }),
     );
   }
 

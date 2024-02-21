@@ -9,7 +9,7 @@ export const daysRange = (start: string, end: string) => {
   const startDate = new Date(start);
   const days = Math.round((new Date(end).getTime() - startDate.getTime()) / (1000 * 3600 * 24));
   return range(days).map(
-    (differenceInDays) => new Date(new Date(start).setDate(startDate.getDate() + differenceInDays))
+    (differenceInDays) => new Date(new Date(start).setDate(startDate.getDate() + differenceInDays)),
   );
 };
 

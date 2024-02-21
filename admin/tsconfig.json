@@ -4,9 +4,7 @@
     "outDir": "lib",
     "sourceMap": false,
     "target": "es2019",
-    "lib": [
-      "es2019"
-    ],
+    "lib": ["es2019"],
     "experimentalDecorators": true,
     "strict": true,
     "strictPropertyInitialization": false,
@@ -17,7 +15,5 @@
     "esModuleInterop": true
   },
   "compileOnSave": true,
-  "files": [
-    "index.ts"
-  ]
+  "files": ["index.ts"]
 }

@@ -2,7 +2,7 @@ import { TitleCasePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { BehaviorSubject, combineLatest, Subscription, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, firstValueFrom, Subscription, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Feature, Map, View } from 'ol';
@@ -69,10 +69,14 @@ export class VectorMapComponent implements OnInit {
     '#6e7e80bf', // '#rgba(110,126,128,0.8)',
   ];
 
-  constructor(public dataService: DataService, private activatedRoute: ActivatedRoute, private router: Router) {}
+  constructor(
+    public dataService: DataService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  ) {}
 
   public async ngOnInit() {
-    await timer(100).toPromise();
+    await firstValueFrom(timer(100));
     this.subscription = combineLatest([
       this.dataService.neighborhoods,
       this.dataService.urlParams.pipe(map(({ left }) => left.state.neighborhoods || [])),
@@ -115,8 +119,8 @@ export class VectorMapComponent implements OnInit {
           const feature = new Feature({ geometry: new MultiPolygon(points) });
           const style = new Style(this.getStyleOptions(highlight, true, color, disabled, label));
           feature.setStyle(style);
-          return feature;
-        })
+          return feature as never;
+        }),
       );
 
       this.map.on('pointermove', (event) => {
@@ -127,15 +131,19 @@ export class VectorMapComponent implements OnInit {
       this.map.on('click', (event) => {
         const feature = this.map.forEachFeatureAtPixel(this.map.getEventPixel(event.originalEvent), (f) => f);
         if (feature instanceof Feature) {
-          const text = (feature.getStyle() as Style).getText().getText();
+          const text = (feature.getStyle() as Style)?.getText()?.getText();
           const selected = this.newSelectedNeighborhoods.value;
-          const newNeighborhood = selected.find((n) => n.lowerAdminLevelName === text?.toLocaleLowerCase());
+          const newNeighborhood = selected.find(
+            (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLowerCase(),
+          );
+          //const newNeighborhood = selected.find((n) => n.lowerAdminLevelName === text?.toLocaleLowerCase());
           const newSelected = !!newNeighborhood
             ? selected.filter((nei) => nei.lowerAdminLevelId !== newNeighborhood.lowerAdminLevelId)
             : [
                 ...selected,
                 allNeighborhoods.find(
-                  (neighborhood) => neighborhood.lowerAdminLevelName === text?.toLocaleLowerCase()
+                  (neighborhood) =>
+                    neighborhood.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase(),
                 ),
               ].filter(isValid);
           this.newSelectedNeighborhoods.next(newSelected);
@@ -167,7 +175,7 @@ export class VectorMapComponent implements OnInit {
     selected: boolean,
     fillColor: string,
     disabled: boolean,
-    text: string
+    text: string,
   ): Options {
     const alpha = disabled ? '40' : 'ff';
     const color = `#${fillColor.slice(1, 7)}${alpha}`;
@@ -181,16 +189,19 @@ export class VectorMapComponent implements OnInit {
     feature: Feature<Geometry>,
     shapes: Shape[],
     action: 'add' | 'remove',
-    selected: boolean
+    selected: boolean,
   ) {
-    const text = (feature.getStyle() as Style)?.getText()?.getText();
+    let text = (feature.getStyle() as Style)?.getText()?.getText();
+    if (text !== undefined && text?.length > 0) text = text[0];
     const { color, disabled } = shapes.filter((shape) => shape.label === text)[0];
     this.map.getTargetElement().style.cursor = feature && !disabled ? 'pointer' : '';
     const alreadySelected = this.newSelectedNeighborhoods.value.some(
-      (n) => n.lowerAdminLevelName === text?.toLocaleLowerCase()
+      (n) => n.lowerAdminLevelName === text?.toLocaleString()?.toLocaleLowerCase(),
     );
     if (!disabled && (!alreadySelected || selected)) {
-      feature.setStyle(new Style(this.getStyleOptions(action === 'add', selected, color, disabled, text || '')));
+      feature.setStyle(
+        new Style(this.getStyleOptions(action === 'add', selected, color, disabled, text?.toString() || '')),
+      );
     }
   }
 

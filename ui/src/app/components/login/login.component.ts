@@ -18,13 +18,21 @@ export class LoginComponent {
   public loading = new BehaviorSubject<boolean>(false);
   public loginForm: FormGroup;
 
-  constructor(fb: FormBuilder, private userService: UserService) {
+  constructor(
+    fb: FormBuilder,
+    private userService: UserService,
+  ) {
     this.loginForm = fb.group({
       username: [null, [Validators.required]],
       password: [null, [Validators.required]],
     });
   }
 
+  /**
+   * Sets the user authorization by specifying the username and password.
+   * @param {string} username The username as string.
+   * @param {string} password The password as string.
+   */
   public login(username: string, password: string) {
     this.errorMessage.next('');
     this.loading.next(true);

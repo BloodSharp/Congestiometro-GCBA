@@ -42,9 +42,9 @@ export class DisplayLogService {
         mat-stroked-button
         style="margin-left: 1em;"
         (click)="dismissWithAction()"
-        [routerLink]="data.action?.url"
+        [routerLink]="data.action.url"
       >
-        {{ data.action?.text }}
+        {{ data.action.text }}
       </button>
       <button *ngIf="!data.action" mat-icon-button (click)="closeAlert()">
         <mat-icon> close </mat-icon>
@@ -57,7 +57,7 @@ export class DisplayLogComponent {
   constructor(
     private snackBarRef: MatSnackBarRef<DisplayLogComponent>,
     @Inject(MAT_SNACK_BAR_DATA)
-    public data: DataType
+    public data: DataType,
   ) {}
 
   public closeAlert() {

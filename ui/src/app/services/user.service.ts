@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Apollo } from 'apollo-angular';
 
-import { fromEvent, merge, of, Subject, timer } from 'rxjs';
+import { firstValueFrom, fromEvent, merge, of, Subject, timer } from 'rxjs';
 import { catchError, map, mapTo, shareReplay, switchMap, tap } from 'rxjs/operators';
 
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 export interface DBUser {
   username: string;
 }
@@ -24,28 +24,31 @@ export class UserService {
       const token = localStorage.getItem('token');
       // console.log({ token });
       if (!token) return of(null);
-      const decodedToken = jwt_decode(token) as { id: string; username: string; exp: number };
+      const decodedToken = jwtDecode<{ id: string; username: string; exp: number }>(token);
       // console.log({ decodedToken });
       const expired = new Date().getTime() - decodedToken.exp * 1000 > oneHour;
       if (expired) {
         return this.refreshTokens().pipe(
           mapTo(null),
-          catchError(() => of(null))
+          catchError(() => of(null)),
         );
       } else {
         const user = { username: decodedToken.username, isAdmin: decodedToken.username === 'admin' } as User;
         return of(Object.assign(user, { token }));
       }
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
 
-  constructor(private http: HttpClient, private apollo: Apollo) {
+  constructor(
+    private http: HttpClient,
+    private apollo: Apollo,
+  ) {
     fromEvent<StorageEvent>(window, 'storage').subscribe(console.log);
   }
 
   public async login(username: string, password: string) {
-    const { token } = (await this.http.post('/auth/login', { username, password }).toPromise()) as {
+    const { token } = (await firstValueFrom(await this.http.post('/auth/login', { username, password }))) as {
       token: string;
     };
     localStorage.setItem('token', token);
@@ -63,7 +66,7 @@ export class UserService {
       tap(({ token }) => {
         localStorage.setItem('token', token);
         this.statusChange.next();
-      })
+      }),
     );
   };
 
@@ -72,9 +75,9 @@ export class UserService {
   }
 
   public createUser = (username: string, password: string) => {
-    return this.http
-      .post<User>('/auth/users', { username, password }, { headers: this.getAuthHeaders() })
-      .toPromise();
+    return firstValueFrom(
+      this.http.post<User>('/auth/users', { username, password }, { headers: this.getAuthHeaders() }),
+    );
   };
 
   public getUsers() {
@@ -84,12 +87,12 @@ export class UserService {
   }
 
   public editUser(username: string, password: string) {
-    return this.http
-      .patch(`/auth/users/${username}`, { password }, { headers: this.getAuthHeaders() })
-      .toPromise();
+    return firstValueFrom(
+      this.http.patch(`/auth/users/${username}`, { password }, { headers: this.getAuthHeaders() }),
+    );
   }
 
   public deleteUser = (username: string) => {
-    return this.http.delete(`/auth/users/${username}`, { headers: this.getAuthHeaders() }).toPromise();
+    return firstValueFrom(this.http.delete(`/auth/users/${username}`, { headers: this.getAuthHeaders() }));
   };
 }

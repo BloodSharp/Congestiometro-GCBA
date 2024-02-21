@@ -28,14 +28,14 @@ export class UsersComponent {
   private updateUsers = new Subject<void>();
   public users = this.updateUsers.pipe(
     startWith(1),
-    switchMap(() => this.userService.getUsers())
+    switchMap(() => this.userService.getUsers()),
   );
 
   public creatingNewUser = new Subject<boolean>();
   public loading = new BehaviorSubject(false);
   public form = new FormGroup({
-    username: new FormControl(null, [Validators.required]),
-    password: new FormControl(null, [Validators.required]),
+    username: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+    password: new FormControl(null, [Validators.required, Validators.minLength(1)]),
   });
 
   public alreadyExistingUsername = combineLatest([this.form.controls.username.valueChanges, this.users]).pipe(
@@ -47,17 +47,20 @@ export class UsersComponent {
     tap((exists) => {
       if (exists) this.form.controls.username.setErrors({ ...this.form.controls.username.errors, exists });
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   public validForm = combineLatest([this.loading, this.alreadyExistingUsername, this.form.statusChanges]).pipe(
     map(([loading, existingUsername, status]) => ({
       valid: !loading && !existingUsername && status === 'VALID',
     })),
-    startWith({ valid: false })
+    startWith({ valid: false }),
   );
 
-  constructor(public userService: UserService, private displayLog: DisplayLogService) {}
+  constructor(
+    public userService: UserService,
+    private displayLog: DisplayLogService,
+  ) {}
 
   public createUser({ username, password }: { username: string; password: string }) {
     this.loading.next(true);

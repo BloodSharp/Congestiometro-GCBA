@@ -12,7 +12,7 @@ services:
     environment:
       POSTGRES_PASSWORD: ${ADMIN_SECRET:-congestiometro}
   admin:
-    image: node:16-alpine
+    image: node:20-alpine
     depends_on:
       - "postgres"
     restart: always
@@ -30,14 +30,14 @@ services:
     command: >
       sh -c "npm i && npm start"
   graphql-engine:
-    image: hasura/graphql-engine:v2.0.10
+    image: hasura/graphql-engine:v2.36.2
     depends_on:
       - "admin"
     restart: always
     environment:
       HASURA_GRAPHQL_METADATA_DATABASE_URL: postgres://postgres:congestiometro@postgres:5432/postgres
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:congestiometro@postgres:5432/postgres
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_DEV_MODE: "false"
       HASURA_GRAPHQL_NO_OF_RETRIES: 5
       HASURA_GRAPHQL_ADMIN_SECRET: ${ADMIN_SECRET:-congestiometro}
@@ -61,6 +61,13 @@ services:
     working_dir: /src
     command: >
       sh -c "gunicorn --bind 0.0.0.0:6001 --workers 1 --threads 1 --timeout 0 main:app"
+  ui:
+    image: node:20-alpine
+    volumes:
+      - ./ui:/src
+    working_dir: /src
+    command: >
+      sh -c "npm i && npm run build-production"
   caddy:
     image: caddy/caddy
     restart: always
@@ -71,5 +78,3 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./.caddy:/root/.caddy
       - ./ui/dist:/var/www
-
-

@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import localeEsAR from '@angular/common/locales/es-AR';
 registerLocaleData(localeEsAR, 'es-AR');
 
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from 'ngx-flexible-layout';
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +25,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 
-import { ChartsModule as ng2ChartsModule } from 'ng2-charts';
+import { NgChartsModule as ng2ChartsModule } from 'ng2-charts';
 
 import { GraphQLModule } from './graphql.module';
 import { DisplayLogComponent } from './services/display-log.service';

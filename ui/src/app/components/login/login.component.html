@@ -8,7 +8,14 @@
       id="login-form"
     >
       <mat-form-field>
-        <input matInput formControlName="username" placeholder="Usuario" type="text" required />
+        <input
+          matInput
+          formControlName="username"
+          [placeholder]="this.loginForm.controls['username'].value?.toString()?.length === 0 ? 'Usuario' : ''"
+          type="text"
+          required
+          autocomplete="off"
+        />
         <mat-error *ngIf="!loginForm.controls['username'].valid && loginForm.controls['username'].touched">
           Este campo es requerido
         </mat-error>
@@ -17,12 +24,13 @@
         <input
           matInput
           formControlName="password"
-          placeholder="Contraseña"
+          [placeholder]="this.loginForm.controls['password'].value?.toString().length === 0 ? 'Contraseña' : ''"
           [type]="showPassword ? 'text' : 'password'"
           required
+          autocomplete="off"
         />
         <mat-icon style="cursor: pointer" matSuffix (click)="showPassword = !showPassword">
-          {{ showPassword ? "visibility" : "visibility_off" }}
+          {{ showPassword ? 'visibility' : 'visibility_off' }}
         </mat-icon>
         <mat-error *ngIf="!loginForm.controls['password'].valid && loginForm.controls['password'].touched">
           Este campo es requerido
@@ -51,7 +59,7 @@
     class="error"
     style="margin-top: 2em"
   >
-    <span>{{ msg }}</span>
+    <span style="margin-left: 2em">{{ msg }}</span>
     <span fxFlex></span>
     <button mat-icon-button (click)="errorMessage.next('')">
       <mat-icon aria-label="close">close</mat-icon>

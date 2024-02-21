@@ -32,6 +32,8 @@
           },
           "configurations": {
             "production": {
+              "sourceMap": false,
+              "optimization": true,
               "budgets": [],
               "fileReplacements": [
                 {
@@ -96,5 +98,8 @@
       }
     }
   },
-  "defaultProject": "ui"
+  "defaultProject": "ui",
+  "cli": {
+    "analytics": false
+  }
 }

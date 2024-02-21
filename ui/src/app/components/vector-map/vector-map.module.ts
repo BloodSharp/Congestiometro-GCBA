@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from 'ngx-flexible-layout';
 
 import { VectorMapComponent } from './vector-map.component';
 
