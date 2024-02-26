@@ -59,10 +59,10 @@ services:
       - "ETL"
     restart: always
     volumes:
-      - ./model:/src
-    working_dir: /src
+      - ./model:/app
+    working_dir: /app
     command: >
-      sh -c "gunicorn --bind 0.0.0.0:6001 --workers 1 --threads 1 --timeout 0 main:app"
+      sh -c "chmod +x /app/start.sh && /app/start.sh"
   ui:
     image: node:20-alpine
     volumes:
