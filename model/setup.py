@@ -45,7 +45,7 @@ setup(
         [
             Extension(
                 name="model_module",
-                sources=["model_module.pyx"],
+                sources=["./src/model_module.pyx"],
             ),
         ],
         build_dir="build",
