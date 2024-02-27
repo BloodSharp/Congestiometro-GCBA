@@ -8,7 +8,6 @@ from Cython.Distutils import build_ext
 # https://stackoverflow.com/questions/38523941/change-cythons-naming-rules-for-so-files
 def get_ext_filename_without_platform_suffix(filename, suffix):
     name, ext = os.path.splitext(filename)
-    #name, ext = os.path.split(filename, '.')
     ext_suffix = suffix
 
     if ext_suffix == ext:
@@ -24,18 +23,10 @@ def get_ext_filename_without_platform_suffix(filename, suffix):
         return name[:idx] + ext
 
 class BuildExtWithoutPlatformSuffix(build_ext):
-    # def get_ext_fullpath(self, ext_name):
-    #     filename = super().get_ext_filename(ext_name)
-    #     modified_filename = get_ext_filename_without_platform_suffix(filename, sysconfig.get_config_var('EXT_SUFFIX'))
-    #     modified_filename = get_ext_filename_without_platform_suffix(modified_filename, sysconfig.get_config_var('py_version_short'))
-    #     return get_ext_filename_without_platform_suffix(modified_filename, sys.platform)
-        #return get_ext_filename_without_platform_suffix(modified_filename, sys.platform + sysconfig.get_config_var('py_version_short'))
     def get_ext_filename(self, ext_name):
         filename = super().get_ext_filename(ext_name)
         modified_filename = get_ext_filename_without_platform_suffix(filename, sysconfig.get_config_var('EXT_SUFFIX'))
         return 'lib'+modified_filename
-        #modified_filename = get_ext_filename_without_platform_suffix(modified_filename, sysconfig.get_config_var('py_version_short'))
-        #return get_ext_filename_without_platform_suffix(modified_filename, sys.platform + sysconfig.get_config_var('py_version_short'))
 
 setup(
     cmdclass={'build_ext': BuildExtWithoutPlatformSuffix},
@@ -45,7 +36,7 @@ setup(
         [
             Extension(
                 name="model_module",
-                sources=["model_module.pyx"],
+                sources=["./src/model_module.pyx"],
             ),
         ],
         build_dir="build",

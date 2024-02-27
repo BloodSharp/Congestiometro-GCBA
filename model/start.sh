@@ -36,7 +36,7 @@ if [ ! -f $FINAL_MODEL_MODULE_SHARED_OBJECT ]; then
     FINAL_MODEL_MODULE_SHARED_OBJECT=${MODEL_MODULE_SHARED_OBJECT_PYTHON}
 fi
 
-FILES=('./libmodel_module.so' './model-application' './build/model_module.c' './build/model_module.h' $FINAL_MODEL_MODULE_SHARED_OBJECT)
+FILES=('./libmodel_module.so' './model-application' './build/src/model_module.c' './build/src/model_module.h' $FINAL_MODEL_MODULE_SHARED_OBJECT)
 ALL_FILES_ARE_AVAILABLE=true
 
 # End of variables section.
@@ -66,7 +66,7 @@ if [ "$ALL_FILES_ARE_AVAILABLE" = "false" ]; then
     ln -s ${FINAL_MODEL_MODULE_SHARED_OBJECT} libmodel_module.so
 
     # Step 7: Build the main application using the main module.
-    gcc ${CFLAGS} -Wno-deprecated-declarations -o model-application model-application.c ${LDFLAGS} -L ${CURRENT_SCRIPT_FOLDER} -lmodel_module
+    gcc ${CFLAGS} -Wno-deprecated-declarations -o ${CURRENT_SCRIPT_FOLDER}/model-application ${CURRENT_SCRIPT_FOLDER}/src/model-application.c ${LDFLAGS} -L ${CURRENT_SCRIPT_FOLDER} -lmodel_module
 fi
 
 # Finally execute the main application by assigning the current working directory to the linux loader to find
