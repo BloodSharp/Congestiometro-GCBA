@@ -1,4 +1,9 @@
-from tensorflow.keras import layers, Model, callbacks
+import random
+from time import sleep
+import numpy as np
+import pandas as pd
+from sklearn.neighbors import KDTree
+from tensorflow import layers, Model, callbacks
 from shapely import wkb
 import psycopg2
 
@@ -168,7 +173,8 @@ def train():
         mode="min",
     )
 
-    for data in dataGen():
+    #for data in dataGen():
+    for data in gen:
         try:
             model.fit(
                 data,
@@ -181,4 +187,3 @@ def train():
             sleep(10000)  # milliseconds
             pass
     return model
-
