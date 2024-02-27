@@ -36,5 +36,5 @@ def predict():
         app.logger.error(err)
         return jsonify({"status": "unexpected error"}), 500
 
-cdef public run_prediction_model_main():
+cdef public void run_prediction_model_main():
     app.run(host="0.0.0.0", port=6001, debug=True)
