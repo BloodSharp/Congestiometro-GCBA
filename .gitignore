@@ -62,5 +62,5 @@ bun.lockb
 
 # Model modules
 model/build/
-model/libmodel_module.so
+model/lib*.*
 model/model-application*

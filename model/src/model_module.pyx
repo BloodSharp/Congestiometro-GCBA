@@ -4,13 +4,6 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-try:
-    model = tf.keras.models.load_model("./model")
-except:
-    from train import train
-
-    model = train()
-
 postgres_conn = psycopg2.connect(
     **{
         "host": "postgres",
@@ -21,6 +14,12 @@ postgres_conn = psycopg2.connect(
     }
 )
 
+try:
+    model = tf.keras.models.load_model("./model")
+except:
+    from train import train
+
+    model = train(postgres_conn)
 
 @app.route("/predict", methods=["POST"])
 def predict():

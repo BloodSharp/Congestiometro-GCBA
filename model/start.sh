@@ -3,7 +3,7 @@
 # Begin of variables section.
 
 # Gets the current script folder.
-CURRENT_SCRIPT_FOLDER=$(cd "${0%/*}" && echo $PWD)
+CURRENT_SCRIPT_FOLDER=$(cd "${0%/*}" && echo $PWD)/
 
 # Gets the current kernel name as lowercase string.
 CURRENT_KERNEL_NAME=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -36,7 +36,16 @@ if [ ! -f $FINAL_MODEL_MODULE_SHARED_OBJECT ]; then
     FINAL_MODEL_MODULE_SHARED_OBJECT=${MODEL_MODULE_SHARED_OBJECT_PYTHON}
 fi
 
-FILES=('./libmodel_module.so' './model-application' './build/src/model_module.c' './build/src/model_module.h' $FINAL_MODEL_MODULE_SHARED_OBJECT)
+# Do the same thing for the model training module.
+MODEL_TRAINING_MODULE_SHARED_OBJECT_CYTHON=./build/lib.${CURRENT_KERNEL_NAME}-${CURRENT_ARCHITECTURE}-cpython-${CURRENT_PYTHON_THREE_VERSION_NO_DOTS}/libmodel_training.so
+MODEL_TRAINING_MODULE_SHARED_OBJECT_PYTHON=./build/lib.${CURRENT_KERNEL_NAME}-${CURRENT_ARCHITECTURE}-${CURRENT_PYTHON_THREE_VERSION}/libmodel_training.so
+
+FINAL_MODEL_TRAINING_MODULE_SHARED_OBJECT=${MODEL_TRAINING_MODULE_SHARED_OBJECT_CYTHON}
+if [ ! -f $FINAL_MODEL_TRAINING_MODULE_SHARED_OBJECT ]; then
+    FINAL_MODEL_TRAINING_MODULE_SHARED_OBJECT=${MODEL_TRAINING_MODULE_SHARED_OBJECT_PYTHON}
+fi
+
+FILES=(${CURRENT_SCRIPT_FOLDER}'libmodel_module.so' ${CURRENT_SCRIPT_FOLDER}'model-application' ${CURRENT_SCRIPT_FOLDER}'build/src/model_module.c' ${CURRENT_SCRIPT_FOLDER}'build/src/model_module.h' ${CURRENT_SCRIPT_FOLDER}'build/src/model_training.c' ${CURRENT_SCRIPT_FOLDER}'build/src/model_training.h' $FINAL_MODEL_MODULE_SHARED_OBJECT $FINAL_MODEL_TRAINING_MODULE_SHARED_OBJECT)
 ALL_FILES_ARE_AVAILABLE=true
 
 # End of variables section.
@@ -54,7 +63,7 @@ done
 # and start
 if [ "$ALL_FILES_ARE_AVAILABLE" = "false" ]; then
     # Step 3: Remove the build directory, the symbolic link from the model module and the built application.
-    rm -Rf build/ libmodel_module.so model-application
+    rm -Rf ${CURRENT_SCRIPT_FOLDER}build/ ${CURRENT_SCRIPT_FOLDER}libmodel_module.so ${CURRENT_SCRIPT_FOLDER}libmodel_training.so ${CURRENT_SCRIPT_FOLDER}model-application
 
     # Step 4: Generate the main application module.
     python${CURRENT_PYTHON_THREE_VERSION} setup.py build_ext
@@ -63,14 +72,15 @@ if [ "$ALL_FILES_ARE_AVAILABLE" = "false" ]; then
     sleep 3
 
     # Step 6: Generate the symbolic link to the main application module.
-    ln -s ${FINAL_MODEL_MODULE_SHARED_OBJECT} libmodel_module.so
+    ln -s ${FINAL_MODEL_MODULE_SHARED_OBJECT} ${CURRENT_SCRIPT_FOLDER}libmodel_module.so
+    ln -s ${FINAL_MODEL_TRAINING_MODULE_SHARED_OBJECT} ${CURRENT_SCRIPT_FOLDER}libmodel_training.so
 
     # Step 7: Build the main application using the main module.
-    gcc ${CFLAGS} -Wno-deprecated-declarations -o ${CURRENT_SCRIPT_FOLDER}/model-application ${CURRENT_SCRIPT_FOLDER}/src/model-application.c ${LDFLAGS} -L ${CURRENT_SCRIPT_FOLDER} -lmodel_module
+    gcc ${CFLAGS} -Wno-deprecated-declarations -o ${CURRENT_SCRIPT_FOLDER}model-application ${CURRENT_SCRIPT_FOLDER}src/model-application.c ${LDFLAGS} -L ${CURRENT_SCRIPT_FOLDER} -lmodel_module -lmodel_training
 fi
 
 # Finally execute the main application by assigning the current working directory to the linux loader to find
 # the main application module as "LD_LIBRARY_PATH=${CURRENT_SCRIPT_FOLDER} ${CURRENT_SCRIPT_FOLDER}/model-application" at the docker compose configuration file.
-if [ -f ${CURRENT_SCRIPT_FOLDER}/model-application ]; then
-    LD_LIBRARY_PATH=${CURRENT_SCRIPT_FOLDER} ${CURRENT_SCRIPT_FOLDER}/model-application
+if [ -f ${CURRENT_SCRIPT_FOLDER}model-application ]; then
+    LD_LIBRARY_PATH=${CURRENT_SCRIPT_FOLDER} ${CURRENT_SCRIPT_FOLDER}model-application
 fi

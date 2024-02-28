@@ -38,6 +38,10 @@ setup(
                 name="model_module",
                 sources=["./src/model_module.pyx"],
             ),
+            Extension(
+                name="model_training",
+                sources=["./src/model_training.pyx"],
+            )
         ],
         build_dir="build",
     ),
