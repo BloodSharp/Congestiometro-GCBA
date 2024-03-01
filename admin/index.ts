@@ -198,6 +198,11 @@ app.delete('/users/:username', async (req: express.Request, res: express.Respons
   res.status(405).json({ message: 'not implemented yet' });
 });
 
+app.post('/predict', async (req: express.Request, res: express.Response) => {
+  const responseFromModel = await axios.post('http://model:6001/predict', req.body);
+  res.status(responseFromModel.status).json(responseFromModel.data);
+});
+
 app.use((req: express.Request, res: express.Response) => res.sendStatus(404).end());
 
 app.listen(8888, () => console.log('Authentication server runnig at port 8888'));

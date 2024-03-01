@@ -19,10 +19,10 @@ import {
 import { WKT } from 'ol/format';
 import { MultiLineString as OlMLS, MultiPolygon, Polygon } from 'ol/geom';
 
-import { BehaviorSubject, combineLatest, from, Observable, of, ReplaySubject, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, firstValueFrom, from, Observable, of, ReplaySubject, timer } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 
-import { AggFuncType, metrics, MetricType } from './chartTypes';
+import { AggFuncType, hours, metrics, MetricType } from './chartTypes';
 import {
   JamsGQL,
   EvolutivoGQL,
@@ -32,10 +32,13 @@ import {
   LinesGQL,
   StreetsGQL,
   Admin_LevelsGQL,
+  Evolutivo_Type,
 } from './graphql';
 import { indexedDb, Line as BaseLine, Street as BaseStreet, AdminLevel as BaseAdminLevel } from './indexedDb';
 import { daysRange, getPartialDate, isValid, range } from './utils';
 import { UserService } from './user.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { QueryResult } from '@apollo/client';
 
 export const getTurfFeature = (polygon: Polygon | MultiPolygon) => {
   return polygon instanceof Polygon
@@ -83,6 +86,16 @@ export interface ComparativeData {
   data: Observable<{ dataset: { label: string; data: number[] }[]; labels: string[]; unit: string }>;
   exportableData: Observable<{ street: string; year: number; month: number; val: number }[]>;
 }
+
+type Predictivo_type = {
+  __typename?: 'predictivo_type';
+  index: string;
+  val: number;
+  val7: number;
+  val14: number;
+  val21: number;
+  val364: number;
+};
 
 @Injectable({ providedIn: 'root' })
 export class DataService {
@@ -421,6 +434,58 @@ export class DataService {
       });
   }
 
+  private averageNumber(list: number[]): number {
+    if (list.length > 0) {
+      return list.reduce((prev, curr) => prev + curr) / list.length;
+    }
+    return 0;
+  }
+  private addZeroesPadding(theNumber: number, minimumZeroesNumber: number): string {
+    const minimumZeroesNumberpadding = minimumZeroesNumber * 10;
+    let returnValueAsString = theNumber.toString();
+    if (theNumber < minimumZeroesNumberpadding) {
+      returnValueAsString = '0'.repeat(minimumZeroesNumber) + returnValueAsString;
+    }
+    return returnValueAsString.toString();
+  }
+  private toPostgreSQLTimeStampConvertionFormat(date: string): string {
+    const theFullDate = new Date(date);
+    const year = theFullDate.getFullYear();
+    const month = this.addZeroesPadding(theFullDate.getMonth() + 1, 1);
+    const day = this.addZeroesPadding(theFullDate.getDate(), 1);
+    const hours = this.addZeroesPadding(theFullDate.getHours(), 1);
+    const minutes = this.addZeroesPadding(theFullDate.getMinutes(), 1);
+    const seconds = this.addZeroesPadding(theFullDate.getSeconds(), 1);
+    return (year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds).toString();
+  }
+  private async getPredictivo(queryParams: QueryParams): Promise<Evolutivo_Type[]> {
+    const predictionParameters = {
+      date_from: this.toPostgreSQLTimeStampConvertionFormat(queryParams.date_from),
+      date_to: this.toPostgreSQLTimeStampConvertionFormat(queryParams.date_to),
+      hours: queryParams.hours,
+      lines: queryParams.lines,
+      working_days: queryParams.working_days,
+      metric: queryParams.metric,
+      agg_func: queryParams.aggFunc,
+    };
+    const predictions = await this.http.post<Predictivo_type[]>('/predict', predictionParameters).toPromise();
+    console.log('Las predicciones son las siguientes: ' + predictions);
+    let returnValuesAsEvolutiveArray: Evolutivo_Type[] = [];
+    predictions?.map((prediction) => {
+      returnValuesAsEvolutiveArray.push({
+        index: prediction.index,
+        val: this.averageNumber([
+          prediction.val,
+          prediction.val7,
+          prediction.val14,
+          prediction.val21,
+          prediction.val364,
+        ]),
+      });
+    });
+    return returnValuesAsEvolutiveArray;
+  }
+
   private getEvolutivo(queryParams: QueryParams) {
     const sameDay = queryParams.date_from.slice(0, 10) === queryParams.date_to.slice(0, 10);
     const realTime = sameDay && new Date(queryParams.date_from).toDateString() === new Date().toDateString();
@@ -431,7 +496,8 @@ export class DataService {
     const { metric, ...params } = queryParams;
     const obs = combineLatest([
       this.evolutivoGQL.fetch({ ...params, metric }).pipe(map((v) => v.data.get_evolutivo)),
-      this.predictivoGQL.fetch({ ...params, metric }).pipe(map((v) => v.data.get_predictivo)),
+      this.getPredictivo(queryParams),
+      //this.predictivoGQL.fetch({ ...params, metric }).pipe(map((v) => v.data.get_predictivo)),
     ]).pipe(
       map((datas) => datas.map((data) => data.map((v) => ({ val: Math.max(v.val, 0), label: v.index })))),
       map((datas) =>
@@ -503,6 +569,7 @@ export class DataService {
   }
 
   constructor(
+    private http: HttpClient,
     private userService: UserService,
     private activatedRoute: ActivatedRoute,
     public jamsGQL: JamsGQL,

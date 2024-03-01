@@ -5,8 +5,8 @@ select t.index,
   val21,
   val364
 from get_evolutivo(
-    '{date_from}'::timestamp,
-    '{date_to}'::timestamp,
+    TO_TIMESTAMP('{date_from}', 'YYYY-MM-DDTHH24:MI:ss')::timestamp,
+    TO_TIMESTAMP('{date_to}', 'YYYY-MM-DDTHH24:MI:ss')::timestamp,
     '{hours}',
     '{lines}',
     '{working_days}',
@@ -15,13 +15,14 @@ from get_evolutivo(
   ) t
   left join (
     select CASE
-        WHEN '{date_from}'::date = '{date_to}'::date THEN index
+        WHEN TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::date = TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::date
+        THEN index
         ELSE (index::date + INTERVAL '7 DAYS')::date::text
       END as index,
       val as val7
     from get_evolutivo(
-        '{date_from}'::timestamp - INTERVAL '7 DAYS',
-        '{date_to}'::timestamp - INTERVAL '7 DAYS',
+        TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '7 DAYS',
+        TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '7 DAYS',
         '{hours}',
         '{lines}',
         '{working_days}',
@@ -31,13 +32,14 @@ from get_evolutivo(
   ) t7 on (t.index = t7.index)
   left join (
     select CASE
-        WHEN '{date_from}'::date = '{date_to}'::date THEN index
+        WHEN TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::date = TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::date
+        THEN index
         ELSE (index::date + INTERVAL '14 DAYS')::date::text
       END as index,
       val as val14
     from get_evolutivo(
-        '{date_from}'::timestamp - INTERVAL '14 DAYS',
-        '{date_to}'::timestamp - INTERVAL '14 DAYS',
+        TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '14 DAYS',
+        TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '14 DAYS',
         '{hours}',
         '{lines}',
         '{working_days}',
@@ -47,13 +49,14 @@ from get_evolutivo(
   ) t14 on (t.index = t14.index)
   left join (
     select CASE
-        WHEN '{date_from}'::date = '{date_to}'::date THEN index
+        WHEN TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::date = TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::date
+        THEN index
         ELSE (index::date + INTERVAL '21 DAYS')::date::text
       END as index,
       val as val21
     from get_evolutivo(
-        '{date_from}'::timestamp - INTERVAL '21 DAYS',
-        '{date_to}'::timestamp - INTERVAL '21 DAYS',
+        TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '21 DAYS',
+        TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '21 DAYS',
         '{hours}',
         '{lines}',
         '{working_days}',
@@ -63,13 +66,14 @@ from get_evolutivo(
   ) t21 on (t.index = t21.index)
   left join (
     select CASE
-        WHEN '{date_from}'::date = '{date_to}'::date THEN index
+        WHEN TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::date = TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::date
+        THEN index
         ELSE (index::date + INTERVAL '364 DAYS')::date::text
       END as index,
       val as val364
     from get_evolutivo(
-        '{date_from}'::timestamp - INTERVAL '364 DAYS',
-        '{date_to}'::timestamp - INTERVAL '364 DAYS',
+        TO_TIMESTAMP('{date_from}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '364 DAYS',
+        TO_TIMESTAMP('{date_to}', 'YYYY-MM-DD HH24:MI:ss')::timestamp - INTERVAL '364 DAYS',
         '{hours}',
         '{lines}',
         '{working_days}',
