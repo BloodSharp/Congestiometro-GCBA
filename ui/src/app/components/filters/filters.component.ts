@@ -315,14 +315,13 @@ export class FiltersComponent implements OnInit {
    * Clear all the selected streets and disable the streets and avenues automatic selection toggles.
    */
   clearAllSelectedStreetsAndDisableToggles() {
-    // Eliminamos las calles seleccionadas
-    this.selectedStreets.clear();
     // Verificar cual de ambos filtros estamos utilizando actualmente
     const sidePanelFilter = this.secondary ? 'right' : 'left';
     // Establecemos la selección en los parámetros de la URL con valores
     // falsos para evitar seleccionar automáticamente la próxima vez
     this.dataService.urlParams.forEach((params) => {
-      if (params[sidePanelFilter].state?.streets?.length > 0) params[sidePanelFilter].state.streets = [];
+      //if (params[sidePanelFilter].state?.streets?.length > 0)
+      params[sidePanelFilter].state.streets = [];
       params[sidePanelFilter].state.autoSelectAvenues = false;
       params[sidePanelFilter].state.autoSelectStreets = false;
     });
@@ -331,6 +330,8 @@ export class FiltersComponent implements OnInit {
       v?.form?.controls?.autoSelectAvenues?.setValue(false);
       v?.form?.controls?.autoSelectStreets?.setValue(false);
     });
+    // Eliminamos las calles seleccionadas
+    this.selectedStreets.clear();
   }
 
   private getCoordinatesArray(drawEvent: DrawEvent): [number, number][] {
