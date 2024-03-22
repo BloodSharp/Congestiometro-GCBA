@@ -50,7 +50,7 @@
     "@angular/cli": "~17.0.7",
     "@angular/compiler-cli": "~17.0.6",
     "@graphql-codegen/cli": "5.0.0",
-    "@graphql-codegen/introspection": "4.0.0",
+    "@graphql-codegen/introspection": "4.0.3",
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-apollo-angular": "4.0.0",
     "@graphql-codegen/typescript-operations": "4.0.1",
@@ -67,6 +67,7 @@
   },
   "overrides": {
     "axios": "^1.6.2",
+    "webpack-dev-middleware": "^6.1.2",
     "vite": "^4.5.1"
   }
 }
