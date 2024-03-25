@@ -26,6 +26,16 @@ git clone git@github.com:EL-BID/Congestiometro-GCBA.git
 
    - ADMIN_SECRET: la clave de administración que servirá para resguardar todo el sistema (por defecto es ==congestiometro==)
 
+   - VERTICA_HOST: El host de la base de datos de Vértica.
+
+   - VERTICA_PORT: El puerto de la base de datos de Vértica.
+
+   - VERTICA_USER: El nombre de usuario de la base de datos de Vértica.
+
+   - VERTICA_PASSWORD: La contraseña de la base de datos de Vértica.
+
+   - VERTICA_DATABASE: El nombre de la base de datos de Vértica.
+
 4. Hacer ejecutables los scripts de la raíz del proyecto
 
 ```bash
